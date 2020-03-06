@@ -1,5 +1,5 @@
 package edu.duke.ece651.risc;
 
-public class Unit {
-
+public interface Unit{
+  public String getName();
 }
