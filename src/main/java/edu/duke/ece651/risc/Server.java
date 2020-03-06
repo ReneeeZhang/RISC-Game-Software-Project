@@ -2,11 +2,15 @@ package edu.duke.ece651.risc;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Server {
@@ -42,8 +46,11 @@ public class Server {
   public void sendToClient() throws IOException{
     for (Socket s : clients) {
       DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-      ObjectMapper mapper = new ObjectMapper();
-      dout.write(mapper.writeValueAsBytes(this.board));
+      ObjectOutputStream serial = new ObjectOutputStream(dout);
+      serial.writeObject(this.board);
+      //ObjectMapper mapper = new ObjectMapper();
+      //mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+      //dout.write(mapper.writeValueAsBytes(this.board));
     }
   }
 }

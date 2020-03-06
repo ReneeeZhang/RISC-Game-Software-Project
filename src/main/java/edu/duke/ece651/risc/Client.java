@@ -2,8 +2,11 @@ package edu.duke.ece651.risc;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Client {
@@ -15,9 +18,19 @@ public class Client {
 
   public void receive() throws IOException{
     DataInputStream din = new DataInputStream(s.getInputStream());
+    ObjectInputStream deserial = new ObjectInputStream(din);
+    try{
+      Board b = (GameBoard) deserial.readObject();
+      System.out.println(b);
+    } catch (ClassNotFoundException e) {
+      System.out.println(e);
+    }
+    /*
     ObjectMapper mapper = new ObjectMapper();
-    String str = din.readUTF();
-    Board b = mapper.readValue(str, Board.class);
-    System.out.println(b);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    byte[] buf = new byte[1024];
+    din.read(buf);
+    Board b = mapper.readValue(buf, GameBoard.class);
+    */
   }
 }

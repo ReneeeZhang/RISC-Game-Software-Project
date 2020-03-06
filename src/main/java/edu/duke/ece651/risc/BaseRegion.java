@@ -1,8 +1,10 @@
 package edu.duke.ece651.risc;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BaseRegion implements Region {
+public class BaseRegion implements Region, Serializable {
+  private static final long serialVersionUID = 989463821;
   private String name;
   private String color;
   private List<Unit> units;

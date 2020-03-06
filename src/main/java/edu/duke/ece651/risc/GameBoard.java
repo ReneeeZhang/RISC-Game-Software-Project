@@ -1,12 +1,14 @@
 package edu.duke.ece651.risc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameBoard implements Board, Drawable {
+public class GameBoard implements Board, Drawable, Serializable {
   private Map<Region, List<Region>> regionMap;
+  private static final long serialVersionUID = 12367648;
   
   public GameBoard() {
     this.regionMap = new HashMap<Region, List<Region>>();
