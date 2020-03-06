@@ -8,3 +8,6 @@
  */
 
 rootProject.name = 'risc'
+
+include ":server", ":client", ":shared"
+
