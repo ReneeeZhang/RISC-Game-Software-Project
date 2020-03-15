@@ -63,6 +63,10 @@ subprojects{
         compiler {
             additionalArgs = "-g:lines,source,vars"
         }
+        report{
+            xml = true
+            html = true
+        }
     }
 }
 
@@ -91,4 +95,25 @@ tasks.register("run-client"){
     dependsOn project('client').getTasksByName('run',false)
     group = 'Run Client/Server'
     description = 'Run the Client'
+}
+
+tasks.withType(JavaCompile) {
+    options.debug = true
+}
+
+task resolveDependencies {
+    doLast{
+        project.rootProject.allprojects.each { subProject->
+            subProject.buildscript.configurations.each { configurations->
+                if(configuration.canBeResolved) {
+                    configuration.resolve()
+                }
+            }
+        }
+        subProject.configurations.each { configuration ->
+            if(configuration.canBeresolved) {
+                configuration.resolve()
+            }            
+        }
+    }
 }
