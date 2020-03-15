@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc;
+package shared;
 
 public class BaseUnit implements Unit {
   private String name;

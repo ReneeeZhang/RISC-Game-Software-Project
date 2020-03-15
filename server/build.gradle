@@ -33,7 +33,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'edu.duke.ece651.risc.server.App'
+    mainClassName = 'edu.duke.ece651.risc.server.Server'
 }
 
 test {
