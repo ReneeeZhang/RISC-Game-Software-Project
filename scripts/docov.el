@@ -1,5 +1,5 @@
 (setq gradle-executable-path "./gradlew")
-;;(dcoverage-generate-and-save "coverage.txt")
+(dcoverage-generate-and-save "coverage.txt")
 (dcoverage-load-default-file)
 (dcoverage-show-coverage-results)
 (write-file "coverage.txt")
