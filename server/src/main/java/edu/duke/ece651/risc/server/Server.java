@@ -16,15 +16,15 @@ public class Server {
   private ServerSocket ss;
   private List<Socket> clients;
   
-  public Server() throws IOException {
+  public Server(int port) throws IOException {
     this.board = new GameBoard();
-    this.ss = new ServerSocket(6666);
+    this.ss = new ServerSocket(port);
     this.clients = new ArrayList<Socket>();
   }
 
   public static void main(String[] args) {
     try{
-      Server server = new Server();
+      Server server = new Server(Integer.valueOf(args[0]));
       server.waitForClients(1);
       System.out.println("wait ends");
       server.sendToClient();

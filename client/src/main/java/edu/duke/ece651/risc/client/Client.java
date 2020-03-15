@@ -10,13 +10,13 @@ import shared.*;
 public class Client {
   private Socket s;
 
-  public Client() throws IOException{
-    this.s = new Socket("localhost", 6666);
+  public Client(String hostname, int port) throws IOException{
+    this.s = new Socket(hostname, port);
   }
 
   public static void main(String[] args){
     try{
-      Client client = new Client();
+      Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
       client.receive();
     } catch (IOException e) {
