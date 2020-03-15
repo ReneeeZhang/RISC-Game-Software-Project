@@ -110,7 +110,7 @@ task resolveDependencies {
                 }
             }
             subProject.configurations.each { configuration ->
-                if(configuration.canBeresolved) {
+                if(configuration.canBeResolved) {
                     configuration.resolve()
                 }            
             }
