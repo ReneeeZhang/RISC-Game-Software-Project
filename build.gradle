@@ -63,6 +63,8 @@ subprojects{
         compiler {
             additionalArgs = "-g:lines,source,vars"
         }
+    }
+    clover {
         report{
             xml = true
             html = true
