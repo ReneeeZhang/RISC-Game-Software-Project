@@ -13,5 +13,11 @@ plugins {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'edu.duke.ece651.risc.client.App'
+    mainClassName = 'edu.duke.ece651.risc.client.Client'
+}
+
+run {
+    if(project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
 }
