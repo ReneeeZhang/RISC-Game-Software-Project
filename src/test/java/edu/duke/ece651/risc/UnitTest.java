@@ -8,7 +8,7 @@ public class UnitTest {
   public void test_client() {
     try{
       Client client = new Client();
-      System.out.println("Connect");
+      System.out.println("Connected");
       client.receive();
     } catch (IOException e) {
       System.out.println(e);
