@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc;
+package shared;
 
 import java.io.Serializable;
 import java.util.List;

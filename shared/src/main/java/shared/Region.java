@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc;
+package shared;
 
 public interface Region {
   public String getName();

@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc;
+package edu.duke.ece651.risc.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,9 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import shared.*;
 
 public class Server {
   private Board board;

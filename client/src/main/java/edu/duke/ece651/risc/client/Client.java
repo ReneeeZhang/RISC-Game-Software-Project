@@ -1,13 +1,11 @@
-package edu.duke.ece651.risc;
+package edu.duke.ece651.risc.client;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import shared.*;
 
 public class Client {
   private Socket s;
@@ -16,6 +14,16 @@ public class Client {
     this.s = new Socket("localhost", 6666);
   }
 
+  public static void main(String[] args){
+    try{
+      Client client = new Client();
+      System.out.println("Connected");
+      client.receive();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+  }
+  
   public void receive() throws IOException{
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);
