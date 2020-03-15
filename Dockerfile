@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-MAINTAINER Drew Hilton "adhilton@ee.duke.edu"
+MAINTAINER Qirui He "qh37@duke.edu"
 
 USER root
 
