@@ -104,7 +104,7 @@ tasks.withType(JavaCompile) {
 task resolveDependencies {
     doLast{
         project.rootProject.allprojects.each { subProject->
-            subProject.buildscript.configurations.each { configurations->
+            subProject.buildscript.configurations.each { configuration->
                 if(configuration.canBeResolved) {
                     configuration.resolve()
                 }
