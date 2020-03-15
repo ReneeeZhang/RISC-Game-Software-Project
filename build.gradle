@@ -64,12 +64,11 @@ subprojects{
             additionalArgs = "-g:lines,source,vars"
         }
     }
-}
-
-clover {
-    report{
-        xml = true
-        html = true
+    clover {
+        report{
+            xml = true
+            html = true
+        }
     }
 }
 

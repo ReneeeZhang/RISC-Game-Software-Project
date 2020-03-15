@@ -33,12 +33,5 @@ public class Client {
     } catch (ClassNotFoundException e) {
       System.out.println(e);
     }
-    /*
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-    byte[] buf = new byte[1024];
-    din.read(buf);
-    Board b = mapper.readValue(buf, GameBoard.class);
-    */
   }
 }
