@@ -10,7 +10,7 @@ stages:
    - test
    - coverage
    - deploy
-   - test-deployment
+#   - test-deployment
 build:
   tags:
      - risc
@@ -42,10 +42,11 @@ deploy:
      - risc
    stage: deploy
    script: ./scripts/redeploy.sh
-test-deployment:
-   tags:
-     - risc
-   stage: test-deployment
-   dependencies:
-     - deploy
-   script: ./scripts/test-deployment.sh
+
+#test-deployment:
+#   tags:
+#     - risc
+#   stage: test-deployment
+#   dependencies:
+#     - deploy
+#   script: ./scripts/test-deployment.sh
