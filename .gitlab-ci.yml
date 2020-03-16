@@ -10,7 +10,8 @@ stages:
    - test
    - coverage
    - deploy
-   - test-deployment
+#   - test-deployment
+
 build:
   tags:
      - risc
@@ -37,15 +38,17 @@ pages:
  artifacts:
    paths:
      - public
+
 deploy:
    tags:
      - risc
    stage: deploy
    script: ./scripts/redeploy.sh
-test-deployment:
-   tags:
-     - risc
-   stage: test-deployment
-   dependencies:
-     - deploy
-   script: ./scripts/test-deployment.sh
+
+#test-deployment:
+#   tags:
+#     - risc
+#   stage: test-deployment
+#   dependencies:
+#     - deploy
+#   script: ./scripts/test-deployment.sh
