@@ -46,9 +46,6 @@ public class Server {
       DataOutputStream dout = new DataOutputStream(s.getOutputStream());
       ObjectOutputStream serial = new ObjectOutputStream(dout);
       serial.writeObject(this.board);
-      //ObjectMapper mapper = new ObjectMapper();
-      //mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-      //dout.write(mapper.writeValueAsBytes(this.board));
     }
   }
 }
