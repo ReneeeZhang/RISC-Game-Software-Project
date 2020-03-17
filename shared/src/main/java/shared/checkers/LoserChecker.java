@@ -21,6 +21,7 @@ public class LoserChecker implements  Checker {
     @Override
     public boolean isValid() {
         //TODO, needs getRegions() in board
+
         return false;
     }
 }
