@@ -5,4 +5,8 @@
 build
 bin
 
+.project
+
+.classpath
+
 *~
