@@ -1,5 +1,7 @@
 package shared;
 
+import shared.checkers.*;
+
 public class Attack extends R2RInstruction {
   public Attack(String s, String d, int n) {
     super(s, d, n);
@@ -7,6 +9,7 @@ public class Attack extends R2RInstruction {
 
   @Override
   public void execute(Board b) {
+    this.board = b;
     if(isValid()) {
       //b.attack(src, dest)
     }
@@ -14,7 +17,7 @@ public class Attack extends R2RInstruction {
 
   @Override
   public boolean isValid() {
-    Checker c = new Checker(src, dest);
+    Checker c = new AdjacentChecker(board, board.getRegion(src), board.getRegion(dest));
     return c.isValid();
   }
 }
