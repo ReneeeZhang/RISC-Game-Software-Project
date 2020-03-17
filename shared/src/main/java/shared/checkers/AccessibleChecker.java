@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * Check if two regions are accessible to each other
  */
 public class AccessibleChecker implements Checker {
     private Board board;
