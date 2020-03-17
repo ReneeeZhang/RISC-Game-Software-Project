@@ -1,6 +1,9 @@
 package shared.checkers;
 
 import shared.Board;
+import shared.Region;
+
+import java.util.List;
 
 public class LoserChecker implements  Checker {
 
@@ -20,8 +23,10 @@ public class LoserChecker implements  Checker {
 
     @Override
     public boolean isValid() {
-        //TODO, needs getRegions() in board
-
-        return false;
+        List<Region> allRegions = board.getAllRegions();
+        for (Region region : allRegions) {
+            if (region.getOwner().equals(owner)) return false;
+        }
+        return true;
     }
 }
