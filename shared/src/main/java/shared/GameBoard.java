@@ -41,6 +41,14 @@ public class GameBoard implements Board, Drawable, Serializable {
     return new ArrayList<Region>(regionNameMap.values());
   }
 
+  @Override
+  public void move(String src, String dst) {
+    Region srcRegion = regionNameMap.get(src);
+    Region dstRegion = regionNameMap.get(dst);
+    //TODO: region.recv and region.send
+    //dstRegion.recv(srcRegion.send());
+  }
+  
   // draw()
   @Override
   public String toString() {

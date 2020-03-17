@@ -8,4 +8,6 @@ public interface Board {
   public Region getRegion(String name);
 
   public List<Region> getAllRegions();
+
+  public void move(String src, String dst);
 }
