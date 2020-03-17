@@ -16,6 +16,7 @@ public class AdjacentChecker implements Checker {
     }
 
     public AdjacentChecker(Board board, Region source, Region dest, Checker next) {
+        this.board = board;
         this.source = source;
         this.dest = dest;
         this.next = next;

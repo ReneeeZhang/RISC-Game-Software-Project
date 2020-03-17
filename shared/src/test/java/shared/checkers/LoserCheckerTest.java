@@ -12,26 +12,29 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AdjacentCheckerTest {
-
+public class LoserCheckerTest {
     @Test
     public void isValid() {
         Region r1 = mock(Region.class);
         Region r2 = mock(Region.class);
         Region r3 = mock(Region.class);
+        //owner
+        when(r1.getOwner()).thenReturn("A");
+        when(r2.getOwner()).thenReturn("A");
+        when(r3.getOwner()).thenReturn("A");
         //name
         when(r1.getName()).thenReturn("r1");
         when(r2.getName()).thenReturn("r2");
         when(r3.getName()).thenReturn("r3");
-        /*
-            two regions directly connected
-         */
-        //r1 -> r2, r1 -> r3
-        List<Region> regions = Arrays.asList(r2, r3);
+
+        List<Region> regions = Arrays.asList(r1, r2, r3);
         Board boardMock = mock(Board.class);
-        when(boardMock.getNeighbor("r1")).thenReturn(regions);
-        //source: r1, dest: r3
-        AdjacentChecker adjacentChecker = new AdjacentChecker(boardMock, r1, r3);
-        Assertions.assertTrue(adjacentChecker.isValid());
+        when(boardMock.getAllRegions()).thenReturn(regions);
+
+        LoserChecker loserChecker = new LoserChecker(boardMock, "B");
+        Assertions.assertTrue(loserChecker.isValid());
+
+        when(r3.getOwner()).thenReturn("B");
+        Assertions.assertFalse(loserChecker.isValid());
     }
 }
