@@ -15,8 +15,8 @@ public class Server {
   private List<Socket> clients;
   
   public Server(int port) throws IOException {
-    Region a = new BaseRegion("Fitzpatrick", "Red", new ArrayList<Unit>());
-    Region b = new BaseRegion("Hudson", "Blue", new ArrayList<Unit>());
+    Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", new ArrayList<Unit>());
+    Region b = new BaseRegion("Hudson", "PlayerB", "Blue", new ArrayList<Unit>());
     List<Region> aNeigh = new ArrayList<Region>();
     aNeigh.add(b);
     List<Region> bNeigh = new ArrayList<Region>();
