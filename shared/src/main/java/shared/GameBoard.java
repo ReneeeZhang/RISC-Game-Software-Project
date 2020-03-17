@@ -31,13 +31,10 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
-  public void move(String src, String dst) {
-    Region srcRegion = regionNameMap.get(src);
-    Region dstRegion = regionNameMap.get(dst);
-    //TODO: region.recv and region.send
-    //dstRegion.recv(srcRegion.send());
+  public Region getRegion(String name) {
+    return regionNameMap.get(name);
   }
- 
+
   // draw()
   @Override
   public String toString() {
