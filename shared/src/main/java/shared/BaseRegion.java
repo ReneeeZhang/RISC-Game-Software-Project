@@ -48,9 +48,5 @@ public class BaseRegion implements Region, Serializable {
   public String setOwner(String s){
   }
   */
-  public void addUnit(int n) {
-  }
-  public void removeUnit(int n){
-  }
   
 }
