@@ -1,7 +1,7 @@
 package shared;
 
 public class Checker {
-  public Checker(Region src, Region dest) {
+  public Checker(String src, String dest) {
   }
   
   public boolean isValid() {

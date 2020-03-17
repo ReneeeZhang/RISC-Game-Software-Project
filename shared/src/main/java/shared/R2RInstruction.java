@@ -1,8 +1,8 @@
 package shared;
 
 public class R2RInstruction implements Instruction {
-  protected Region src;
-  protected Region dest;
+  protected String src;
+  protected String dest;
   protected int numUnit;
 
   // Default constructor
@@ -10,7 +10,7 @@ public class R2RInstruction implements Instruction {
   }
 
   // Constructor
-  public R2RInstruction(Region s, Region d, int n) {
+  public R2RInstruction(String s, String d, int n) {
     src = s;
     dest = d;
     numUnit = n;

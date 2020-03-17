@@ -1,15 +1,14 @@
 package shared;
 
 public class Attack extends R2RInstruction {
-  public Attack(Region s, Region d, int n) {
+  public Attack(String s, String d, int n) {
     super(s, d, n);
   }
 
   @Override
   public void execute(Board b) {
     if(isValid()) {
-      src.removeUnit(numUnit);
-      dest.addUnit(numUnit);
+      //b.attack(src, dest)
     }
   }
 
