@@ -27,6 +27,6 @@ public class LoserChecker implements  Checker {
         for (Region region : allRegions) {
             if (region.getOwner().equals(owner)) return false;
         }
-        return true;
+        return next == null || next.isValid();
     }
 }
