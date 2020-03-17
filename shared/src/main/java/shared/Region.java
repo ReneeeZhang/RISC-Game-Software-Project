@@ -8,4 +8,6 @@ public interface Region {
   public int setNumUnit();
   public String setOwner(String s);
   */
+  public void addUnit(int n);
+  public void removeUnit(int n);
 }
