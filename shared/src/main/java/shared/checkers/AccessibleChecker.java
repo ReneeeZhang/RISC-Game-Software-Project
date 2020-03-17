@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * Check if two regions are accessible to each other
  */
 public class AccessibleChecker implements Checker {
     private Board board;
@@ -46,7 +46,7 @@ public class AccessibleChecker implements Checker {
         if (neighbor.contains(dest)) return true;
 
         for (Region region : neighbor) {
-            if (visited.contains(region) || isSameOwner(region, r)) continue;
+            if (visited.contains(region) || !isSameOwner(region, r)) continue;
             if (isAccessible(region)) return true;
         }
 
