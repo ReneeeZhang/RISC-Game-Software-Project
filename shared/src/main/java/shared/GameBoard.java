@@ -1,6 +1,7 @@
 package shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   @Override
   public Region getRegion(String name) {
     return regionNameMap.get(name);
+  }
+
+  @Override
+  public List<Region> getAllRegions() {
+    return new ArrayList<Region>(regionNameMap.values());
   }
 
   // draw()

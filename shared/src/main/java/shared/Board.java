@@ -6,4 +6,6 @@ public interface Board {
   public List<Region> getNeighbor(String name);
 
   public Region getRegion(String name);
+
+  public List<Region> getAllRegions();
 }
