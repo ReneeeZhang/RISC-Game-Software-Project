@@ -2,12 +2,10 @@ package edu.duke.ece651.risc.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import shared.*;
 
@@ -17,7 +15,16 @@ public class Server {
   private List<Socket> clients;
   
   public Server(int port) throws IOException {
-    this.board = new GameBoard();
+    Region a = new BaseRegion("Fitzpatrick", "Red", new ArrayList<Unit>());
+    Region b = new BaseRegion("Hudson", "Blue", new ArrayList<Unit>());
+    List<Region> aNeigh = new ArrayList<Region>();
+    aNeigh.add(b);
+    List<Region> bNeigh = new ArrayList<Region>();
+    bNeigh.add(a);
+    Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
+    regionMap.put(a, aNeigh);
+    regionMap.put(b, bNeigh);
+    this.board = new GameBoard(regionMap);
     this.ss = new ServerSocket(port);
     this.clients = new ArrayList<Socket>();
   }
