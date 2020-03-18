@@ -9,5 +9,5 @@ public interface Board {
 
   public List<Region> getAllRegions();
 
-  public void move(String src, String dst);
+  public void move(String src, String dst, int num);
 }

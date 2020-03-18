@@ -28,7 +28,7 @@ public class Client {
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);
     try{
-      Board b = (GameBoard) deserial.readObject();
+      Board b = (Board) deserial.readObject();
       System.out.println(b);
     } catch (ClassNotFoundException e) {
       System.out.println(e);
