@@ -20,7 +20,7 @@ public class UnitQuantityChecker implements Checker {
 
     @Override
     public boolean isValid() {
-
-        return false;
+        boolean valid = region.getNumBaseUnit() >= expect;
+        return next == null ? valid : valid && next.isValid();
     }
 }
