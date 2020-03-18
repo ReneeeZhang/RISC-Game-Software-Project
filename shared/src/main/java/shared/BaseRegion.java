@@ -1,6 +1,7 @@
 package shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseRegion implements Region, Serializable {
@@ -31,13 +32,19 @@ public class BaseRegion implements Region, Serializable {
     return this.color;
   }
   
-  public void addUnit(Unit unit) {
-    units.add(unit);
+  public List<Unit> sendUnit(int num) {
+    List<Unit> toSend = new ArrayList<>();
+    for (int i = 0; i < num; i++) {
+      toSend.add(units.get(i));
+      units.remove(i);
+    }
+    return toSend;
   }
 
-  public void removeUnit(Unit unit) {
-    //TODO: what if unit does belong to units
-    units.remove(unit);
+  public void receiveUnit(List<Unit> toReceive) {
+    for (Unit unit : toReceive) {
+      units.add(unit);
+    }
   }
    
   /*

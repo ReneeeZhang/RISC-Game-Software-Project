@@ -11,10 +11,10 @@ public class WinnerChecker implements Checker {
     String owner;
 
     public WinnerChecker(Board board, String owner) {
-        this(null, board, owner);
+        this(board, owner, null);
     }
 
-    public WinnerChecker(Checker next, Board board, String owner) {
+    public WinnerChecker(Board board, String owner, Checker next) {
         this.next = next;
         this.board = board;
         this.owner = owner;

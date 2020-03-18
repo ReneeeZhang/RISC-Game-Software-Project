@@ -7,18 +7,17 @@ import java.util.List;
 
 public class LoserChecker implements  Checker {
 
-    Checker next;
     Board board;
-    String owner;
+    String owner;    Checker next;
 
     public LoserChecker(Board board, String owner) {
-        this(null, board, owner);
+        this(board, owner, null);
     }
 
-    public LoserChecker(Checker next, Board board, String owner) {
-        this.next = next;
+    public LoserChecker(Board board, String owner, Checker next) {
         this.board = board;
         this.owner = owner;
+        this.next = next;
     }
 
     @Override

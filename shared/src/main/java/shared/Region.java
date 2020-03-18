@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.List;
+
 public interface Region {
   public String getName();
 
@@ -7,9 +9,9 @@ public interface Region {
 
   public String getColor();
   
-  public void addUnit(Unit unit);
+  public List<Unit> sendUnit(int num);
 
-  public void removeUnit(Unit unit);
+  public void receiveUnit(List<Unit> toReceive);
 
   /*
   public int getNumUnit();
