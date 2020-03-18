@@ -13,8 +13,8 @@ public interface Region {
 
   public void receiveUnit(List<Unit> toReceive);
 
+  public int getNumBaseUnit();
   /*
-  public int getNumUnit();
   public int setNumUnit();
   public String setOwner(String s);
   */
