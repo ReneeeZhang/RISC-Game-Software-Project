@@ -4,6 +4,7 @@ public class R2RInstruction implements Instruction {
   protected String src;
   protected String dest;
   protected int numUnit;
+  protected Board board;
 
   // Default constructor
   public R2RInstruction() {
@@ -17,6 +18,7 @@ public class R2RInstruction implements Instruction {
   }
   
   public void execute(Board b) {
+    this.board = b;
     return;
   }
 

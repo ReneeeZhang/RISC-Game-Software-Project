@@ -1,5 +1,7 @@
 package shared;
 
+import shared.checkers.*;
+
 public class Move extends R2RInstruction {
   public Move(String s, String d, int n) {
     super(s, d, n);
@@ -7,6 +9,7 @@ public class Move extends R2RInstruction {
 
   @Override
   public void execute(Board b) {
+    this.board = b;
     if(isValid()) {
       b.move(src, dest);
     }
@@ -14,7 +17,7 @@ public class Move extends R2RInstruction {
 
   @Override
   public boolean isValid() {
-    Checker c = new Checker(src, dest);
+    Checker c = new AccessibleChecker(board, board.getRegion(src), board.getRegion(dest));
     return c.isValid();
   }
 }
