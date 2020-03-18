@@ -4,9 +4,9 @@ import shared.Region;
 
 public class UnitQuantityChecker implements Checker {
 
-    Region region;
-    int expect;
-    Checker next;
+    private Region region;
+    private int expect;
+    private Checker next;
 
     public UnitQuantityChecker(Region region, int expect) {
         this(region, expect, null);

@@ -6,9 +6,9 @@ import shared.Region;
 import java.util.List;
 
 public class WinnerChecker implements Checker {
-    Checker next;
-    Board board;
-    String owner;
+    private Checker next;
+    private Board board;
+    private String owner;
 
     public WinnerChecker(Board board, String owner) {
         this(board, owner, null);

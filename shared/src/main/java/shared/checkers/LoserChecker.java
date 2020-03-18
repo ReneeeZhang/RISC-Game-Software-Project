@@ -7,8 +7,9 @@ import java.util.List;
 
 public class LoserChecker implements  Checker {
 
-    Board board;
-    String owner;    Checker next;
+    private Board board;
+    private String owner;
+    private Checker next;
 
     public LoserChecker(Board board, String owner) {
         this(board, owner, null);
