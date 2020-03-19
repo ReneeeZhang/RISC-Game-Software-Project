@@ -60,6 +60,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   public String toString() {
     String str = "";
     for (String n : regionNameMap.keySet()) {
+      str += regionNameMap.get(n).getNumBaseUnit() + " units in ";
       str += n + "(next to : ";
       for(Region r: regionMap.get(regionNameMap.get(n))){
         str += r.getName() + ", ";
