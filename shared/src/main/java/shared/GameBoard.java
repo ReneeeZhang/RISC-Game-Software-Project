@@ -47,6 +47,12 @@ public class GameBoard implements Board, Drawable, Serializable {
     Region dstRegion = regionNameMap.get(dst);
     dstRegion.receiveUnit(srcRegion.sendUnit(num));
   }
+
+  public void attack(String src, String dst, int num) {
+    Region srcRegion = regionNameMap.get(src);
+    Region dstRegion = regionNameMap.get(dst);
+    // dstRegion.beenAttack(srcRegion.attack())
+  }
   
   // draw()
   @Override
