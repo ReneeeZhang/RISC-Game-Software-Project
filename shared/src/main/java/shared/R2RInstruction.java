@@ -12,9 +12,9 @@ public class R2RInstruction implements Instruction {
 
   // Constructor
   public R2RInstruction(String s, String d, int n) {
-    src = s;
-    dest = d;
-    numUnit = n;
+    this.src = s;
+    this.dest = d;
+    this.numUnit = n;
   }
   
   public void execute(Board b) {
