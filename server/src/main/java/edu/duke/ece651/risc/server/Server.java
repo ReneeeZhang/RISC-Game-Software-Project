@@ -35,11 +35,11 @@ public class Server {
       Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits);
       List<Region> aNeigh = new ArrayList<Region>();
       aNeigh.add(b);
+      aNeigh.add(c);
       List<Region> bNeigh = new ArrayList<Region>();
       bNeigh.add(a);
       List<Region> cNeigh = new ArrayList<Region>();
       cNeigh.add(a);
-      cNeigh.add(b);
       Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
       regionMap.put(a, aNeigh);
       regionMap.put(b, bNeigh);

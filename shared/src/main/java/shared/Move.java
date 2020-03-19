@@ -15,16 +15,14 @@ public class Move extends R2RInstruction implements Serializable {
   @Override
   public void execute(Board b) {
     this.board = b;
-    if(isValid()) {
+    if (isValid()) {
       b.move(src, dest, numUnit);
+      System.out.println(b);
     }
   }
 
   @Override
   public boolean isValid() {
-    System.out.println(src+" "+dest);
-    System.out.println(board.getRegion(src));
-    System.out.println(board.getRegion(dest));
     Checker c = new AccessibleChecker(board, board.getRegion(src), board.getRegion(dest));
     return c.isValid();
   }
