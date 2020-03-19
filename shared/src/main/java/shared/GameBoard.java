@@ -42,11 +42,10 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
-  public void move(String src, String dst) {
+  public void move(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    //TODO: region.recv and region.send
-    //dstRegion.recv(srcRegion.send());
+    dstRegion.receiveUnit(srcRegion.sendUnit(num));
   }
   
   // draw()
