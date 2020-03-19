@@ -41,7 +41,7 @@ public class Server {
     this.ss = new ServerSocket(port);
     this.clients = new ArrayList<Socket>();
   }
-
+  
   public static void main(String[] args) {
     try{
       Server server = new Server(Integer.valueOf(args[0]));
@@ -54,12 +54,16 @@ public class Server {
     }
   }
 
+  public void Initialization() {
+  }
+  
   public void waitForClients(int playerNum) throws IOException{
     for (int i = 0; i < playerNum; i++) {
       Socket s = ss.accept();
       System.out.println("accept");
       clients.add(s);
     }
+    ss.close();
   }
 
   public void sendToClient() throws IOException {
