@@ -1,8 +1,13 @@
 package shared;
 
-import shared.checkers.*;
+import java.io.Serializable;
 
-public class Move extends R2RInstruction {
+import shared.checkers.AccessibleChecker;
+import shared.checkers.Checker;
+
+public class Move extends R2RInstruction implements Serializable {
+  private static final long serialVersionUID = 923749345;
+  
   public Move(String s, String d, int n) {
     super(s, d, n);
   }
@@ -10,8 +15,9 @@ public class Move extends R2RInstruction {
   @Override
   public void execute(Board b) {
     this.board = b;
-    if(isValid()) {
+    if (isValid()) {
       b.move(src, dest, numUnit);
+      System.out.println(b);
     }
   }
 
@@ -20,4 +26,13 @@ public class Move extends R2RInstruction {
     Checker c = new AccessibleChecker(board, board.getRegion(src), board.getRegion(dest));
     return c.isValid();
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Move: move ").append(numUnit).append(" unit(s) from ").append(src).append(" to ").append(dest)
+        .append(".\n");
+    return sb.toString();
+  }
+  
 }
