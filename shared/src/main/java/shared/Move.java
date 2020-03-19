@@ -1,8 +1,13 @@
 package shared;
 
-import shared.checkers.*;
+import java.io.Serializable;
 
-public class Move extends R2RInstruction {
+import shared.checkers.AccessibleChecker;
+import shared.checkers.Checker;
+
+public class Move extends R2RInstruction implements Serializable {
+  private static final long serialVersionUID = 923749345;
+  
   public Move(String s, String d, int n) {
     super(s, d, n);
   }
