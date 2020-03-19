@@ -11,7 +11,7 @@ public class Attack extends R2RInstruction {
   public void execute(Board b) {
     this.board = b;
     if(isValid()) {
-      //b.attack(src, dest)
+      //b.attack(src, dest, numUnit)
     }
   }
 

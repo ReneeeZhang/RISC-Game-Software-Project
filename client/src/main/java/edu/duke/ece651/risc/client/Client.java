@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import shared.Board;
-import shared.GameBoard;
 import shared.Instruction;
 import shared.Move;
 
@@ -22,8 +21,8 @@ public class Client {
   public void receiveFromServer() throws IOException {
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);
-    try {
-      Board b = (GameBoard) deserial.readObject();
+    try{
+      Board b = (Board) deserial.readObject();
       System.out.println(b);
     } catch (ClassNotFoundException e) {
       System.out.println(e);
@@ -51,5 +50,4 @@ public class Client {
       System.out.println(e);
     }
   }
-
 }
