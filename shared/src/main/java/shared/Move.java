@@ -25,4 +25,13 @@ public class Move extends R2RInstruction implements Serializable {
     Checker c = new AccessibleChecker(board, board.getRegion(src), board.getRegion(dest));
     return c.isValid();
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Move: move ").append(numUnit).append(" unit(s) from ").append(src).append(" to ").append(dest)
+        .append(".\n");
+    return sb.toString();
+  }
+  
 }
