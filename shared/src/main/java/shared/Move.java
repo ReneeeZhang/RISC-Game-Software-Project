@@ -11,7 +11,7 @@ public class Move extends R2RInstruction {
   public void execute(Board b) {
     this.board = b;
     if(isValid()) {
-      b.move(src, dest);
+      b.move(src, dest, numUnit);
     }
   }
 
