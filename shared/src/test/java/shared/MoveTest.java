@@ -20,7 +20,7 @@ public class MoveTest {
     //owner
     when(r1.getOwner()).thenReturn("A");
     when(r2.getOwner()).thenReturn("A");
-    when(r3.getOwner()).thenReturn("A");
+    when(r3.getOwner()).thenReturn("B");
     //name
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
@@ -38,6 +38,11 @@ public class MoveTest {
     m1.execute(boardMock);
     assertEquals(true, m1.isValid());
 
+    m1.toString();
+
+    Move m2 = new Move("r1", "r3", 1);
+    m2.execute(boardMock);
+    assertEquals(false, m2.isValid());
   }
   @Test
   public void test_() {

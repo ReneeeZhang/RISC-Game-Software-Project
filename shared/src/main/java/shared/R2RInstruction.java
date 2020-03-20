@@ -22,10 +22,18 @@ public class R2RInstruction implements Instruction, Serializable {
   
   public void execute(Board b) {
     this.board = b;
-    return;
   }
 
   public boolean isValid() {
     return true;
+  }
+
+  // Getters
+  public Region getSrc() {
+    return board.getRegion(src);
+  }
+
+  public Region getDest() {
+    return board.getRegion(dest);
   }
 }
