@@ -1,8 +1,10 @@
 package shared;
-
+import java.io.Serializable;
 import shared.checkers.*;
 
-public class Attack extends R2RInstruction {
+public class Attack extends R2RInstruction implements Serializable{
+  private static final long serialVersionUID = 923749346;
+  
   public Attack(String s, String d, int n) {
     super(s, d, n);
   }
@@ -17,7 +19,10 @@ public class Attack extends R2RInstruction {
 
   @Override
   public boolean isValid() {
-    Checker c = new AdjacentChecker(board, board.getRegion(src), board.getRegion(dest));
-    return c.isValid();
+    Region r1 = board.getRegion(src);
+    Region r2 = board.getRegion(dest);
+    Checker c = new AdjacentChecker(board, r1, r2);
+    boolean sameOwner = r1.getOwner().equals(r2.getOwner());
+    return c.isValid() && !sameOwner;
   }
 }
