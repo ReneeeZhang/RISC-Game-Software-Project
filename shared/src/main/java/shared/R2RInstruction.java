@@ -15,17 +15,29 @@ public class R2RInstruction implements Instruction, Serializable {
 
   // Constructor
   public R2RInstruction(String s, String d, int n) {
-    src = s;
-    dest = d;
-    numUnit = n;
+    this.src = s;
+    this.dest = d;
+    this.numUnit = n;
   }
   
   public void execute(Board b) {
     this.board = b;
-    return;
   }
 
   public boolean isValid() {
     return true;
+  }
+
+  // Getters
+  public Region getSrc() {
+    return board.getRegion(src);
+  }
+
+  public Region getDest() {
+    return board.getRegion(dest);
+  }
+
+  public int getNumUnit() {
+    return numUnit;
   }
 }

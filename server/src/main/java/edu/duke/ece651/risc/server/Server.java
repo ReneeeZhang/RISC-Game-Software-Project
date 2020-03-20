@@ -16,39 +16,41 @@ public class Server {
   private ServerSocket ss;
   private List<Socket> clients;
   
-  public Server(int port) throws IOException {
-    List<Unit> aUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit("a"));
-    List<Unit> bUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit("b"));
-    List<Unit> cUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit("c"));
-    Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", aUnits);
-    Region b = new BaseRegion("Hudson", "PlayerA", "Blue", bUnits);
-    Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits);
-    List<Region> aNeigh = new ArrayList<Region>();
-    aNeigh.add(b);
-    List<Region> bNeigh = new ArrayList<Region>();
-    bNeigh.add(a);
-    List<Region> cNeigh = new ArrayList<Region>();
-    cNeigh.add(a);
-    cNeigh.add(b);
-    Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
-    regionMap.put(a, aNeigh);
-    regionMap.put(b, bNeigh);
-    regionMap.put(c, cNeigh);
-    this.board = new GameBoard(regionMap);
+  public Server(int port, int playerNum, Board board) throws IOException {
+    this.board = board;
     this.ss = new ServerSocket(port);
     this.clients = new ArrayList<Socket>();
   }
   
   public static void main(String[] args) {
-    try{
-      Server server = new Server(Integer.valueOf(args[0]));
+    try {
+      List<Unit> aUnits = new ArrayList<Unit>();
+      aUnits.add(new BaseUnit("a"));
+      List<Unit> bUnits = new ArrayList<Unit>();
+      bUnits.add(new BaseUnit("b"));
+      List<Unit> cUnits = new ArrayList<Unit>();
+      cUnits.add(new BaseUnit("c"));
+      Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", aUnits);
+      Region b = new BaseRegion("Hudson", "PlayerA", "Blue", bUnits);
+      Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits);
+      List<Region> aNeigh = new ArrayList<Region>();
+      aNeigh.add(b);
+      aNeigh.add(c);
+      List<Region> bNeigh = new ArrayList<Region>();
+      bNeigh.add(a);
+      List<Region> cNeigh = new ArrayList<Region>();
+      cNeigh.add(a);
+      Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
+      regionMap.put(a, aNeigh);
+      regionMap.put(b, bNeigh);
+      regionMap.put(c, cNeigh);
+      Board board = new GameBoard(regionMap);
+      Server server = new Server(Integer.valueOf(args[0]), Integer.valueOf(args[1]), board);
       server.waitForClients(1);
       System.out.println("wait ends");
       server.sendToClient();
       server.recvFromClient();
+      server.sendToClient();
     } catch (IOException e) {
       System.out.println(e);
     }
@@ -81,6 +83,7 @@ public class Server {
       try{
         Instruction instr = (Instruction) deserial.readObject();
         System.out.println(instr);
+        instr.execute(this.board);
       } catch (ClassNotFoundException e) {
       System.out.println(e);
       }

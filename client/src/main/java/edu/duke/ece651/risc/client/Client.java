@@ -42,10 +42,10 @@ public class Client {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
       client.receiveFromServer();
-
       // Hardcode an instruction
       Instruction inst = new Move("Fitzpatrick", "Teer", 1);
       client.sendToServer(inst);
+      client.receiveFromServer();
     } catch (IOException e) {
       System.out.println(e);
     }

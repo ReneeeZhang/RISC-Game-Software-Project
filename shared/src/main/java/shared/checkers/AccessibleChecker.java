@@ -49,7 +49,6 @@ public class AccessibleChecker implements Checker {
             if (visited.contains(region) || !isSameOwner(region, r)) continue;
             if (isAccessible(region)) return true;
         }
-
         return false;
     }
     @Override

@@ -36,7 +36,7 @@ public class BaseRegion implements Region, Serializable {
     // TODO: Better way is to iterate the list of units and count all base units
     return units.size();
   }
-  
+
   public List<Unit> sendUnit(int num) {
     List<Unit> toSend = new ArrayList<>();
     for (int i = 0; i < num; i++) {
