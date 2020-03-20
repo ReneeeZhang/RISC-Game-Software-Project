@@ -42,11 +42,17 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
-  public void move(String src, String dst) {
+  public void move(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    //TODO: region.recv and region.send
-    //dstRegion.recv(srcRegion.send());
+    dstRegion.receiveUnit(srcRegion.sendUnit(num));
+  }
+
+  @Override
+  public void attack(String src, String dst, int num) {
+    Region srcRegion = regionNameMap.get(src);
+    Region dstRegion = regionNameMap.get(dst);
+    // dstRegion.beenAttack(srcRegion.attack())
   }
   
   // draw()
@@ -54,6 +60,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   public String toString() {
     String str = "";
     for (String n : regionNameMap.keySet()) {
+      str += regionNameMap.get(n).getNumBaseUnit() + " units in ";
       str += n + "(next to : ";
       for(Region r: regionMap.get(regionNameMap.get(n))){
         str += r.getName() + ", ";
