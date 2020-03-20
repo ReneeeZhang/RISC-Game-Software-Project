@@ -36,4 +36,8 @@ public class R2RInstruction implements Instruction, Serializable {
   public Region getDest() {
     return board.getRegion(dest);
   }
+
+  public int getNumUnit() {
+    return numUnit;
+  }
 }

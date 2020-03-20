@@ -6,15 +6,15 @@ import shared.Region;
 import java.util.List;
 
 public class WinnerChecker implements Checker {
-    Checker next;
-    Board board;
-    String owner;
+    private Checker next;
+    private Board board;
+    private String owner;
 
     public WinnerChecker(Board board, String owner) {
-        this(null, board, owner);
+        this(board, owner, null);
     }
 
-    public WinnerChecker(Checker next, Board board, String owner) {
+    public WinnerChecker(Board board, String owner, Checker next) {
         this.next = next;
         this.board = board;
         this.owner = owner;
@@ -26,6 +26,6 @@ public class WinnerChecker implements Checker {
         for (Region region : allRegions) {
             if (!region.getOwner().equals(owner)) return false;
         }
-        return true;
+        return next == null || next.isValid();
     }
 }
