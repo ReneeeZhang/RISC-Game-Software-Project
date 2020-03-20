@@ -13,9 +13,12 @@ public interface Region {
 
   public void receiveUnit(List<Unit> toReceive);
 
+  public void removeUnit(int num);
+  
   public int getNumBaseUnit();
-  /*
-  public int setNumUnit();
-  public String setOwner(String s);
-  */
+
+  public void setOwner(String owner);
+
+  public void autoIncrement();
+
 }

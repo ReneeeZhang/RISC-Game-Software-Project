@@ -51,14 +51,20 @@ public class BaseRegion implements Region, Serializable {
       units.add(unit);
     }
   }
-   
-  /*
-  public int getNumUnit() {
+
+  public void removeUnit(int num) {
+    for (int i = 0; i < num; i++) {
+      units.remove(i);
+    }
   }
-  public int setNumUnit() {
-  }
-  public String setOwner(String s){
-  }
-  */
   
+  public void setOwner(String owner) {
+    this.owner = owner;
+  }
+ 
+  public void autoIncrement(){
+    Unit unit = new BaseUnit(owner);
+    units.add(unit);
+  }
 }
+
