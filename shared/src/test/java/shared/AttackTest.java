@@ -21,7 +21,7 @@ public class AttackTest {
     //owner
     when(r1.getOwner()).thenReturn("A");
     when(r2.getOwner()).thenReturn("A");
-    when(r3.getOwner()).thenReturn("A");
+    when(r3.getOwner()).thenReturn("B");
     //name
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
@@ -35,9 +35,13 @@ public class AttackTest {
     when(boardMock.getRegion("r3")).thenReturn(r3);
     //doNothing().when(boardMock.move("r1","r2"));
 
-    Attack a1 = new Attack("r1", "r2", 1);
+    Attack a1 = new Attack("r1", "r3", 1);
     a1.execute(boardMock);
     assertEquals(true, a1.isValid());
+
+     Attack a2 = new Attack("r1", "r2", 1);
+    a2.execute(boardMock);
+    assertEquals(false, a2.isValid());
 
   }
   @Test
