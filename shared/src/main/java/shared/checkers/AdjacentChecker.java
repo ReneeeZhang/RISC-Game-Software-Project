@@ -21,7 +21,9 @@ public class AdjacentChecker implements Checker {
         this.dest = dest;
         this.next = next;
     }
-
+    public void setNext(Checker next) {
+        this.next = next;
+    }
     @Override
     public boolean isValid() {
         List<Region> neighbor = board.getNeighbor(source.getName());

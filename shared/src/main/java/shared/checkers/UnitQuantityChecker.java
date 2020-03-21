@@ -18,6 +18,10 @@ public class UnitQuantityChecker implements Checker {
         this.next = next;
     }
 
+    public void setNext(Checker next) {
+        this.next = next;
+    }
+
     @Override
     public boolean isValid() {
         boolean valid = region.getNumBaseUnit() >= expect;
