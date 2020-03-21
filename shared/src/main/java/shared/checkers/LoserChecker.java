@@ -20,7 +20,9 @@ public class LoserChecker implements  Checker {
         this.owner = owner;
         this.next = next;
     }
-
+    public void setNext(Checker next) {
+        this.next = next;
+    }
     @Override
     public boolean isValid() {
         List<Region> allRegions = board.getAllRegions();

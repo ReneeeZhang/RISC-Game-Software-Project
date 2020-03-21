@@ -28,6 +28,10 @@ public class AccessibleChecker implements Checker {
         this.dest = dest;
         this.next = next;
     }
+
+    public void setNext(Checker next) {
+        this.next = next;
+    }
     /**
      * helper function -- check if two regions belong to same owner
      */
