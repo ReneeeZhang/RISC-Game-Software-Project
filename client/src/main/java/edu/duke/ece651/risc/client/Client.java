@@ -29,13 +29,11 @@ public class Client {
     }
   }
 
-  
   public void sendToServer(Instruction inst) throws IOException {
     DataOutputStream dout = new DataOutputStream(s.getOutputStream());
     ObjectOutputStream serial = new ObjectOutputStream(dout);
     serial.writeObject(inst);
   }
-
 
   public static void main(String[] args) {
     try {
