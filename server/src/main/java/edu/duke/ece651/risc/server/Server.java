@@ -23,10 +23,7 @@ public class Server {
     try {
       Server server = new Server(Integer.valueOf(args[0]), new Scanner(System.in));
       System.out.println("Create a new game for how many players:");
-      Scanner sc = new Scanner(System.in);
-      while (!sc.hasNextLine()) {
-        continue;
-      }
+      Scanner sc = new Scanner("2");
       int playerNum = Integer.valueOf(sc.nextLine());
       sc.close();
       List<SocketChannel> clientSockets = server.waitForClients(playerNum);
@@ -46,9 +43,10 @@ public class Server {
 
   public List<SocketChannel> waitForClients(int n) throws IOException {
     List<SocketChannel> clientSockets = new ArrayList<SocketChannel>();
+    //System.out.println("wait");
     for (int i = 0; i < n; i++) {
       SocketChannel sc = serverSocketChannel.accept();
-      System.out.println("accept");
+      //System.out.println("accept");
       clientSockets.add(sc);
     }
     return clientSockets;

@@ -9,17 +9,19 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Iterator;
 
 import shared.Instruction;
 
 public class InstructionCollector {
+  private List<SocketChannel> playerSockets;
   private Selector selector;
   
   public InstructionCollector(List<SocketChannel> playerSockets) throws IOException {
+    this.playerSockets = playerSockets;
     selector = Selector.open();
     for (SocketChannel sc : playerSockets) {
       sc.configureBlocking(false);
@@ -28,27 +30,31 @@ public class InstructionCollector {
   }
 
   public Map<SocketChannel, List<Instruction>> collect() throws IOException {
-    Map<SocketChannel, List<Instruction>> instrMap= new HashMap<SocketChannel, List<Instruction>>();
-    while (selector.keys().size()>0) {
+    Map<SocketChannel, List<Instruction>> instrMap = new HashMap<SocketChannel, List<Instruction>>();
+    while (selector.keys().size() > 1) {
       selector.select();
       Set<SelectionKey> keys = selector.selectedKeys();
+      System.out.println("size: " + selector.selectedKeys().size());
       Iterator<SelectionKey> keyIterator = keys.iterator();
       while (keyIterator.hasNext()) {
         SelectionKey key = keyIterator.next();
         if (key.isReadable()) {
-          List<Instruction> instr = recvInstruction(key);
-          instrMap.put((SocketChannel) key.channel(), instr);
           key.cancel();
+          SocketChannel sc = (SocketChannel) key.channel();
+          sc.configureBlocking(true);
+          List<Instruction> ins = recvInstruction(sc);
+          instrMap.put(sc, ins);
         }
         keyIterator.remove();
       }
+      //System.out.println("size: " + selector.selectedKeys().size());
     }
     return instrMap;
   }
 
-  private List<Instruction> recvInstruction(SelectionKey key) throws IOException {
+  private List<Instruction> recvInstruction(SocketChannel sc) throws IOException {
+    System.out.println("recv blocking: " + sc.isBlocking());
     List<Instruction> ins = new ArrayList<Instruction>();
-    SocketChannel sc = (SocketChannel) key.channel();
     Socket s = sc.socket();
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);

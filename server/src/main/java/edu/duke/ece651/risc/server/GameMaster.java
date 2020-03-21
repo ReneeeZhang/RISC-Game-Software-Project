@@ -54,6 +54,9 @@ public class GameMaster {
 
   public void sendBoardToClient() throws IOException {
     for (SocketChannel sc : playerSockets) {
+      System.out.println(sc.isRegistered());
+      System.out.println("send blocking: " + sc.isBlocking());
+      sc.configureBlocking(true);
       Socket s = sc.socket();
       DataOutputStream dout = new DataOutputStream(s.getOutputStream());
       ObjectOutputStream serial = new ObjectOutputStream(dout);
