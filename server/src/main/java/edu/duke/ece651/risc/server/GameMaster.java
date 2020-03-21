@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +22,15 @@ import shared.Unit;
 
 public class GameMaster {
   private Board board;
-  private List<Socket> players;
+  private List<SocketChannel> playerSockets;
 
-  public GameMaster(List<Socket> players) {
-    this.players = players;
-    int playerNum = players.size();
-    this.board = initGameBoard(playerNum);
+  public GameMaster(List<SocketChannel> playerSockets) {
+    this.playerSockets = playerSockets;
+    this.board = initGameBoard();
   }
 
-  private Board initGameBoard(int playerNum) {
+  private Board initGameBoard() {
+    //TODO:config init boards for 2-5 players
     List<Unit> aUnits = new ArrayList<Unit>();
     aUnits.add(new BaseUnit("a"));
     List<Unit> bUnits = new ArrayList<Unit>();
@@ -52,25 +53,25 @@ public class GameMaster {
     regionMap.put(c, cNeigh);
     return new GameBoard(regionMap);
   }
-  
-  public void sendToClient() throws IOException {
-    for (Socket s : players) {
+
+  public void sendBoardToClient() throws IOException {
+    for (SocketChannel sc : playerSockets) {
+      Socket s = sc.socket();
       DataOutputStream dout = new DataOutputStream(s.getOutputStream());
       ObjectOutputStream serial = new ObjectOutputStream(dout);
       serial.writeObject(this.board);
     }
   }
 
-  public void recvFromClient() throws IOException {
-    for (Socket s : players) {
-      DataInputStream din = new DataInputStream(s.getInputStream());
-      ObjectInputStream deserial = new ObjectInputStream(din);
-      try{
-        Instruction instr = (Instruction) deserial.readObject();
-        System.out.println(instr);
-        instr.execute(this.board);
-      } catch (ClassNotFoundException e) {
-      System.out.println(e);
+  public Map<Socket, List<Instruction>> recvInstrFromClient() throws IOException {
+    InstructionCollector ic = new InstructionCollector(playerSockets);
+    return ic.collect();
+  }
+
+  public void resolve(Map<Socket, List<Instruction>> instrMap) {
+    for (Socket playerSocket : instrMap.keySet()) {
+      for (Instruction in : instrMap.get(playerSocket)) {
+        in.execute(board);
       }
     }
   }
