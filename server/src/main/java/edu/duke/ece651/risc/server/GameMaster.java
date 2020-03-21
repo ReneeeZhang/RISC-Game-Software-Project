@@ -1,9 +1,7 @@
 package edu.duke.ece651.risc.server;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.nio.channels.SocketChannel;
@@ -63,13 +61,13 @@ public class GameMaster {
     }
   }
 
-  public Map<Socket, List<Instruction>> recvInstrFromClient() throws IOException {
+  public Map<SocketChannel, List<Instruction>> recvInstrFromClient() throws IOException {
     InstructionCollector ic = new InstructionCollector(playerSockets);
     return ic.collect();
   }
 
-  public void resolve(Map<Socket, List<Instruction>> instrMap) {
-    for (Socket playerSocket : instrMap.keySet()) {
+  public void resolve(Map<SocketChannel, List<Instruction>> instrMap) {
+    for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction in : instrMap.get(playerSocket)) {
         in.execute(board);
       }
