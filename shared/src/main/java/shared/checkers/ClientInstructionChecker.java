@@ -36,7 +36,9 @@ public class ClientInstructionChecker implements Checker{
         this.next = next;
     }
 
-
+    public void setNext(Checker next) {
+        this.next = next;
+    }
     @Override
     public boolean isValid() {
         Map<String, Integer> units = new HashMap<>();
