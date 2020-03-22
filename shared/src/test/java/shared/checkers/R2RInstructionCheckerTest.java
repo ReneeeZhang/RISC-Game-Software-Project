@@ -34,12 +34,12 @@ public class R2RInstructionCheckerTest {
         Attack a2 = mock(Attack.class);
         Attack a1 = mock(Attack.class);
         //sources
-        when(m1.getSrc()).thenReturn(r1);
-        when(m1.getDest()).thenReturn(r2);
-        when(a2.getSrc()).thenReturn(r3);
-        when(a2.getDest()).thenReturn(r2);
-        when(a1.getSrc()).thenReturn(r1);
-        when(a1.getDest()).thenReturn(r2);
+        when(m1.getSrc()).thenReturn("r1");
+        when(m1.getDest()).thenReturn("r2");
+        when(a2.getSrc()).thenReturn("r3");
+        when(a2.getDest()).thenReturn("r2");
+        when(a1.getSrc()).thenReturn("r1");
+        when(a1.getDest()).thenReturn("r2");
         //units
         when(m1.getNumUnit()).thenReturn(3);
         when(a2.getNumUnit()).thenReturn(3);
@@ -50,20 +50,21 @@ public class R2RInstructionCheckerTest {
         Board boardMock = mock(Board.class);
         when(boardMock.getNeighbor("r1")).thenReturn(regions);
 
+        when(boardMock.getRegion("r1")).thenReturn(r1);
+        when(boardMock.getRegion("r2")).thenReturn(r2);
+        when(boardMock.getRegion("r3")).thenReturn(r3);
         //valid move
         R2RInstructionChecker r2RInstructionChecker = new R2RInstructionChecker(boardMock, m1);
         Assertions.assertTrue(r2RInstructionChecker.isValid());
 
         //invalid move
         List<Region> regions2 = Arrays.asList(r3);
-        boardMock = mock(Board.class);
         when(boardMock.getNeighbor("r1")).thenReturn(regions2);
         r2RInstructionChecker = new R2RInstructionChecker(boardMock, m1);
         Assertions.assertFalse(r2RInstructionChecker.isValid());
 
         //invalid attack because of same owner
         List<Region> regions3 = Arrays.asList(r2, r3);
-        boardMock = mock(Board.class);
         when(boardMock.getNeighbor("r1")).thenReturn(regions);
         r2RInstructionChecker = new R2RInstructionChecker(boardMock, a1);
         Assertions.assertFalse(r2RInstructionChecker.isValid());

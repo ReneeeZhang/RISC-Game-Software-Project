@@ -46,7 +46,7 @@ public class MoveTest {
 
     Move m2 = new Move("r1", "r3", 1);
     assertEquals(false, m2.isValid(boardMock));
-    m2.execute(boardMock)
+    m2.execute(boardMock);
   }
   @Test
   public void test_() {

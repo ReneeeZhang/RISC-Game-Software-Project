@@ -3,7 +3,7 @@ package shared;
 import java.io.Serializable;
 import shared.checkers.*;
 
-abstract class R2RInstruction implements Instruction, Serializable {
+abstract public class R2RInstruction implements Instruction, Serializable {
   protected String src;
   protected String dest;
   protected int numUnit;
@@ -23,7 +23,7 @@ abstract class R2RInstruction implements Instruction, Serializable {
   //abstract void execute(Board b);
 
   public boolean isValid(Board b) {
-    R2RInstructionChecker check = new R2RInstructionChecker(this.board, this);
+    R2RInstructionChecker check = new R2RInstructionChecker(b, this);
     return check.isValid();
  } 
 

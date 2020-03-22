@@ -23,6 +23,7 @@ public class ClientInstructionChecker implements Checker{
     }
 
     public ClientInstructionChecker(Board board, List<Instruction> instructions, Checker next) {
+        this.board = board;
         this.instructions = instructions;
         instructions.sort((o1, o2) -> {
             if (!o1.getClass().equals(o2.getClass())) {
@@ -45,10 +46,10 @@ public class ClientInstructionChecker implements Checker{
                 break;
             }
             R2RInstruction ins = (R2RInstruction) instruction;
-            Region src = ins.getSrc();
-            String srcName = src.getName();
-            Region dest = ins.getDest();
-            String destName = dest.getName();
+            String srcName = ins.getSrc();
+            Region src = board.getRegion(srcName);
+            String destName = ins.getDest();
+            Region dest = board.getRegion(destName);
             if (!units.containsKey(srcName)) {
                 units.put(srcName, src.getNumBaseUnit());
             }
