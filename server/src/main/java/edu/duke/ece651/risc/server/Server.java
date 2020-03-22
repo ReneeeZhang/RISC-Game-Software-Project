@@ -46,7 +46,6 @@ public class Server {
     //System.out.println("wait");
     for (int i = 0; i < n; i++) {
       SocketChannel sc = serverSocketChannel.accept();
-      //System.out.println("accept");
       clientSockets.add(sc);
     }
     return clientSockets;

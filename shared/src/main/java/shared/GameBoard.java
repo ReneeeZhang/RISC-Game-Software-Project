@@ -49,12 +49,23 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public void dispatch(String src, String dst, int num) {
+    Region srcRegion = regionNameMap.get(src);
+    //TODO: Region.dispatch()
+    //srcRegion.dispatch(dst, num);
+  }
+  
+  @Override
   public void attack(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    // dstRegion.beenAttack(srcRegion.attack())
+    List<Unit> units = srcRegion.attack(dst);
+    while (units.size() > 0 && dstRegion.getNumBaseUnit() > 0) {
+      //TODO:
+    }
+    //dstRegion.receive
   }
-  
+
   // draw()
   @Override
   public String toString() {
