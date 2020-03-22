@@ -26,6 +26,10 @@ public class AttackTest {
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
     when(r3.getName()).thenReturn("r3");
+    //unit
+    when(r1.getNumBaseUnit()).thenReturn(1);
+    when(r2.getNumBaseUnit()).thenReturn(1);
+    when(r3.getNumBaseUnit()).thenReturn(1);
 
     List<Region> regions = Arrays.asList(r2, r3);
     Board boardMock = mock(Board.class);
@@ -33,7 +37,9 @@ public class AttackTest {
     when(boardMock.getRegion("r1")).thenReturn(r1);
     when(boardMock.getRegion("r2")).thenReturn(r2);
     when(boardMock.getRegion("r3")).thenReturn(r3);
-    //doNothing().when(boardMock.move("r1","r2"));
+    //when(boardMock.attack("r1", "r2", 1));
+    //when(boardMock.attack("r1", "r3", 1));
+    
 
     Attack a1 = new Attack("r1", "r3", 1);
     a1.execute(boardMock);
