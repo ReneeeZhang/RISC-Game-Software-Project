@@ -1,5 +1,5 @@
 package shared;
 
 public interface Drawable {
-  // draw()
+  public String draw();
 }

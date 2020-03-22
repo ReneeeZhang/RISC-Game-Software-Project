@@ -71,8 +71,8 @@ public class GameMaster {
 
   public void resolve(Map<SocketChannel, List<Instruction>> instrMap) {
     for (SocketChannel playerSocket : instrMap.keySet()) {
-      for (Instruction in : instrMap.get(playerSocket)) {
-        in.execute(board);
+      for (Instruction instr : instrMap.get(playerSocket)) {
+        instr.execute(board);
       }
     }
   }
