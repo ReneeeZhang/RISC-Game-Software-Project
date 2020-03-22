@@ -25,6 +25,9 @@ public class UnitQuantityChecker implements Checker {
     @Override
     public boolean isValid() {
         boolean valid = region.getNumBaseUnit() >= expect;
+        if (!valid) {
+            System.out.println("Instruction failed because units are not abundant. Source: " + region.getName());
+        }
         return next == null ? valid : valid && next.isValid();
     }
 }

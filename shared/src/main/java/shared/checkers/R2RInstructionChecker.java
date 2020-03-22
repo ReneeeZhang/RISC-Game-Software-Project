@@ -14,17 +14,18 @@ public class R2RInstructionChecker implements Checker {
 
     @Override
     public boolean isValid() {
-        Region src = instruction.getSrc();
+        Region source = instruction.getSrc();
         Region dest = instruction.getDest();
         int units = instruction.getNumUnit();
-        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(src, units);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, units);
         if (instruction instanceof Move) {
-            unitQuantityChecker.setNext(new AccessibleChecker(board, src, dest));
+            unitQuantityChecker.setNext(new AccessibleChecker(board, source, dest));
         } else if (instruction instanceof Attack) {
-            if (src.getOwner().equals(dest.getOwner())) {
+            if (source.getOwner().equals(dest.getOwner())) {
+                System.out.println("Attack failed because of having same owner. Source: " + source.getName() + ", Destination: " + dest.getName());
                 return false;
             }
-            unitQuantityChecker.setNext(new AdjacentChecker(board, src, dest));
+            unitQuantityChecker.setNext(new AdjacentChecker(board, source, dest));
         }
         return unitQuantityChecker.isValid();
     }
