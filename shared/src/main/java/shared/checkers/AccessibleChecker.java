@@ -54,8 +54,14 @@ public class AccessibleChecker implements Checker {
     }
     @Override
     public boolean isValid() {
-        if (!isSameOwner(source, dest)) return false;
+        if (!isSameOwner(source, dest)) {
+            System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
+            return false;
+        }
         boolean accessible = isAccessible(source);
+        if (!accessible) {
+            System.out.println("Instruction failed because regions are not accessible. Source: " + source.getName() + ", Destination: " + dest.getName());
+        }
         return next == null ? accessible : accessible && next.isValid();
     }
 
