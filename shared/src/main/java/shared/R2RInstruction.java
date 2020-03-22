@@ -20,7 +20,7 @@ abstract class R2RInstruction implements Instruction, Serializable {
     this.numUnit = n;
   }
   
-  abstract void execute(Board b);
+  //abstract void execute(Board b);
 
   public boolean isValid(Board b) {
     R2RInstructionChecker check = new R2RInstructionChecker(this.board, this);
