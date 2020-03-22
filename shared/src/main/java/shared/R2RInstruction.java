@@ -21,11 +21,7 @@ abstract public class R2RInstruction implements Instruction, Serializable {
   }
   
   //abstract void execute(Board b);
-
-  public boolean isValid(Board b) {
-    R2RInstructionChecker check = new R2RInstructionChecker(b, this);
-    return check.isValid();
- } 
+  //public boolean isValid(Board b);
 
   // Getters
   public String getSrc() {
