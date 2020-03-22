@@ -1,6 +1,7 @@
 package shared;
 
 import java.io.Serializable;
+import shared.checkers.*;
 
 public class R2RInstruction implements Instruction, Serializable {
   protected String src;
@@ -25,7 +26,8 @@ public class R2RInstruction implements Instruction, Serializable {
   }
 
   public boolean isValid() {
-    return true;
+    R2RInstructionChecker check = new R2RInstructionChecker(this.board, this);
+    return check.isValid();
   }
 
   // Getters
