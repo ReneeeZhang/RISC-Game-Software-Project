@@ -3,11 +3,10 @@ package shared;
 import java.io.Serializable;
 import shared.checkers.*;
 
-public class R2RInstruction implements Instruction, Serializable {
+abstract class R2RInstruction implements Instruction, Serializable {
   protected String src;
   protected String dest;
   protected int numUnit;
-  protected Board board;
   private static final long serialVersionUID = 435352123;
 
   // Default constructor
@@ -21,22 +20,20 @@ public class R2RInstruction implements Instruction, Serializable {
     this.numUnit = n;
   }
   
-  public void execute(Board b) {
-    this.board = b;
-  }
+  abstract void execute(Board b);
 
-  public boolean isValid() {
+  public boolean isValid(Board b) {
     R2RInstructionChecker check = new R2RInstructionChecker(this.board, this);
     return check.isValid();
-  }
+ } 
 
   // Getters
-  public Region getSrc() {
-    return board.getRegion(src);
+  public String getSrc() {
+    return src;
   }
 
-  public Region getDest() {
-    return board.getRegion(dest);
+  public String getDest() {
+    return dest;
   }
 
   public int getNumUnit() {

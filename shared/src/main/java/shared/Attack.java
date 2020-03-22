@@ -11,9 +11,6 @@ public class Attack extends R2RInstruction implements Serializable{
 
   @Override
   public void execute(Board b) {
-    this.board = b;
-    if(this.isValid()) {
-      b.attack(src, dest, numUnit);
-    }
+    b.attack(src, dest, numUnit);
   }
 }

@@ -39,14 +39,14 @@ public class MoveTest {
     //doNothing().when(boardMock.move("r1","r2"));
 
     Move m1 = new Move("r1", "r2", 1);
+    assertEquals(true, m1.isValid(boardMock));
     m1.execute(boardMock);
-    assertEquals(true, m1.isValid());
 
     m1.toString();
 
     Move m2 = new Move("r1", "r3", 1);
-    m2.execute(boardMock);
-    assertEquals(false, m2.isValid());
+    assertEquals(false, m2.isValid(boardMock));
+    m2.execute(boardMock)
   }
   @Test
   public void test_() {
