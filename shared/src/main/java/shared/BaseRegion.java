@@ -82,8 +82,7 @@ public class BaseRegion implements Region, Serializable {
   public List<Unit> sendUnit(int num) {
     List<Unit> toSend = new ArrayList<>();
     for (int i = 0; i < num; i++) {
-      toSend.add(majorCamp.get(i));
-      majorCamp.remove(i);
+      toSend.add(majorCamp.remove(majorCamp.size()  - 1));
     }
     return toSend;
   }
@@ -97,12 +96,12 @@ public class BaseRegion implements Region, Serializable {
   // TODO: change method name -> loseDefenser 
   public void removeUnit(int num) {
     for (int i = 0; i < num; i++) {
-      majorCamp.remove(i);
+      majorCamp.remove(majorCamp.size() - 1);
     }
   }
 
   public void removeUnit() {
-    majorCamp.remove(0);
+    majorCamp.remove(majorCamp.size() - 1);
   }
   
   public void setOwner(String owner) {
@@ -112,17 +111,21 @@ public class BaseRegion implements Region, Serializable {
   public void dispatch(String adjDest, int num) {
     List<Unit> boarderCamp = borderCamps.get(adjDest);
     for (int i = 0; i < num; i++) {
-      boarderCamp.add(majorCamp.get(i));
-      majorCamp.remove(i);
+      boarderCamp.add(majorCamp.remove(majorCamp.size() - 1));
     }
   }
 
   public List<Unit> getBorderCamp(String dest) {
-    return borderCamps.get(dest);
+    List<Unit> troop = borderCamps.get(dest);
+    borderCamps.replace(dest, new ArrayList<>());
+    return troop;
+  }
+
+  public void initBorderCamp(String neighbor) {
+    borderCamps.put(neighbor, new ArrayList<>());
   }
   
   public void autoIncrement(){
-    Unit unit = new BaseUnit();
-    majorCamp.add(unit);
+    majorCamp.add(new BaseUnit());
   }
 }

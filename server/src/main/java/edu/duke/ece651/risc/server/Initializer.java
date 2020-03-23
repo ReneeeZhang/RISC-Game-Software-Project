@@ -74,6 +74,7 @@ public class Initializer {
       List<Region> adjRegions = new ArrayList<>();
       for (int i = 0; i < adjRegionNames.length; i++) {
         adjRegions.add(regionNameMap.get(adjRegionNames[i]));
+        currRegion.initOneBorderCamp(adjRegionNames[i]);
       }
       regionMap.put(currRegion, adjRegions);
     }
