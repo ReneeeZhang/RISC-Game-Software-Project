@@ -1,6 +1,7 @@
 package edu.duke.ece651.risc.server;
 
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
@@ -15,24 +16,21 @@ import shared.*;
 public class ServerTest implements Runnable {
   @Test
   public void test_server() {
-    //System.out.println("Server Test");
-    try {
-      Server server = new Server(6666);
-      Thread player1 = new Thread(new ServerTest());
-      Thread player2 = new Thread(new ServerTest());
-      player1.start();
-      player2.start();
-      List<SocketChannel> players = server.waitForClients(2);
-      GameMaster gm = new GameMaster(players);
-      gm.sendBoardToClient();
-      gm.recvInstrFromClient();
-    } catch (IOException e) {
+    Thread player1 = new Thread(new ServerTest());
+    Thread player2 = new Thread(new ServerTest());
+    player1.start();
+    player2.start();
+    try{
+      System.setIn(new FileInputStream("src/resource/ServerTest.txt"));
+    } catch (FileNotFoundException e) {
       System.out.println(e);
     }
+    Server.main(new String[] { "6666" });
   }
 
   public void run() {
-    try{
+    try {
+      Thread.sleep(5);
       SocketChannel sc = SocketChannel.open();
       sc.connect(new InetSocketAddress("localhost", 6666));
       Socket s = sc.socket();
@@ -47,10 +45,7 @@ public class ServerTest implements Runnable {
       ins.add(attack);
       serial.writeObject(ins);
     }
-    catch (ClassNotFoundException e) {
-      System.out.println(e);
-    }
-    catch (IOException e) {
+    catch (Exception e) {
       System.out.println(e);
     }
   }

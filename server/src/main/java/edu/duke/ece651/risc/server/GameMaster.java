@@ -14,19 +14,22 @@ import shared.*;
 public class GameMaster {
   private Board board;
   private List<SocketChannel> playerSockets;
+  //TODO: List<String> playerSocketMap;
 
   public GameMaster(List<SocketChannel> playerSockets) {
     this.playerSockets = playerSockets;
     this.board = initGameBoard();
   }
 
-  public void run() throws IOException{
+  public void run() throws IOException {
+    int cnt = 1;
     while (true) {
-      System.out.println("Round Start");
+      System.out.println("Round " + cnt + "Starts!");
       sendBoardToClient();
       Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
-      resolve(instrMap);
+      executeAll(instrMap);
       //TODO:if win() is true, break
+      cnt++;
     }
   }
 
@@ -76,7 +79,7 @@ public class GameMaster {
     return ic.collect();
   }
 
-  public void resolve(Map<SocketChannel, List<Instruction>> instrMap) {
+  public void executeAll(Map<SocketChannel, List<Instruction>> instrMap) {
     // first move
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
@@ -93,6 +96,7 @@ public class GameMaster {
         }
       }
     }
-    //for()
+    // then resolve
+    board.resolve();
   }
 }

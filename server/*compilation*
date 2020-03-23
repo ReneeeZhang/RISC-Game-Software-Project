@@ -1,0 +1,78 @@
+-*- mode: compilation; default-directory: "~/ece651_risc/server/" -*-
+Compilation started at Mon Mar 23 15:57:19
+
+/opt/gradle/gradle-6.0.1/bin/gradle cloverGenerateReport
+> Task :shared:compileJava UP-TO-DATE
+
+> Task :server:compileJava
+Note: /home/chuan/ece651_risc/server/src/main/java/edu/duke/ece651/risc/server/InstructionCollector.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :server:processResources NO-SOURCE
+> Task :server:classes
+> Task :server:compileTestJava
+> Task :server:processTestResources NO-SOURCE
+> Task :server:testClasses
+> Task :shared:processResources NO-SOURCE
+> Task :shared:classes UP-TO-DATE
+> Task :shared:jar UP-TO-DATE
+
+> Task :server:test
+[ant:javac] Note: /tmp/clover120671099052520641.tmp/edu/duke/ece651/risc/server/InstructionCollector.java uses unchecked or unsafe operations.
+[ant:javac] Note: Recompile with -Xlint:unchecked for details.
+
+edu.duke.ece651.risc.server.ServerTest > test_server() STANDARD_OUT
+    Create a new game for how many players:
+    Round 1Starts!
+    PlayerA:
+    PlayerA:
+    ----------
+     1 unit(s) in Fitzpatrick(next to : Hudson)
+     1 unit(s) in Teer(next to : Hudson)
+     1 unit(s) in Hudson(next to : Fitzpatrick, Teer)
+
+    ----------
+     1 unit(s) in Fitzpatrick(next to : Hudson)
+     1 unit(s) in Teer(next to : Hudson)
+     1 unit(s) in Hudson(next to : Fitzpatrick, Teer)
+
+    shared.GameBoard@12b8732e
+
+edu.duke.ece651.risc.server.ServerTest > test_server() FAILED
+    java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+        at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+        at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+        at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+        at java.base/java.util.Objects.checkIndex(Objects.java:372)
+        at java.base/java.util.ArrayList.get(ArrayList.java:458)
+        at shared.BaseRegion.sendUnit(BaseRegion.java:72)
+        at shared.GameBoard.move(GameBoard.java:67)
+        at shared.Move.execute(Move.java:15)
+        at edu.duke.ece651.risc.server.GameMaster.executeAll(GameMaster.java:87)
+        at edu.duke.ece651.risc.server.GameMaster.run(GameMaster.java:30)
+        at edu.duke.ece651.risc.server.Server.main(Server.java:31)
+        at edu.duke.ece651.risc.server.ServerTest.test_server(ServerTest.java:29)
+
+1 test completed, 1 failed
+
+> Task :server:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':server:test'.
+> There were failing tests. See the report at: file:///home/chuan/ece651_risc/server/build/reports/tests/test/index.html
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/6.0.1/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD FAILED in 5s
+5 actionable tasks: 3 executed, 2 up-to-date
+
+Compilation exited abnormally with code 1 at Mon Mar 23 15:57:25
