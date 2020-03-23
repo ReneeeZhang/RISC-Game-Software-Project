@@ -1,9 +1,7 @@
 package shared;
 
 import java.io.Serializable;
-
-import shared.checkers.AccessibleChecker;
-import shared.checkers.Checker;
+import shared.checkers.*;
 
 public class Move extends R2RInstruction implements Serializable {
   private static final long serialVersionUID = 923749345;
@@ -14,17 +12,16 @@ public class Move extends R2RInstruction implements Serializable {
 
   @Override
   public void execute(Board b) {
-    this.board = b;
-    if (isValid()) {
-      b.move(src, dest, numUnit);
-      System.out.println(b);
-    }
+    b.move(src, dest, numUnit);
+    System.out.println(b);
   }
 
   @Override
-  public boolean isValid() {
-    Checker c = new AccessibleChecker(board, board.getRegion(src), board.getRegion(dest));
-    return c.isValid();
+  public boolean isValid(Board b) {
+    Region source = b.getRegion(src);
+    AccessibleChecker checker = new AccessibleChecker(b, source, b.getRegion(dest));
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, numUnit);
+    return checker.isValid() && uChecker.isValid();
   }
 
   @Override
@@ -36,3 +33,7 @@ public class Move extends R2RInstruction implements Serializable {
   }
   
 }
+
+
+
+

@@ -14,14 +14,16 @@ import java.util.Map;
  */
 
 public class ClientInstructionChecker implements Checker{
+    Board board;
     List<Instruction> instructions;
     Checker next;
 
-    public ClientInstructionChecker(List<Instruction> instructions) {
-        this(instructions, null);
+    public ClientInstructionChecker(Board board, List<Instruction> instructions) {
+        this(board, instructions, null);
     }
 
-    public ClientInstructionChecker(List<Instruction> instructions, Checker next) {
+    public ClientInstructionChecker(Board board, List<Instruction> instructions, Checker next) {
+        this.board = board;
         this.instructions = instructions;
         instructions.sort((o1, o2) -> {
             if (!o1.getClass().equals(o2.getClass())) {
@@ -36,18 +38,18 @@ public class ClientInstructionChecker implements Checker{
         this.next = next;
     }
 
-    public void setNext(Checker next) {
-        this.next = next;
-    }
     @Override
     public boolean isValid() {
         Map<String, Integer> units = new HashMap<>();
         for (Instruction instruction : instructions) {
+            if (!(instruction instanceof R2RInstruction)) {
+                break;
+            }
             R2RInstruction ins = (R2RInstruction) instruction;
-            Region src = ins.getSrc();
-            String srcName = src.getName();
-            Region dest = ins.getDest();
-            String destName = dest.getName();
+            String srcName = ins.getSrc();
+            Region src = board.getRegion(srcName);
+            String destName = ins.getDest();
+            Region dest = board.getRegion(destName);
             if (!units.containsKey(srcName)) {
                 units.put(srcName, src.getNumBaseUnit());
             }
@@ -64,6 +66,11 @@ public class ClientInstructionChecker implements Checker{
                     units.put(destName, destUnits + numUnit);
                 }
             } else {
+                if (ins instanceof Move) {
+                    System.out.println("Move failed because units are not abundant after former steps. Source: " + srcName + ", Destination: " + destName);
+                } else {
+                    System.out.println("Attack failed because units are not abundant after former steps. Source: " + srcName + ", Destination: " + destName);
+                }
                 return false;
             }
         }
