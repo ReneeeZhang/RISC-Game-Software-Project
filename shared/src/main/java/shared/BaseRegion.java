@@ -121,7 +121,7 @@ public class BaseRegion implements Region, Serializable {
     return troop;
   }
 
-  public void initBorderCamp(String neighbor) {
+  public void initOneBorderCamp(String neighbor) {
     borderCamps.put(neighbor, new ArrayList<>());
   }
   
