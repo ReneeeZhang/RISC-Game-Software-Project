@@ -12,4 +12,6 @@ public interface Board {
   public void move(String src, String dst, int num);
 
   public void attack(String src, String dst, int num);
+  
+  public void resolve();
 }
