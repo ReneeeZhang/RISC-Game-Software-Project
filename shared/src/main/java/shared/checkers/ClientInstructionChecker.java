@@ -64,6 +64,11 @@ public class ClientInstructionChecker implements Checker{
                     units.put(destName, destUnits + numUnit);
                 }
             } else {
+                if (ins instanceof Move) {
+                    System.out.println("Move failed because units are not abundant after former steps. Source: " + srcName + ", Destination: " + destName);
+                } else {
+                    System.out.println("Attack failed because units are not abundant after former steps. Source: " + srcName + ", Destination: " + destName);
+                }
                 return false;
             }
         }
