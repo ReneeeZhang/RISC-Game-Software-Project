@@ -1,13 +1,10 @@
 package shared;
 
-public class BaseUnit implements Unit {
-  private String name;
+import java.io.Serializable;
 
-  public BaseUnit(String name){
-    this.name = name;
-  }
-  
-  public String getName(){
-    return name;
-  }
+public class BaseUnit implements Unit, Serializable {
+  // for serialization
+  private static final long serialVersionUID = 19407245;
+
+  public BaseUnit() {}
 }

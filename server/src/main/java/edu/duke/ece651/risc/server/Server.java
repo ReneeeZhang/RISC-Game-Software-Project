@@ -1,51 +1,52 @@
 package edu.duke.ece651.risc.server;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-import shared.*;
+import shared.Instruction;
 
 public class Server {
-  private Board board;
-  private ServerSocket ss;
-  private List<Socket> clients;
-  
-  public Server(int port) throws IOException {
-    this.board = new GameBoard();
-    this.ss = new ServerSocket(port);
-    this.clients = new ArrayList<Socket>();
-  }
+  private ServerSocketChannel serverSocketChannel;
 
+  public Server(int port) throws IOException {
+    this.serverSocketChannel = ServerSocketChannel.open();
+    serverSocketChannel.socket().bind(new InetSocketAddress(port));
+  }
+  
   public static void main(String[] args) {
-    try{
+    try {
       Server server = new Server(Integer.valueOf(args[0]));
-      server.waitForClients(1);
-      System.out.println("wait ends");
-      server.sendToClient();
+      System.out.println("Create a new game for how many players:");
+      Scanner sc = new Scanner(System.in);
+      int playerNum = sc.nextInt();
+      sc.close();
+      List<SocketChannel> clientSockets = server.waitForClients(playerNum);
+      GameMaster gm = new GameMaster(clientSockets);
+      // actual game starts
+      while (true) {
+        System.out.println("Round Start");
+        gm.sendBoardToClient();
+        Map<SocketChannel, List<Instruction>> instrMap = gm.recvInstrFromClient();
+        gm.resolve(instrMap);
+        // if win() is true, break
+      }
     } catch (IOException e) {
       System.out.println(e);
     }
   }
 
-  public void waitForClients(int playerNum) throws IOException{
-    for (int i = 0; i < playerNum; i++) {
-      Socket s = ss.accept();
-      System.out.println("accept");
-      clients.add(s);
+  public List<SocketChannel> waitForClients(int n) throws IOException {
+    List<SocketChannel> clientSockets = new ArrayList<SocketChannel>();
+    for (int i = 0; i < n; i++) {
+      SocketChannel sc = serverSocketChannel.accept();
+      clientSockets.add(sc);
     }
-  }
-
-  public void sendToClient() throws IOException{
-    for (Socket s : clients) {
-      DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-      ObjectOutputStream serial = new ObjectOutputStream(dout);
-      serial.writeObject(this.board);
-    }
+    return clientSockets;
   }
 }
