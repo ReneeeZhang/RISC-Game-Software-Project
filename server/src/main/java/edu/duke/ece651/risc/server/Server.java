@@ -6,10 +6,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
-import shared.Instruction;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;

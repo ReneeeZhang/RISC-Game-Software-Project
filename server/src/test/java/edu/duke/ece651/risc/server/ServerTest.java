@@ -21,7 +21,7 @@ public class ServerTest implements Runnable {
     player1.start();
     player2.start();
     try{
-      System.setIn(new FileInputStream("src/resource/ServerTest.txt"));
+      System.setIn(new FileInputStream("src/test/resources/ServerTest.txt"));
     } catch (FileNotFoundException e) {
       System.out.println(e);
     }
@@ -38,11 +38,11 @@ public class ServerTest implements Runnable {
       GameBoard b = (GameBoard) deserial.readObject();
       System.out.println(b.draw());
       ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      Instruction move = new Move("Hudson", "Teer", 1);
-      Instruction attack = new Attack("Teer", "Hudson", 2);
       List<Instruction> ins = new ArrayList<Instruction>();
+      Instruction move = new Move("Bostock", "Teer", 2);
       ins.add(move);
-      ins.add(attack);
+      //Instruction attack = new Attack("Teer", "Hudson", 2);
+      //ins.add(attack);
       serial.writeObject(ins);
     }
     catch (Exception e) {
