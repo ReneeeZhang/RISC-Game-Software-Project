@@ -2,6 +2,7 @@ package shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +14,24 @@ public class BaseRegion implements Region, Serializable {
   private List<Unit> majorCamp; // For moving and defensing
   private Map<String, List<Unit>> borderCamps;
   
-  public BaseRegion(String name, String owner, String color, List<Unit> majorCamp, Map<String, List<Unit>> borderCamps) {
+  public BaseRegion(String name, String owner, String color, List<Unit> majorCamp,
+      Map<String, List<Unit>> borderCamps) {
     this.name = name;
     this.owner = owner;
     this.color = color;
     this.majorCamp = majorCamp;
     this.borderCamps = borderCamps;
+  }
+
+  public BaseRegion(String name, String owner) {
+    this.name = name;
+    this.owner = owner;
+    this.color = "";
+    this.majorCamp = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      majorCamp.add(new BaseUnit());
+    }
+    this.borderCamps = new HashMap<>();
   }
 
   /* // Copy constructor
@@ -109,7 +122,7 @@ public class BaseRegion implements Region, Serializable {
   }
   
   public void autoIncrement(){
-    Unit unit = new BaseUnit(owner);
+    Unit unit = new BaseUnit();
     majorCamp.add(unit);
   }
 }
