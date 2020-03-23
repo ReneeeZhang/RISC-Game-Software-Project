@@ -11,9 +11,16 @@ public class Attack extends R2RInstruction implements Serializable{
 
   @Override
   public void execute(Board b) {
-    this.board = b;
-    if(this.isValid()) {
-      b.attack(src, dest, numUnit);
-    }
+    b.attack(src, dest, numUnit);
+  }
+
+  @Override
+  public boolean isValid(Board b) {
+    Region source =  b.getRegion(src);
+    Region destination = b.getRegion(dest);
+    AdjacentChecker checker = new AdjacentChecker(b, source, destination);
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, numUnit);
+    boolean sameOwner = source.getOwner().equals(destination.getOwner());
+    return checker.isValid() && uChecker.isValid() && !sameOwner;
   }
 }
