@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import shared.Attack;
 import shared.Board;
+import shared.GameBoard;
 import shared.Instruction;
 import shared.Move;
 import shared.checkers.ClientInstructionChecker;
@@ -29,12 +30,12 @@ public class Client {
     scanner = new Scanner(System.in);
   }
   
-  private Board receiveFromServer() throws IOException, ClassNotFoundException {
+  private GameBoard receiveFromServer() throws IOException, ClassNotFoundException {
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);
-    return (Board) deserial.readObject();
+    return (GameBoard) deserial.readObject();
   }
-  
+
   private void sendToServer(Instruction inst) throws IOException {
     DataOutputStream dout = new DataOutputStream(s.getOutputStream());
     ObjectOutputStream serial = new ObjectOutputStream(dout);
@@ -161,7 +162,8 @@ public class Client {
     try {
       while (true) {
         // receive the board from GameMaster
-        Board board = receiveFromServer();
+        GameBoard board = receiveFromServer();
+        System.out.println(board.draw());
         // integrate all the instructions that a user input
         List<Instruction> packedInsts = packInsts(board);
         // send those packed instructions to server
