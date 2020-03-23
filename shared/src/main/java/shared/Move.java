@@ -12,11 +12,16 @@ public class Move extends R2RInstruction implements Serializable {
 
   @Override
   public void execute(Board b) {
-    this.board = b;
-    if (this.isValid()) {
-      b.move(src, dest, numUnit);
-      System.out.println(b);
-    }
+    b.move(src, dest, numUnit);
+    System.out.println(b);
+  }
+
+  @Override
+  public boolean isValid(Board b) {
+    Region source = b.getRegion(src);
+    AccessibleChecker checker = new AccessibleChecker(b, source, b.getRegion(dest));
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, numUnit);
+    return checker.isValid() && uChecker.isValid();
   }
 
   @Override
@@ -28,3 +33,7 @@ public class Move extends R2RInstruction implements Serializable {
   }
   
 }
+
+
+
+

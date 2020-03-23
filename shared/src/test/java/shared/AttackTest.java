@@ -42,12 +42,12 @@ public class AttackTest {
     
 
     Attack a1 = new Attack("r1", "r3", 1);
+    assertEquals(true, a1.isValid(boardMock));
     a1.execute(boardMock);
-    assertEquals(true, a1.isValid());
 
      Attack a2 = new Attack("r1", "r2", 1);
+    assertEquals(false, a2.isValid(boardMock));
     a2.execute(boardMock);
-    assertEquals(false, a2.isValid());
 
   }
   @Test

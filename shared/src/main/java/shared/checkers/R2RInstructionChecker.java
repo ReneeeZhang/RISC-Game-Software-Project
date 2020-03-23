@@ -14,8 +14,8 @@ public class R2RInstructionChecker implements Checker {
 
     @Override
     public boolean isValid() {
-        Region source = instruction.getSrc();
-        Region dest = instruction.getDest();
+        Region source = board.getRegion(instruction.getSrc());
+        Region dest = board.getRegion(instruction.getDest());
         int units = instruction.getNumUnit();
         UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, units);
         if (instruction instanceof Move) {
