@@ -16,6 +16,7 @@ import shared.Attack;
 import shared.Board;
 import shared.Instruction;
 import shared.Move;
+import shared.checkers.ClientInstructionChecker;
 
 public class Client {
   private Socket s;
@@ -107,7 +108,7 @@ public class Client {
       }
       Instruction r2rinst = generateInst(inst);
       // TODO: isValid should take in an argv
-      if (!r2rinst.isValid()) {
+      if (!r2rinst.isValid(board)) {
         System.out.println("Please reinput your instruction:");
         continue;
       } else {
@@ -136,8 +137,12 @@ public class Client {
    * Otherwise, return false  
    */
   private boolean simulateAllInsts(List<Instruction> insts, Board board) {
-    System.out.println("Illogical combination of your instructions. Please reinput all your instructions again.");
-    return false;
+    ClientInstructionChecker cic = new ClientInstructionChecker(board, insts);
+    if (!cic.isValid()) {
+      System.out.println("Illogical combination of your instructions. Please reinput all your instructions again.");
+      return false;
+    }
+    return true;
   }
 
   // return a list of sorted instructions (move comes before attack)
@@ -165,19 +170,23 @@ public class Client {
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException e) {
-      System.out.println();
+      System.out.println(e);
     }
   }
   
   public static void main(String[] args) {
+
     try {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
+      client.run();
+      /*
       client.receiveFromServer();
       // Hardcode an instruction
       Instruction inst = new Move("Fitzpatrick", "Teer", 1);
       client.sendToServer(inst);
       client.receiveFromServer();
+      */
     } catch (Exception e) {
       System.out.println(e);
     }
