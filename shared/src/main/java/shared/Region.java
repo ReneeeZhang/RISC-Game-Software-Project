@@ -24,6 +24,8 @@ public interface Region {
   public void dispatch(String adjDest, int num);
 
   public List<Unit> getBorderCamp(String dest);
+
+  public void initOneBorderCamp(String neighbor);
   
   public void autoIncrement();
 
