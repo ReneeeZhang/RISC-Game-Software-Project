@@ -16,6 +16,10 @@ public class R2RInstructionChecker implements Checker {
     public boolean isValid() {
         Region source = board.getRegion(instruction.getSrc());
         Region dest = board.getRegion(instruction.getDest());
+        if (source == null || dest == null) {
+            System.out.println("Instruction failed because board does not contain a region named: " + (source != null ? instruction.getDest() : instruction.getSrc()));
+            return false;
+        }
         int units = instruction.getNumUnit();
         UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, units);
         if (instruction instanceof Move) {
