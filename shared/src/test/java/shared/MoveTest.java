@@ -25,6 +25,10 @@ public class MoveTest {
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
     when(r3.getName()).thenReturn("r3");
+    //unit
+    when(r1.getNumBaseUnit()).thenReturn(1);
+    when(r2.getNumBaseUnit()).thenReturn(1);
+    when(r3.getNumBaseUnit()).thenReturn(1);
 
     List<Region> regions = Arrays.asList(r2, r3);
     Board boardMock = mock(Board.class);
@@ -35,14 +39,14 @@ public class MoveTest {
     //doNothing().when(boardMock.move("r1","r2"));
 
     Move m1 = new Move("r1", "r2", 1);
+    assertEquals(true, m1.isValid(boardMock));
     m1.execute(boardMock);
-    assertEquals(true, m1.isValid());
 
     m1.toString();
 
     Move m2 = new Move("r1", "r3", 1);
+    assertEquals(false, m2.isValid(boardMock));
     m2.execute(boardMock);
-    assertEquals(false, m2.isValid());
   }
   @Test
   public void test_() {

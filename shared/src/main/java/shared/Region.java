@@ -14,11 +14,17 @@ public interface Region {
   public void receiveUnit(List<Unit> toReceive);
 
   public void removeUnit(int num);
+
+  public void removeUnit();
   
   public int getNumBaseUnit();
 
   public void setOwner(String owner);
 
+  public void dispatch(String adjDest, int num);
+
+  public List<Unit> getBorderCamp(String dest);
+  
   public void autoIncrement();
 
 }

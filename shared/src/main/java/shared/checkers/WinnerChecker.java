@@ -19,9 +19,7 @@ public class WinnerChecker implements Checker {
         this.board = board;
         this.owner = owner;
     }
-    public void setNext(Checker next) {
-        this.next = next;
-    }
+
     @Override
     public boolean isValid() {
         List<Region> allRegions = board.getAllRegions();
