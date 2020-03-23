@@ -23,8 +23,8 @@ public class Server {
     try {
       Server server = new Server(Integer.valueOf(args[0]));
       System.out.println("Create a new game for how many players:");
-      Scanner sc = new Scanner("2");
-      int playerNum = Integer.valueOf(sc.nextLine());
+      Scanner sc = new Scanner(System.in);
+      int playerNum = sc.nextInt();
       sc.close();
       List<SocketChannel> clientSockets = server.waitForClients(playerNum);
       GameMaster gm = new GameMaster(clientSockets);
