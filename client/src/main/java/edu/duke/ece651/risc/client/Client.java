@@ -176,7 +176,6 @@ public class Client {
   }
   
   public static void main(String[] args) {
-
     try {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
