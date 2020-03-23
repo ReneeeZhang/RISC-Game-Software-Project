@@ -18,17 +18,22 @@ public class GameMaster {
 
   public GameMaster(List<SocketChannel> playerSockets) {
     this.playerSockets = playerSockets;
-    this.board = initGameBoard();
+    try {
+      Initializer initer = new Initializer(2);
+      this.board = initer.initGame();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
   }
-
+  
   private Board initGameBoard() {
     //TODO:config init boards for 2-5 players
     List<Unit> aUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit(""));
+    aUnits.add(new BaseUnit());
     List<Unit> bUnits = new ArrayList<Unit>();
-    bUnits.add(new BaseUnit(""));
+    bUnits.add(new BaseUnit());
     List<Unit> cUnits = new ArrayList<Unit>();
-    cUnits.add(new BaseUnit(""));
+    cUnits.add(new BaseUnit());
     Map<String, List<Unit>> aBorderCamps = new HashMap<String, List<Unit>>();
     aBorderCamps.put("Hudson", new ArrayList<Unit>());
     Map<String, List<Unit>> bBorderCamps = new HashMap<String, List<Unit>>();

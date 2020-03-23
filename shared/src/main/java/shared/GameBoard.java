@@ -22,14 +22,14 @@ public class GameBoard implements Board, Drawable, Serializable {
     this.playerRegionMap = new HashMap<String, List<Region>>();
   }
 
-  public GameBoard(Map<Region, List<Region>> regionMap){
+  public GameBoard(Map<Region, List<Region>> regionMap) {
     this.regionMap = regionMap;
     this.regionNameMap = new HashMap<String, Region>();
     this.playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : regionMap.keySet()) {
       regionNameMap.put(r.getName(), r);
       // if not exist
-      if(playerRegionMap.containsKey(r.getOwner())){
+      if (playerRegionMap.containsKey(r.getOwner())) {
         playerRegionMap.get(r.getOwner()).add(r);
       } else {
         List<Region> regionList = new ArrayList<Region>();
@@ -37,6 +37,12 @@ public class GameBoard implements Board, Drawable, Serializable {
         playerRegionMap.put(r.getOwner(), regionList);
       }
     }
+  }
+
+  public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap, Map<String, List<Region>> playerRegionMap) {
+    this.regionMap = regionMap;
+    this.regionNameMap = regionNameMap;
+    this.playerRegionMap = playerRegionMap;
   }
 
   @Override
