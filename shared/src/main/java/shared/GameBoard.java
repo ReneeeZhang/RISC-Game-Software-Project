@@ -3,9 +3,11 @@ package shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class GameBoard implements Board, Drawable, Serializable {
   private Map<Region, List<Region>> regionMap;
@@ -48,6 +50,11 @@ public class GameBoard implements Board, Drawable, Serializable {
     return regionNameMap.get(name);
   }
 
+  @Override
+  public Set<String> getAllRegionNames() {
+    return new HashSet<String>(regionNameMap.keySet());
+  }
+  
   @Override
   public List<Region> getAllRegions() {
     return new ArrayList<Region>(regionNameMap.values());
@@ -100,10 +107,10 @@ public class GameBoard implements Board, Drawable, Serializable {
   public String draw() {
     String str = "";
     for (String player : playerRegionMap.keySet()) {
-      str += player + ":\n----------\n ";
+      str += player + ":\n----------\n";
       for (Region r : playerRegionMap.get(player)) {
         String name = r.getName();
-        str += r.getNumBaseUnit() + " unit(s) in " + name;
+        str += " " + r.getNumBaseUnit() + " unit(s) in " + name;
         str += "(next to : ";
         for (Region neigh : regionMap.get(r)) {
           str += neigh.getName() + ", ";

@@ -62,7 +62,7 @@ public class Client {
     }
     // Check instruction name
     if (!isValidInstName(parts[0])) {
-      System.out.println("Wrong instruction! You can input one of: \"move\", \"attack|\"or \"done\".");
+      System.out.println("Wrong instruction! You can input one of: \"move\", \"attack\"or \"done\".");
       return false;
     }
     // Check number
@@ -83,6 +83,7 @@ public class Client {
     }
 
     int num = Integer.parseInt(parts[3]);
+    parts[0] = parts[0].toLowerCase();
     Instruction r2rinst = null;
     if (parts[0].equals("move")) {
       r2rinst = new Move(parts[1], parts[2], num);
@@ -102,18 +103,16 @@ public class Client {
     System.out.println("Please input your instrution:");
     while (true) {
       String inst = scanner.nextLine();
-      inst = inst.toLowerCase();
-      if (inst.trim().equals("done")) {
+      if (inst.toLowerCase().trim().equals("done")) {
         System.out.println("Finish inputting. Instruction(s) commited.");
         return insts;
       }
-      Instruction r2rinst = generateInst(inst);
-      // TODO: isValid should take in an argv
-      if (!r2rinst.isValid(board)) {
+      Instruction realInst = generateInst(inst);
+      if (realInst == null || !realInst.isValid(board)) {
         System.out.println("Please reinput your instruction:");
         continue;
       } else {
-        insts.add(r2rinst);
+        insts.add(realInst);
       }
       System.out.println("Instruction recorded.\nPlease input your next instruction:");
     }
@@ -189,7 +188,7 @@ public class Client {
       client.sendToServer(inst);
       client.receiveFromServer();
       */
-    } catch (Exception e) {
+    } catch (IOException e) {
       System.out.println(e);
     }
   }
