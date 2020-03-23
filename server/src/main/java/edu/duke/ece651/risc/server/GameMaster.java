@@ -21,7 +21,7 @@ public class GameMaster {
     this.board = initGameBoard();
   }
 
-  private Board initGameBoard() {
+  private Board initGameBoard(int num) {
     //TODO:config init boards for 2-5 players
     List<Unit> aUnits = new ArrayList<Unit>();
     aUnits.add(new BaseUnit(""));

@@ -1,11 +1,14 @@
 package shared;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Board {
   public List<Region> getNeighbor(String name);
 
   public Region getRegion(String name);
+
+  public Set<String> getAllRegionNames();
 
   public List<Region> getAllRegions();
 
