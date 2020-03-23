@@ -28,14 +28,7 @@ public class Server {
       sc.close();
       List<SocketChannel> clientSockets = server.waitForClients(playerNum);
       GameMaster gm = new GameMaster(clientSockets);
-      // actual game starts
-      while (true) {
-        System.out.println("Round Start");
-        gm.sendBoardToClient();
-        Map<SocketChannel, List<Instruction>> instrMap = gm.recvInstrFromClient();
-        gm.resolve(instrMap);
-        // if win() is true, break
-      }
+      gm.run();
     } catch (IOException e) {
       System.out.println(e);
     }

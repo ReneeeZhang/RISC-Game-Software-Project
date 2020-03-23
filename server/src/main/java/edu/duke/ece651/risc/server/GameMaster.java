@@ -1,6 +1,5 @@
 package edu.duke.ece651.risc.server;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -19,6 +18,16 @@ public class GameMaster {
   public GameMaster(List<SocketChannel> playerSockets) {
     this.playerSockets = playerSockets;
     this.board = initGameBoard();
+  }
+
+  public void run() throws IOException{
+    while (true) {
+      System.out.println("Round Start");
+      sendBoardToClient();
+      Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
+      resolve(instrMap);
+      //TODO:if win() is true, break
+    }
   }
 
   private Board initGameBoard() {
@@ -55,12 +64,9 @@ public class GameMaster {
 
   public void sendBoardToClient() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      System.out.println(sc.isRegistered());
-      System.out.println("send blocking: " + sc.isBlocking());
       sc.configureBlocking(true);
       Socket s = sc.socket();
-      DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-      ObjectOutputStream serial = new ObjectOutputStream(dout);
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(this.board);
     }
   }
@@ -87,6 +93,6 @@ public class GameMaster {
         }
       }
     }
-    //for(String player: )
+    //for()
   }
 }
