@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class GameBoard implements Board, Drawable, Serializable {
   private Map<Region, List<Region>> regionMap;
@@ -62,7 +63,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   @Override
   public void attack(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
-    //srcRegion.dispatch(dst, num);
+    srcRegion.dispatch(dst, num);
   }
   
   @Override
@@ -70,11 +71,29 @@ public class GameBoard implements Board, Drawable, Serializable {
     for (String player : playerRegionMap.keySet()) {
       for (Region region : playerRegionMap.get(player)) {
         for (Region target : regionMap.get(region)) {
-          //List<Region> units = region.getBorderCamp(target.getName());
-          // resolve(units, target)
+          List<Unit> units = region.getBorderCamp(target.getName());
+          if (fightAgainst(units, target)) {
+            // wins the fight
+            target.setOwner(player);
+            target.receiveUnit(units);
+          }
         }
       }
     }
+  }
+
+  private boolean fightAgainst(List<Unit> units, Region target) {
+    while (units.size() > 0 && target.getNumBaseUnit() > 0) {
+      Random rand = new Random();
+      int randA = rand.nextInt(20);
+      int randB = rand.nextInt(20);
+      if (randA > randB) {
+        target.removeUnit(1);
+      } else {
+        units.remove(0);
+      }
+    }
+    return units.size() > 0;
   }
 
   @Override

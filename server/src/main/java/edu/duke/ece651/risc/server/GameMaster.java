@@ -24,14 +24,21 @@ public class GameMaster {
   private Board initGameBoard() {
     //TODO:config init boards for 2-5 players
     List<Unit> aUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit("a"));
+    aUnits.add(new BaseUnit(""));
     List<Unit> bUnits = new ArrayList<Unit>();
-    bUnits.add(new BaseUnit("b"));
+    bUnits.add(new BaseUnit(""));
     List<Unit> cUnits = new ArrayList<Unit>();
-    cUnits.add(new BaseUnit("c"));
-    Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", aUnits);
-    Region b = new BaseRegion("Hudson", "PlayerA", "Blue", bUnits);
-    Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits);
+    cUnits.add(new BaseUnit(""));
+    Map<String, List<Unit>> aBorderCamps = new HashMap<String, List<Unit>>();
+    aBorderCamps.put("Hudson", new ArrayList<Unit>());
+    Map<String, List<Unit>> bBorderCamps = new HashMap<String, List<Unit>>();
+    bBorderCamps.put("Fitzpatrick", new ArrayList<Unit>());
+    bBorderCamps.put("Teer", new ArrayList<Unit>());
+    Map<String, List<Unit>> cBorderCamps = new HashMap<String, List<Unit>>();
+    cBorderCamps.put("Hudson", new ArrayList<Unit>());
+    Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", aUnits, aBorderCamps);
+    Region b = new BaseRegion("Hudson", "PlayerA", "Blue", bUnits, bBorderCamps);
+    Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits, cBorderCamps);
     List<Region> aNeigh = new ArrayList<Region>();
     aNeigh.add(b);
     List<Region> bNeigh = new ArrayList<Region>();

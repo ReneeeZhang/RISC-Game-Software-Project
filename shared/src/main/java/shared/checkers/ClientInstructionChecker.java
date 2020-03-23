@@ -2,7 +2,6 @@ package shared.checkers;
 
 import shared.*;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,7 @@ public class ClientInstructionChecker implements Checker{
     public ClientInstructionChecker(Board board, List<Instruction> instructions, Checker next) {
         this.board = board;
         this.instructions = instructions;
+        /*
         instructions.sort((o1, o2) -> {
             if (!o1.getClass().equals(o2.getClass())) {
                 if (o1 instanceof Move) {
@@ -35,6 +35,7 @@ public class ClientInstructionChecker implements Checker{
             }
             return 0;
         });
+        */
         this.next = next;
     }
 

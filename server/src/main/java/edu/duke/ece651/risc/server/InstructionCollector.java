@@ -50,16 +50,12 @@ public class InstructionCollector {
   }
 
   private List<Instruction> recvInstruction(SocketChannel sc) throws IOException {
-    System.out.println("recv blocking: " + sc.isBlocking());
-    List<Instruction> ins = new ArrayList<Instruction>();
     Socket s = sc.socket();
     DataInputStream din = new DataInputStream(s.getInputStream());
     ObjectInputStream deserial = new ObjectInputStream(din);
+    List<Instruction> ins = new ArrayList<Instruction>();
     try {
-      // TODO: List<Instruction>
-      Instruction instr = (Instruction) deserial.readObject();
-      System.out.println(instr);
-      ins.add(instr);
+      ins = (ArrayList<Instruction>) deserial.readObject();
     } catch (ClassNotFoundException e) {
       System.out.println(e);
     }
