@@ -17,11 +17,9 @@ import java.util.Iterator;
 import shared.Instruction;
 
 public class InstructionCollector {
-  private List<SocketChannel> playerSockets;
   private Selector selector;
   
   public InstructionCollector(List<SocketChannel> playerSockets) throws IOException {
-    this.playerSockets = playerSockets;
     selector = Selector.open();
     for (SocketChannel sc : playerSockets) {
       sc.configureBlocking(false);
@@ -47,7 +45,6 @@ public class InstructionCollector {
         }
         keyIterator.remove();
       }
-      //System.out.println("size: " + selector.selectedKeys().size());
     }
     return instrMap;
   }

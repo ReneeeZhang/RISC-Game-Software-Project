@@ -10,13 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import shared.BaseRegion;
-import shared.BaseUnit;
-import shared.Board;
-import shared.GameBoard;
-import shared.Instruction;
-import shared.Region;
-import shared.Unit;
+import shared.*;
 
 public class GameMaster {
   private Board board;
@@ -70,10 +64,22 @@ public class GameMaster {
   }
 
   public void resolve(Map<SocketChannel, List<Instruction>> instrMap) {
+    // first move
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
-        instr.execute(board);
+        if (instr instanceof Move) {
+          instr.execute(board);
+        }
       }
     }
+    // then attack
+    for (SocketChannel playerSocket : instrMap.keySet()) {
+      for (Instruction instr : instrMap.get(playerSocket)) {
+        if (instr instanceof Attack) {
+          instr.execute(board);
+        }
+      }
+    }
+    //for(String player: )
   }
 }

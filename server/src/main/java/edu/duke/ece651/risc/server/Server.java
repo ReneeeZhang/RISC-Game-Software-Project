@@ -14,14 +14,14 @@ import shared.Instruction;
 public class Server {
   private ServerSocketChannel serverSocketChannel;
 
-  public Server(int port, Scanner sc) throws IOException {
+  public Server(int port) throws IOException {
     this.serverSocketChannel = ServerSocketChannel.open();
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
   }
   
   public static void main(String[] args) {
     try {
-      Server server = new Server(Integer.valueOf(args[0]), new Scanner(System.in));
+      Server server = new Server(Integer.valueOf(args[0]));
       System.out.println("Create a new game for how many players:");
       Scanner sc = new Scanner("2");
       int playerNum = Integer.valueOf(sc.nextLine());
@@ -43,7 +43,6 @@ public class Server {
 
   public List<SocketChannel> waitForClients(int n) throws IOException {
     List<SocketChannel> clientSockets = new ArrayList<SocketChannel>();
-    //System.out.println("wait");
     for (int i = 0; i < n; i++) {
       SocketChannel sc = serverSocketChannel.accept();
       clientSockets.add(sc);
