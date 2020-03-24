@@ -39,6 +39,7 @@ public class MoveTest {
     //doNothing().when(boardMock.move("r1","r2"));
 
     Move m1 = new Move("r1", "r2", 1);
+    assertEquals(1, m1.getNumUnit());
     assertEquals(true, m1.isValid(boardMock));
     m1.execute(boardMock);
 
@@ -47,6 +48,10 @@ public class MoveTest {
     Move m2 = new Move("r1", "r3", 1);
     assertEquals(false, m2.isValid(boardMock));
     m2.execute(boardMock);
+
+    assertEquals("r1", m2.getSrc());
+    assertEquals("r3", m2.getDest());
+
   }
   @Test
   public void test_() {
