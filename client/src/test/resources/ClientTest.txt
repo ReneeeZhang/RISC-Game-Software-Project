@@ -1,5 +1,14 @@
 move Hudson Wilson 3
+move
+ATTACK
+att
+ajiwe
+move Hudson 3
+move Hudson Wilson a
+move Hudson Wilson 1000
 done
+attack Fitz
+attack Fitzpatrick Teer 0
 move Fitzpatrick Hudson 2
 done
 move Fitzpatrick Hudson 1
