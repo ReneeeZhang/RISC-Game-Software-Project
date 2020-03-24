@@ -32,9 +32,6 @@ public class GameMaster {
     while (true) {
       System.out.println("Round " + cnt + " Starts!");
       sendBoardToClient();
-      Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
-      executeAll(instrMap);
-      autoIncrement();
       for (String player : board.getAllOwners()) {
         Checker winCheck = new WinnerChecker(board, player);
         if (winCheck.isValid()) {
@@ -42,6 +39,9 @@ public class GameMaster {
           return;
         }
       }
+      Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
+      executeAll(instrMap);
+      autoIncrement();
       cnt++;
     }
   }
