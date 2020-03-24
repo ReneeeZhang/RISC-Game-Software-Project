@@ -50,7 +50,7 @@ public class MoveTest {
     m2.execute(boardMock);
 
     assertEquals("r1", m2.getSrc());
-    assertEquals("R3", m2.getDest());
+    assertEquals("r3", m2.getDest());
     
   }
   @Test
