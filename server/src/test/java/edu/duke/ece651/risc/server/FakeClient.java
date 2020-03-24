@@ -24,17 +24,18 @@ public class FakeClient implements Runnable {
       SocketChannel socketChannel = SocketChannel.open();
       socketChannel.connect(new InetSocketAddress("localhost", 6666));
       Socket s = socketChannel.socket();
-      ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-      GameBoard b = (GameBoard) deserial.readObject();
-      System.out.println(b.draw());
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      List<Instruction> ins = new ArrayList<Instruction>();
-      Instruction move = new Move(sc.nextLine(), sc.nextLine(), sc.nextInt());
-      //Instruction move = new Move("Bostock", "Teer", 2);
-      ins.add(move);
-      //Instruction attack = new Attack("Teer", "Hudson", 2);
-      //ins.add(attack);
-      serial.writeObject(ins);
+      while (true) {
+        ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+        GameBoard b = (GameBoard) deserial.readObject();
+        System.out.println(b.draw());
+        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+        List<Instruction> ins = new ArrayList<Instruction>();
+        Instruction move = new Move(sc.nextLine(), sc.nextLine(), Integer.valueOf(sc.nextLine()));
+        ins.add(move);
+        Instruction attack = new Attack(sc.nextLine(), sc.nextLine(), Integer.valueOf(sc.nextLine()));
+        ins.add(attack);
+        serial.writeObject(ins);
+      }
     }
     catch (Exception e) {
       System.out.println(e);

@@ -88,9 +88,17 @@ public class GameBoard implements Board, Drawable, Serializable {
         }
       }
     }
+    // update player-region map
+    playerRegionMap = new HashMap<String, List<Region>>();
+    for (Region r : getAllRegions()) {
+      if (!playerRegionMap.containsKey(r.getOwner())) {
+        playerRegionMap.put(r.getOwner(), new ArrayList<Region>());
+      }
+      playerRegionMap.get(r.getOwner()).add(r);
+    }
   }
 
-  private boolean fightAgainst(Region src, Region dst) {
+  private void fightAgainst(Region src, Region dst) {
     List<Unit> units = src.getBorderCamp(dst.getName());
     while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
       Random rand = new Random();
@@ -102,7 +110,11 @@ public class GameBoard implements Board, Drawable, Serializable {
         units.remove(0);
       }
     }
-    return units.size() > 0;
+    // if wins, send rest units and change owner.
+    if (units.size() > 0) {
+      dst.setOwner(src.getOwner());
+      dst.receiveUnit(units);
+    }
   }
 
   @Override
