@@ -1,7 +1,5 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,29 +20,34 @@ import shared.checkers.ClientInstructionChecker;
 public class Client {
   private Socket s;
   private Scanner scanner;
-  
+  private String name;
+
   public Client(String hostname, int port) throws IOException {
     SocketChannel sc = SocketChannel.open();
     sc.connect(new InetSocketAddress(hostname, port));
     this.s = sc.socket();
+    try{
+      this.name = receiveNameFromServer();
+    } catch (IOException e) {
+      System.out.println(e);
+    } catch (ClassNotFoundException e) {
+      System.out.println(e);
+    }
     scanner = new Scanner(System.in);
+  }
+
+  private String receiveNameFromServer() throws IOException, ClassNotFoundException {
+    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+    return (String) deserial.readObject();
   }
   
   private GameBoard receiveFromServer() throws IOException, ClassNotFoundException {
-    DataInputStream din = new DataInputStream(s.getInputStream());
-    ObjectInputStream deserial = new ObjectInputStream(din);
+    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return (GameBoard) deserial.readObject();
   }
 
-  private void sendToServer(Instruction inst) throws IOException {
-    DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-    ObjectOutputStream serial = new ObjectOutputStream(dout);
-    serial.writeObject(inst);
-  }
-
   private void sendToServer(List<Instruction> insts) throws IOException {
-    DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-    ObjectOutputStream serial = new ObjectOutputStream(dout);
+    ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
     serial.writeObject(insts);
   }
 
@@ -100,6 +103,7 @@ public class Client {
    */
   private List<Instruction> inputInst(Board board) {
     List<Instruction> insts = new ArrayList<>();
+    System.out.println("You are " + name);
     System.out.println("Please input your instrution:");
     while (true) {
       String inst = scanner.nextLine();
@@ -176,7 +180,6 @@ public class Client {
   }
   
   public static void main(String[] args) {
-
     try {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");

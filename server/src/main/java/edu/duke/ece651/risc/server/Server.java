@@ -6,10 +6,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
-import shared.Instruction;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;
@@ -28,14 +25,7 @@ public class Server {
       sc.close();
       List<SocketChannel> clientSockets = server.waitForClients(playerNum);
       GameMaster gm = new GameMaster(clientSockets);
-      // actual game starts
-      while (true) {
-        System.out.println("Round Start");
-        gm.sendBoardToClient();
-        Map<SocketChannel, List<Instruction>> instrMap = gm.recvInstrFromClient();
-        gm.resolve(instrMap);
-        // if win() is true, break
-      }
+      gm.run();
     } catch (IOException e) {
       System.out.println(e);
     }
