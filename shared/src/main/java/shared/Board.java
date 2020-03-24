@@ -12,6 +12,8 @@ public interface Board {
 
   public List<Region> getAllRegions();
 
+  public Set<String> getAllOwners();
+  
   public void move(String src, String dst, int num);
 
   public void attack(String src, String dst, int num);
