@@ -11,8 +11,10 @@ import shared.GameBoard;
 public class InitializerTest {
   @Test
   public void test_initGame() throws IOException {
-    Initializer initer = new Initializer(2);
-    GameBoard gb = initer.initGame();
-    System.out.println(gb.draw());
+    for (int i = 2; i < 6; i++) {
+      Initializer initer = new Initializer(i);
+      GameBoard gb = initer.initGame();
+      System.out.println(gb.draw());
+    }
   }
 }
