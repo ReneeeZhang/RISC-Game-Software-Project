@@ -1,5 +1,5 @@
 package shared;
 
 public interface Unit{
-  public String getName();
+  // public String getName();
 }
