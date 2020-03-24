@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import shared.*;
+import shared.checkers.*;
 
 public class GameMaster {
   private Board board;
@@ -34,7 +35,13 @@ public class GameMaster {
       Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
       executeAll(instrMap);
       autoIncrement();
-      //TODO:if win() is true, break
+      for (String player : board.getAllOwners()) {
+        Checker winCheck = new WinnerChecker(board, player);
+        if (winCheck.isValid()) {
+          System.out.println(player + "wins the game");
+          return;
+        }
+      }
       cnt++;
     }
   }
