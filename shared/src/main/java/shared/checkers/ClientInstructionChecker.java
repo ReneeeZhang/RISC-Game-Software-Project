@@ -42,9 +42,9 @@ public class ClientInstructionChecker implements Checker{
     public boolean isValid() {
         Map<String, Integer> units = new HashMap<>();
         for (Instruction instruction : instructions) {
-            if (!(instruction instanceof R2RInstruction)) {
-                break;
-            }
+//            if (!(instruction instanceof R2RInstruction)) {
+//                continue;
+//            }
             R2RInstruction ins = (R2RInstruction) instruction;
             String srcName = ins.getSrc();
             Region src = board.getRegion(srcName);

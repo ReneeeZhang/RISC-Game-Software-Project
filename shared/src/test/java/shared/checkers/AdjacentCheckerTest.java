@@ -33,5 +33,17 @@ public class AdjacentCheckerTest {
         //source: r1, dest: r3
         AdjacentChecker adjacentChecker = new AdjacentChecker(boardMock, r1, r3);
         Assertions.assertTrue(adjacentChecker.isValid());
+        //add next
+        when(r1.getNumBaseUnit()).thenReturn(4);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 3);
+        adjacentChecker = new AdjacentChecker(boardMock, r1, r3, unitQuantityChecker);
+        Assertions.assertTrue(adjacentChecker.isValid());
+        //invalid
+        List<Region> regions2 = Arrays.asList(r2);
+        when(boardMock.getNeighbor("r1")).thenReturn(regions2);
+        adjacentChecker = new AdjacentChecker(boardMock, r1, r3);
+        Assertions.assertFalse(adjacentChecker.isValid());
+
+
     }
 }
