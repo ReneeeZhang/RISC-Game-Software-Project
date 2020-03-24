@@ -11,8 +11,16 @@ public class ServerTest {
   public void test_server() {
     String str1 = "Bostock\nTeer\n5\n";
     str1 += "Teer\nFitzpatrick\n10\n";
+    str1 += "Fitzpatrick\nBostock\n5\n";
+    str1 += "Fitzpatrick\nPerkins\n1\n";
+    str1 += "Hudson\nWilson\n1\n";
+    str1 += "Bostock\nTeer\n10\n";
     String str2 = "Hudson\nWilson\n2\n";
     str2 += "Wilson\nBostock\n7\n";
+    str2 += "Perkins\nTeer\n6\n";
+    str2 += "Teer\nBostock\n7\n";
+    str2 += "Teer\nTeer\n0\n";
+    str2 += "Teer\nBostock\n1\n";
     Scanner sc1 = new Scanner(str1);
     Scanner sc2 = new Scanner(str2);
     Thread player1 = new Thread(new FakeClient(sc1));

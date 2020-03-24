@@ -106,11 +106,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   private void fightAgainst(Region src, Region dst) {
     List<Unit> units = src.getBorderCamp(dst.getName());
     while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
-      Random rand = new Random();
+      Random rand = new Random(0);
       int randA = rand.nextInt(20);
       int randB = rand.nextInt(20);
       if (randA > randB) {
-        dst.removeUnit(1);
+        dst.removeUnit();
       } else {
         units.remove(0);
       }

@@ -24,8 +24,11 @@ public class FakeClient implements Runnable {
       SocketChannel socketChannel = SocketChannel.open();
       socketChannel.connect(new InetSocketAddress("localhost", 6666));
       Socket s = socketChannel.socket();
+      ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+      String name = (String) deserial.readObject();
+      System.out.println(name);
       while (true) {
-        ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+        deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
         System.out.println(b.draw());
         ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
