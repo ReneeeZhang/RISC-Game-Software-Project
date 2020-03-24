@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +13,12 @@ import shared.*;
 public class GameMaster {
   private Board board;
   private List<SocketChannel> playerSockets;
-  //TODO: List<String> playerSocketMap;
 
   public GameMaster(List<SocketChannel> playerSockets) {
     this.playerSockets = playerSockets;
+    int num = playerSockets.size();
     try {
-      Initializer initer = new Initializer(2);
+      Initializer initer = new Initializer(num);
       this.board = initer.initGame();
     } catch (IOException e) {
       System.out.println(e);
@@ -25,6 +26,7 @@ public class GameMaster {
   }
 
   public void run() throws IOException {
+    sendPlayerNames();
     int cnt = 1;
     while (true) {
       System.out.println("Round " + cnt + " Starts!");
@@ -37,40 +39,15 @@ public class GameMaster {
     }
   }
 
-  /*
-  private Board initGameBoard() {
-    //TODO:config init boards for 2-5 players
-    List<Unit> aUnits = new ArrayList<Unit>();
-    aUnits.add(new BaseUnit());
-    List<Unit> bUnits = new ArrayList<Unit>();
-    bUnits.add(new BaseUnit());
-    List<Unit> cUnits = new ArrayList<Unit>();
-    cUnits.add(new BaseUnit());
-    Map<String, List<Unit>> aBorderCamps = new HashMap<String, List<Unit>>();
-    aBorderCamps.put("Hudson", new ArrayList<Unit>());
-    Map<String, List<Unit>> bBorderCamps = new HashMap<String, List<Unit>>();
-    bBorderCamps.put("Fitzpatrick", new ArrayList<Unit>());
-    bBorderCamps.put("Teer", new ArrayList<Unit>());
-    Map<String, List<Unit>> cBorderCamps = new HashMap<String, List<Unit>>();
-    cBorderCamps.put("Hudson", new ArrayList<Unit>());
-    Region a = new BaseRegion("Fitzpatrick", "PlayerA", "Red", aUnits, aBorderCamps);
-    Region b = new BaseRegion("Hudson", "PlayerA", "Blue", bUnits, bBorderCamps);
-    Region c = new BaseRegion("Teer", "PlayerA", "Green", cUnits, cBorderCamps);
-    List<Region> aNeigh = new ArrayList<Region>();
-    aNeigh.add(b);
-    List<Region> bNeigh = new ArrayList<Region>();
-    bNeigh.add(a);
-    bNeigh.add(c);
-    List<Region> cNeigh = new ArrayList<Region>();
-    cNeigh.add(b);
-    Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
-    regionMap.put(a, aNeigh);
-    regionMap.put(b, bNeigh);
-    regionMap.put(c, cNeigh);
-    return new GameBoard(regionMap);
+  public void sendPlayerNames() throws IOException {
+    Iterator<String> namesIter = board.getAllOwners().iterator();
+    for (SocketChannel sc : playerSockets) {
+      Socket s = sc.socket();
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(namesIter.next());
+    }
   }
-  */
-
+  
   public void sendBoardToClient() throws IOException {
     for (SocketChannel sc : playerSockets) {
       sc.configureBlocking(true);

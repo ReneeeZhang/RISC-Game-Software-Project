@@ -67,6 +67,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public Set<String> getAllOwners() {
+    return playerRegionMap.keySet();
+  }
+
+  @Override
   public void move(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
