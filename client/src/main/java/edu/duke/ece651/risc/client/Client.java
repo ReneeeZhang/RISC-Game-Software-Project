@@ -15,7 +15,10 @@ import shared.Board;
 import shared.GameBoard;
 import shared.Instruction;
 import shared.Move;
+import shared.checkers.Checker;
 import shared.checkers.ClientInstructionChecker;
+import shared.checkers.LoserChecker;
+import shared.checkers.WinnerChecker;
 
 public class Client {
   private Socket s;
@@ -161,11 +164,40 @@ public class Client {
     }
   }
 
+  private boolean hasWon(Board board) {
+    Checker winnerChecker = new WinnerChecker(board, name);
+    if (winnerChecker.isValid()) {
+      System.out.println(name + ", you have won!");
+      return true;
+    }
+    return false;
+  }
+
+  private boolean hasLost(Board board) {
+    Checker loserChecker = new LoserChecker(board, name);
+    if (loserChecker.isValid()) {
+      System.out.println(name + ", you have lost...");
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isOver(Board board) {
+    if (hasWon(board) || hasLost(board)) {
+      return true;
+    }
+    return false;
+  }
+  
   public void run() {
     try {
       while (true) {
         // receive the board from GameMaster
         GameBoard board = receiveFromServer();
+        if (isOver(board)) {
+          System.out.println("Game over~");
+          return;
+        }
         System.out.println(board.draw());
         // integrate all the instructions that a user input
         List<Instruction> packedInsts = packInsts(board);
