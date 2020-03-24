@@ -1,5 +1,8 @@
-move Hudson Teer 1
+move Hudson Wilson 3
 done
+move Fitzpatrick Hudson 2
 done
+move Fitzpatrick Hudson 1
 done
+attack Wilson Teer 1
 done
