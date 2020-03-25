@@ -20,7 +20,7 @@ public class FakeClient implements Runnable {
   
   public void run() {
     try {
-      Thread.sleep(5);
+      Thread.sleep(50);
       SocketChannel socketChannel = SocketChannel.open();
       socketChannel.connect(new InetSocketAddress("localhost", 6666));
       Socket s = socketChannel.socket();

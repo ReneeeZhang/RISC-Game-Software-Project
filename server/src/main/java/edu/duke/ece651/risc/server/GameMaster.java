@@ -37,17 +37,13 @@ public class GameMaster implements Runnable {
       System.out.println("Round " + cnt + " Starts!");
       try{
         sendBoardToClients();
-      } catch (IOException e) {
-        System.out.println(e);
-      }
-      for (String player : board.getAllOwners()) {
-        Checker winCheck = new WinnerChecker(board, player);
-        if (winCheck.isValid()) {
-          System.out.println(player + "wins the game");
-          return;
+        for (String player : board.getAllOwners()) {
+          Checker winCheck = new WinnerChecker(board, player);
+          if (winCheck.isValid()) {
+            System.out.println(player + "wins the game");
+            return;
+          }
         }
-      }
-      try{
         Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClients();
         executeAll(instrMap);
       } catch (IOException e) {
