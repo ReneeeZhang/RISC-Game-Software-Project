@@ -11,7 +11,7 @@ import java.util.Map;
 import shared.*;
 import shared.checkers.*;
 
-public class GameMaster {
+public class GameMaster implements Runnable {
   private Board board;
   private List<SocketChannel> playerSockets;
 
@@ -26,12 +26,20 @@ public class GameMaster {
     }
   }
 
-  public void run() throws IOException {
-    sendPlayerNames();
+  public void run() {
+    try{
+      sendPlayerNames();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
     int cnt = 1;
     while (true) {
       System.out.println("Round " + cnt + " Starts!");
-      sendBoardToClient();
+      try{
+        sendBoardToClient();
+      } catch (IOException e) {
+        System.out.println(e);
+      }
       for (String player : board.getAllOwners()) {
         Checker winCheck = new WinnerChecker(board, player);
         if (winCheck.isValid()) {
@@ -39,8 +47,12 @@ public class GameMaster {
           return;
         }
       }
-      Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
-      executeAll(instrMap);
+      try{
+        Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
+        executeAll(instrMap);
+      } catch (IOException e) {
+        System.out.println(e);
+      }
       autoIncrement();
       cnt++;
     }
@@ -94,5 +106,7 @@ public class GameMaster {
     for (Region r : board.getAllRegions()) {
       r.autoIncrement();
     }
+    //for player:
+    //  autoIncrement() resource
   }
 }
