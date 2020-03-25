@@ -25,7 +25,9 @@ public class Server {
       sc.close();
       List<SocketChannel> clientSockets = server.waitForClients(playerNum);
       GameMaster gm = new GameMaster(clientSockets);
-      gm.run();
+      Thread t = new Thread(gm);
+      //gm.run();
+      t.start();
     } catch (IOException e) {
       System.out.println(e);
     }
