@@ -36,7 +36,7 @@ public class GameMaster implements Runnable {
     while (true) {
       System.out.println("Round " + cnt + " Starts!");
       try{
-        sendBoardToClient();
+        sendBoardToClients();
       } catch (IOException e) {
         System.out.println(e);
       }
@@ -48,7 +48,7 @@ public class GameMaster implements Runnable {
         }
       }
       try{
-        Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
+        Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClients();
         executeAll(instrMap);
       } catch (IOException e) {
         System.out.println(e);
@@ -67,7 +67,7 @@ public class GameMaster implements Runnable {
     }
   }
   
-  public void sendBoardToClient() throws IOException {
+  public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
       sc.configureBlocking(true);
       Socket s = sc.socket();
@@ -76,7 +76,7 @@ public class GameMaster implements Runnable {
     }
   }
 
-  public Map<SocketChannel, List<Instruction>> recvInstrFromClient() throws IOException {
+  public Map<SocketChannel, List<Instruction>> recvInstrFromClients() throws IOException {
     InstructionCollector ic = new InstructionCollector(playerSockets);
     return ic.collect();
   }
