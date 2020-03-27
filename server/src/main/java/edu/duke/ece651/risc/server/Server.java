@@ -28,6 +28,7 @@ public class Server {
         Thread t = new Thread(gm);
         t.start();
       }
+      sc.close();
     } catch (IOException e) {
       System.out.println(e);
     }
