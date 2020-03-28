@@ -49,9 +49,9 @@ public class Client {
     return (GameBoard) deserial.readObject();
   }
 
-  private void sendToServer(List<Instruction> insts) throws IOException {
+  private void sendToServer(Object obj) throws IOException {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-    serial.writeObject(insts);
+    serial.writeObject(obj);
   }
 
   
@@ -181,22 +181,40 @@ public class Client {
     }
     return false;
   }
-
-  private boolean isOver(Board board) {
-    if (hasWon(board) || hasLost(board)) {
-      return true;
-    }
-    return false;
-  }
   
   public void run() {
     try {
       while (true) {
         // receive the board from GameMaster
         GameBoard board = receiveFromServer();
-        if (isOver(board)) {
+        if (hasWon(board)) {
           System.out.println("Game over~");
           return;
+        }
+        if (hasLost(board)) {
+          System.out.println("Would you like to continue to watch the game? Please answer yes/no:");
+          while (true) {
+            String ans2Lost = scanner.nextLine().toLowerCase();
+
+            if (ans2Lost.equals("yes")) {
+              // TODO: Enter to a phase of watching
+              sendToServer(ans2Lost); // Send "yes" to server
+              while (true) {
+                GameBoard board2Watch = receiveFromServer();
+                // if gameOverChecker is true, return;
+                //else sendToServer(new ArrayList<Instruction>())
+              }
+            }
+            else if (ans2Lost.equals("no")) {
+              sendToServer(ans2Lost);  // send "no" to server
+              receiveFromServer();
+              return;
+              // TODO: Wait for server's response
+            }
+            else {
+              System.out.println("You can only input yes or no.");
+            }              
+          }
         }
         System.out.println(board.draw());
         // integrate all the instructions that a user input
@@ -216,13 +234,6 @@ public class Client {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
       client.run();
-      /*
-      client.receiveFromServer();
-      // Hardcode an instruction
-      Instruction inst = new Move("Fitzpatrick", "Teer", 1);
-      client.sendToServer(inst);
-      client.receiveFromServer();
-      */
     } catch (IOException e) {
       System.out.println(e);
     }
