@@ -10,6 +10,7 @@ import java.util.Map;
 
 import shared.*;
 import shared.checkers.*;
+import shared.instructions.*;
 
 public class GameMaster implements Runnable {
   private Board board;

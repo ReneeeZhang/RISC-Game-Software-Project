@@ -3,6 +3,7 @@ package shared.checkers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import shared.*;
+import shared.instructions.*;
 
 import java.util.Arrays;
 import java.util.List;
