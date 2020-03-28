@@ -2,28 +2,30 @@ package shared;
 
 import java.io.Serializable;
 import shared.checkers.*;
+import java.util.HashMap;
 
 abstract public class UpgradeInstruction implements Instruction, Serializable{
-  protected String src;
-  protected int level;
+  protected int oldLevel;
+  protected int newLevel;
+  protected int cost;
   private static final long serialVersionUID = 435352124;
 
   // Default constructor
   public UpgradeInstruction() {
   }
 
+  
   // Constructor
-  public UpgradeInstruction(String s, int l) {
-    this.src = s;
-    this.level = l;
-  }
-
-  // Getters
-  public String getSrc() {
-    return src;
+  public UpgradeInstruction(int oldL, int newL) {
+    this.oldLevel = oldL;
+    this.newLevel = newL;
   }
 
   public int getLevel() {
-    return level;
+    return newLevel;
+  }
+
+  public int getCost() {
+    return cost;
   }
 }
