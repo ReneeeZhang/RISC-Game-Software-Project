@@ -1,6 +1,7 @@
-package shared;
+package shared.instructions;
 
 import java.io.Serializable;
+import shared.*;
 import shared.checkers.*;
 import java.util.HashMap;
 

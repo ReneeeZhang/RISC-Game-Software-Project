@@ -1,6 +1,7 @@
 package shared.checkers;
 
 import shared.*;
+import shared.instructions.*;
 
 import java.util.HashMap;
 import java.util.List;
