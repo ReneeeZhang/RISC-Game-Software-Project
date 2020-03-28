@@ -1,17 +1,8 @@
 package shared;
 
-public class TechResource implements Resource{
-  private int num;
-  
-  public TechResource() {
-    this.num = 0;
-  }
-  
-  public int getNum() {
-    return num;
-  }
+public class TechResource extends CountableResource {
 
-  public void increase(int n) {
-    num += n;
+  public TechResource(int num) {
+    super("Tech", num);
   }
 }

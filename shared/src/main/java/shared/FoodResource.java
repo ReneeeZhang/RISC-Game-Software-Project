@@ -1,17 +1,8 @@
 package shared;
 
-public class FoodResource implements Resource{
-  private int num;
+public class FoodResource extends CountableResource{
 
-  public FoodResource() {
-    this.num = 0;
-  }
-
-  public int getNum() {
-    return num;
-  }
-
-  public void increase(int n) {
-    num += n;
+  public FoodResource(int num) {
+    super("Food", num);
   }
 }
