@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import shared.Attack;
+
 import shared.Board;
 import shared.GameBoard;
-import shared.Instruction;
-import shared.Move;
+import shared.instructions.*;
+
 import shared.checkers.Checker;
 import shared.checkers.ClientInstructionChecker;
 import shared.checkers.LoserChecker;
