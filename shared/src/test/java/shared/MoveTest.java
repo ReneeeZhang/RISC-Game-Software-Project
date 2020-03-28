@@ -51,7 +51,6 @@ public class MoveTest {
 
     assertEquals("r1", m2.getSrc());
     assertEquals("r3", m2.getDest());
-    
   }
   @Test
   public void test_() {

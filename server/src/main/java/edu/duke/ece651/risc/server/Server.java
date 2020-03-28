@@ -6,10 +6,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
-import shared.Instruction;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;
@@ -24,18 +21,14 @@ public class Server {
       Server server = new Server(Integer.valueOf(args[0]));
       System.out.println("Create a new game for how many players:");
       Scanner sc = new Scanner(System.in);
-      int playerNum = sc.nextInt();
-      sc.close();
-      List<SocketChannel> clientSockets = server.waitForClients(playerNum);
-      GameMaster gm = new GameMaster(clientSockets);
-      // actual game starts
-      while (true) {
-        System.out.println("Round Start");
-        gm.sendBoardToClient();
-        Map<SocketChannel, List<Instruction>> instrMap = gm.recvInstrFromClient();
-        gm.resolve(instrMap);
-        // if win() is true, break
+      while (sc.hasNext()) {
+        int playerNum = sc.nextInt();
+        List<SocketChannel> clientSockets = server.waitForClients(playerNum);
+        GameMaster gm = new GameMaster(clientSockets);
+        Thread t = new Thread(gm);
+        t.start();
       }
+      sc.close();
     } catch (IOException e) {
       System.out.println(e);
     }

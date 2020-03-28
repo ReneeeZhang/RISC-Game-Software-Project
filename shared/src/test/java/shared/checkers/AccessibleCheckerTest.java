@@ -48,18 +48,30 @@ public class AccessibleCheckerTest {
         //source: r1, dest: r3
         AccessibleChecker accessibleChecker2 = new AccessibleChecker(boardMock2, r1, r3);
         Assertions.assertTrue(accessibleChecker2.isValid());
+        //add next
+        when(r1.getNumBaseUnit()).thenReturn(4);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 3);
+        accessibleChecker2 = new AccessibleChecker(boardMock2, r1, r3, unitQuantityChecker);
+        Assertions.assertTrue(accessibleChecker2.isValid());
         /*
             two regions belonging to different owners
          */
         //r4 belongs to "B"
         Region r4 = mock(Region.class);
-        when(r1.getOwner()).thenReturn("B");
+        when(r4.getName()).thenReturn("r4");
+        when(r4.getOwner()).thenReturn("B");
         //r1 -> r2, r1 -> r3, r1 -> r4
         List<Region> regions4 = Arrays.asList(r2, r3, r4);
         Board boardMock3 = mock(Board.class);
-        when(boardMock.getNeighbor("r1")).thenReturn(regions4);
-        //source: r1, dest: r3
+        when(boardMock3.getNeighbor("r1")).thenReturn(regions4);
+        //source: r1, dest: r4
         AccessibleChecker accessibleChecker3 = new AccessibleChecker(boardMock3, r1, r4);
+        Assertions.assertFalse(accessibleChecker3.isValid());
+
+        //invalid
+        List<Region> regions5 = Arrays.asList(r3);
+        when(boardMock.getNeighbor("r2")).thenReturn(regions5);
+        accessibleChecker3 = new AccessibleChecker(boardMock3, r1, r4);
         Assertions.assertFalse(accessibleChecker3.isValid());
     }
 }

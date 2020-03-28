@@ -1,6 +1,5 @@
 package edu.duke.ece651.risc.server;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -32,7 +31,6 @@ public class InstructionCollector {
     while (selector.keys().size() > 1) {
       selector.select();
       Set<SelectionKey> keys = selector.selectedKeys();
-      System.out.println("size: " + selector.selectedKeys().size());
       Iterator<SelectionKey> keyIterator = keys.iterator();
       while (keyIterator.hasNext()) {
         SelectionKey key = keyIterator.next();
@@ -40,7 +38,7 @@ public class InstructionCollector {
           key.cancel();
           SocketChannel sc = (SocketChannel) key.channel();
           sc.configureBlocking(true);
-          List<Instruction> ins = recvInstruction(sc);
+          List<Instruction> ins = recvInstructions(sc);
           instrMap.put(sc, ins);
         }
         keyIterator.remove();
@@ -49,10 +47,9 @@ public class InstructionCollector {
     return instrMap;
   }
 
-  private List<Instruction> recvInstruction(SocketChannel sc) throws IOException {
+  private List<Instruction> recvInstructions(SocketChannel sc) throws IOException {
     Socket s = sc.socket();
-    DataInputStream din = new DataInputStream(s.getInputStream());
-    ObjectInputStream deserial = new ObjectInputStream(din);
+    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     List<Instruction> ins = new ArrayList<Instruction>();
     try {
       ins = (ArrayList<Instruction>) deserial.readObject();

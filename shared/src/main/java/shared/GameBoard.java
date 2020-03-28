@@ -67,6 +67,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public Set<String> getAllOwners() {
+    return playerRegionMap.keySet();
+  }
+
+  @Override
   public void move(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
@@ -82,31 +87,39 @@ public class GameBoard implements Board, Drawable, Serializable {
   @Override
   public void resolve() {
     for (String player : playerRegionMap.keySet()) {
-      for (Region region : playerRegionMap.get(player)) {
-        for (Region target : regionMap.get(region)) {
-          List<Unit> units = region.getBorderCamp(target.getName());
-          if (fightAgainst(units, target)) {
-            // wins the fight
-            target.setOwner(player);
-            target.receiveUnit(units);
-          }
+      for (Region srcRegion : playerRegionMap.get(player)) {
+        for (Region dstRegion : regionMap.get(srcRegion)) {
+          fightAgainst(srcRegion, dstRegion);
         }
       }
     }
+    // update player-region map
+    playerRegionMap = new HashMap<String, List<Region>>();
+    for (Region r : getAllRegions()) {
+      if (!playerRegionMap.containsKey(r.getOwner())) {
+        playerRegionMap.put(r.getOwner(), new ArrayList<Region>());
+      }
+      playerRegionMap.get(r.getOwner()).add(r);
+    }
   }
 
-  private boolean fightAgainst(List<Unit> units, Region target) {
-    while (units.size() > 0 && target.getNumBaseUnit() > 0) {
-      Random rand = new Random();
+  private void fightAgainst(Region src, Region dst) {
+    List<Unit> units = src.getBorderCamp(dst.getName());
+    Random rand = new Random(0);
+    while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
       int randA = rand.nextInt(20);
       int randB = rand.nextInt(20);
       if (randA > randB) {
-        target.removeUnit(1);
+        dst.removeUnit();
       } else {
         units.remove(0);
       }
     }
-    return units.size() > 0;
+    // if wins, send rest units and change owner.
+    if (units.size() > 0) {
+      dst.setOwner(src.getOwner());
+      dst.receiveUnit(units);
+    }
   }
 
   @Override
