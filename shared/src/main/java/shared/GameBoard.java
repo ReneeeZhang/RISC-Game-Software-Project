@@ -13,6 +13,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
   private Map<String, List<Region>> playerRegionMap;
+  private Map<String, Player> playerNameMap;
   // for serialization
   private static final long serialVersionUID = 12367648;
   
@@ -56,6 +57,11 @@ public class GameBoard implements Board, Drawable, Serializable {
     return regionNameMap.get(name);
   }
 
+  @Override
+  public Player getPlayer(String name) {
+    return playerNameMap.get(name);
+  }
+  
   @Override
   public Set<String> getAllRegionNames() {
     return new HashSet<String>(regionNameMap.keySet());

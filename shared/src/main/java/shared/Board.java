@@ -8,6 +8,8 @@ public interface Board {
 
   public Region getRegion(String name);
 
+  public Player getPlayer(String name);
+
   public Set<String> getAllRegionNames();
 
   public List<Region> getAllRegions();
