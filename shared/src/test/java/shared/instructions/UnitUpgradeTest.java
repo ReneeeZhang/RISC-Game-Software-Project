@@ -1,6 +1,7 @@
 package shared.instructions;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import shared.*;
@@ -8,16 +9,16 @@ import shared.*;
 public class UnitUpgradeTest {
   @Test
   public void test_() {
-    Board b = new GameBoard();
     Player p = new Player("Drew");
     p.increaseTech(100);
-    UnitUpgrade u = new UnitUpgrade("Hudson", 0, 1, 1);
-    u.execute(b);
-    assertEquals(true, u.isValid(b));
+    UnitUpgrade u = new UnitUpgrade("Drew", "Hudson", 0, 1, 1);
+
+    Board b = mock(Board.class);
+    when(b.getPlayer("Drew")).thenReturn(p);
 
     assertEquals("Hudson", u.getSrc());
-    u.execute(b, p);
-    assertEquals(true, u.isValid(b, p));
+    u.execute(b);
+    assertEquals(true, u.isValid(b));
   }
 
 }
