@@ -11,8 +11,8 @@ public class UnitUpgrade extends UpgradeInstruction implements Serializable {
   
   private static final long serialVersionUID = 923749348;
 
-  public UnitUpgrade(String s, int oldL, int newL, int num) {
-    super(oldL, newL);
+  public UnitUpgrade(String pname, String s, int oldL, int newL, int num) {
+    super(pname, oldL, newL);
     this.src = s;
     this.numUnit = num;
   }

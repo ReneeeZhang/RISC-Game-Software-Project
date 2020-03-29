@@ -8,8 +8,8 @@ public class TechUpgrade extends UpgradeInstruction implements Serializable {
   
   private static final long serialVersionUID = 923749347;
 
-  public TechUpgrade(int oldL, int newL) {
-    super(oldL, newL);
+  public TechUpgrade(String pname, int oldL, int newL) {
+    super(pname, oldL, newL);
   }
 
   /* NOT USING */
