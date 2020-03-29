@@ -11,7 +11,7 @@ public class Player {
     // TODO: how many when init
     this.food = new FoodResource(0);
     this.tech = new TechResource(0);
-    this.level = 0;
+    this.level = 1;
   }
 
   public String getName() {
@@ -46,7 +46,7 @@ public class Player {
     tech.increase(n);
   }
   
-  public void upgrade(int n) {
-    level += n;
+  public void upgrade() {
+    level += 1;
   }
 }
