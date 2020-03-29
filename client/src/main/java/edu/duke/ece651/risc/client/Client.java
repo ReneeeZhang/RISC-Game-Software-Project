@@ -246,7 +246,7 @@ public class Client implements Runnable{
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
       Thread t = new Thread(client);
-      t.start();;
+      t.start();
     } catch (IOException e) {
       System.out.println(e);
     }
