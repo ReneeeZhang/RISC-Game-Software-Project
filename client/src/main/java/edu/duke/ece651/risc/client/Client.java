@@ -181,6 +181,21 @@ public class Client {
     }
     return false;
   }
+
+  /**
+   * Check game result based on given {@argv board}
+   * Return true if this client is the winner
+   * Return false if this client loses  
+   */
+  /*
+  private void checkResult(GameBoard board) {
+    if (hasWon(board)) {
+      System.out.println("Game over~");
+      return true;
+    }
+    
+  }
+  */
   
   public void run() {
     try {
@@ -201,6 +216,7 @@ public class Client {
               sendToServer(ans2Lost); // Send "yes" to server
               while (true) {
                 GameBoard board2Watch = receiveFromServer();
+               
                 // if gameOverChecker is true, return;
                 //else sendToServer(new ArrayList<Instruction>())
               }
