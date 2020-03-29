@@ -1,7 +1,21 @@
 package shared;
 
-public interface Resource {
-  public String getName();
+public abstract class Resource implements Countable {
+  protected int amount;
+  
+  public Resource(int amount) {
+    this.amount = amount;
+  }
 
-  public void increase(int n);
+  public int getAmount() {
+    return amount;
+  }
+
+  public void increase(int n) {
+    amount += n;
+  }
+
+  public void decrease(int n) {
+    amount -= n;
+  }
 }
