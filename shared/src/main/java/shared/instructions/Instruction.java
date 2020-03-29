@@ -1,4 +1,6 @@
-package shared;
+package shared.instructions;
+
+import shared.*;
 
 public interface Instruction {
   public void execute(Board b);

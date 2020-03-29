@@ -1,6 +1,8 @@
 
-package shared;
+package shared.instructions;
+
 import shared.*;
+import shared.instructions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;

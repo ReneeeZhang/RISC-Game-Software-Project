@@ -1,5 +1,7 @@
-package shared;
+package shared.instructions;
+
 import shared.*;
+import shared.instructions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -51,7 +53,6 @@ public class MoveTest {
 
     assertEquals("r1", m2.getSrc());
     assertEquals("r3", m2.getDest());
-
   }
   @Test
   public void test_() {
