@@ -19,7 +19,11 @@ abstract public class UpgradeInstruction implements Instruction, Serializable{
     this.newLevel = newL;
   }
 
-  public int getLevel() {
+  public int getOldLevel() {
+    return oldLevel;
+  }
+  
+  public int getNewLevel() {
     return newLevel;
   }
 }
