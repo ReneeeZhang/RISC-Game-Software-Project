@@ -17,6 +17,7 @@ import shared.instructions.*;
 
 import shared.checkers.Checker;
 import shared.checkers.ClientInstructionChecker;
+import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
@@ -24,21 +25,21 @@ public class Client {
   private Socket s;
   private Scanner scanner;
   private String name;
+  //private List<SocketChannel> games;
+  //private Map<SocketChannel, String> socketPlayerMap;
 
   public Client(String hostname, int port) throws IOException {
     SocketChannel sc = SocketChannel.open();
     sc.connect(new InetSocketAddress(hostname, port));
     this.s = sc.socket();
-    try{
-      this.name = receiveNameFromServer();
-    } catch (IOException e) {
-      System.out.println(e);
-    } catch (ClassNotFoundException e) {
-      System.out.println(e);
-    }
     scanner = new Scanner(System.in);
   }
 
+  private Object receiveFromServer() throws IOException, ClassNotFoundException {
+    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+    return deserial.readObject();
+  }
+  /*
   private String receiveNameFromServer() throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return (String) deserial.readObject();
@@ -48,10 +49,10 @@ public class Client {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return (GameBoard) deserial.readObject();
   }
-
-  private void sendToServer(List<Instruction> insts) throws IOException {
+  */
+  private void sendToServer(Object obj) throws IOException {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-    serial.writeObject(insts);
+    serial.writeObject(obj);
   }
 
   
@@ -182,21 +183,63 @@ public class Client {
     return false;
   }
 
-  private boolean isOver(Board board) {
-    if (hasWon(board) || hasLost(board)) {
+  /**
+   * Check game result based on given {@argv board}
+   * Return true if this client is the winner
+   * Return false if this client loses  
+   */
+  /*
+  private void checkResult(GameBoard board) {
+    if (hasWon(board)) {
+      System.out.println("Game over~");
       return true;
     }
-    return false;
+    
   }
+  */
   
   public void run() {
     try {
+      sendToServer(3); // want to join a game of 2
+      this.name = (String) receiveFromServer();
       while (true) {
         // receive the board from GameMaster
-        GameBoard board = receiveFromServer();
-        if (isOver(board)) {
+        GameBoard board = (GameBoard)receiveFromServer();
+        if (hasWon(board)) {
           System.out.println("Game over~");
           return;
+        }
+        if (hasLost(board)) {
+          System.out.println("Would you like to continue to watch the game? Please answer yes/no:");
+          while (true) {
+            String ans2Lost = scanner.nextLine().toLowerCase();
+
+            if (ans2Lost.equals("yes")) {
+              // TODO: Enter to a phase of watching
+              sendToServer(ans2Lost); // Send "yes" to server
+              while (true) {
+                GameBoard board2Watch = (GameBoard) receiveFromServer();
+                System.out.println(board2Watch.draw());
+                GameOverChecker gmoChecker = new GameOverChecker(board2Watch);
+                if (gmoChecker.isValid()) {
+                  System.out.println("Game over~");
+                  return;
+                }
+                else {
+                  sendToServer(new ArrayList<Instruction>());
+                }
+              }
+            }
+            else if (ans2Lost.equals("no")) {
+              sendToServer(ans2Lost);  // send "no" to server
+              //              receiveFromServer();
+              return;
+              // TODO: Wait for server's response
+            }
+            else {
+              System.out.println("You can only input yes or no.");
+            }              
+          }
         }
         System.out.println(board.draw());
         // integrate all the instructions that a user input
@@ -216,13 +259,6 @@ public class Client {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
       client.run();
-      /*
-      client.receiveFromServer();
-      // Hardcode an instruction
-      Instruction inst = new Move("Fitzpatrick", "Teer", 1);
-      client.sendToServer(inst);
-      client.receiveFromServer();
-      */
     } catch (IOException e) {
       System.out.println(e);
     }

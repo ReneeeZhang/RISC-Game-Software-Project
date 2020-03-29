@@ -13,6 +13,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
   private Map<String, List<Region>> playerRegionMap;
+  private Map<String, Player> playerNameMap;
   // for serialization
   private static final long serialVersionUID = 12367648;
   
@@ -57,6 +58,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public Player getPlayer(String name) {
+    return playerNameMap.get(name);
+  }
+  
+  @Override
   public Set<String> getAllRegionNames() {
     return new HashSet<String>(regionNameMap.keySet());
   }
@@ -71,6 +77,14 @@ public class GameBoard implements Board, Drawable, Serializable {
     return playerRegionMap.keySet();
   }
 
+  @Override
+  public int getDistance(String src, String dst) {
+    for (Region r : getNeighbor(src)) {
+      //TODO:get shortest path
+    }
+    return 0;
+  }
+  
   @Override
   public void move(String src, String dst, int num) {
     Region srcRegion = regionNameMap.get(src);
@@ -105,7 +119,7 @@ public class GameBoard implements Board, Drawable, Serializable {
 
   private void fightAgainst(Region src, Region dst) {
     List<Unit> units = src.getBorderCamp(dst.getName());
-    Random rand = new Random(0);
+    Random rand = new Random();
     while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
       int randA = rand.nextInt(20);
       int randB = rand.nextInt(20);

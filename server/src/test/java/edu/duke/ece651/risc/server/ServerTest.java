@@ -32,7 +32,6 @@ public class ServerTest {
     } catch (FileNotFoundException e) {
       System.out.println(e);
     }
-    Server.main(new String[] { "6666" });
-    
+    //Server.main(new String[] { "6666" });
   }
 }
