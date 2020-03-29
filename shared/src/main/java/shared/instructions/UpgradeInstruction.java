@@ -7,13 +7,11 @@ import shared.checkers.*;
 abstract public class UpgradeInstruction implements Instruction, Serializable{
   protected int oldLevel;
   protected int newLevel;
-  protected int cost;
   private static final long serialVersionUID = 435352124;
 
   // Default constructor
   public UpgradeInstruction() {
   }
-
   
   // Constructor
   public UpgradeInstruction(int oldL, int newL) {
@@ -23,9 +21,5 @@ abstract public class UpgradeInstruction implements Instruction, Serializable{
 
   public int getLevel() {
     return newLevel;
-  }
-
-  public int getCost() {
-    return cost;
   }
 }
