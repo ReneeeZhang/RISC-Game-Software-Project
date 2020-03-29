@@ -17,6 +17,7 @@ import shared.instructions.*;
 
 import shared.checkers.Checker;
 import shared.checkers.ClientInstructionChecker;
+import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
@@ -30,7 +31,7 @@ public class Client {
     sc.connect(new InetSocketAddress(hostname, port));
     this.s = sc.socket();
     try{
-      this.name = receiveNameFromServer();
+      this.name = (String)receiveFromServer();
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException e) {
@@ -39,6 +40,11 @@ public class Client {
     scanner = new Scanner(System.in);
   }
 
+  private Object receiveFromServer() throws IOException, ClassNotFoundException {
+    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+    return deserial.readObject();
+  }
+  /*
   private String receiveNameFromServer() throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return (String) deserial.readObject();
@@ -48,7 +54,7 @@ public class Client {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return (GameBoard) deserial.readObject();
   }
-
+  */
   private void sendToServer(Object obj) throws IOException {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
     serial.writeObject(obj);
@@ -199,9 +205,10 @@ public class Client {
   
   public void run() {
     try {
+      sendToServer(2); // want to join a game of 2
       while (true) {
         // receive the board from GameMaster
-        GameBoard board = receiveFromServer();
+        GameBoard board = (GameBoard)receiveFromServer();
         if (hasWon(board)) {
           System.out.println("Game over~");
           return;
@@ -215,15 +222,20 @@ public class Client {
               // TODO: Enter to a phase of watching
               sendToServer(ans2Lost); // Send "yes" to server
               while (true) {
-                GameBoard board2Watch = receiveFromServer();
-               
-                // if gameOverChecker is true, return;
-                //else sendToServer(new ArrayList<Instruction>())
+                GameBoard board2Watch = (GameBoard)receiveFromServer();
+                GameOverChecker gmoChecker = new GameOverChecker(board2Watch);
+                if (gmoChecker.isValid()) {
+                  System.out.println("Game over~");
+                  return;
+                }
+                else {
+                  sendToServer(new ArrayList<Instruction>());
+                }
               }
             }
             else if (ans2Lost.equals("no")) {
               sendToServer(ans2Lost);  // send "no" to server
-              receiveFromServer();
+              //              receiveFromServer();
               return;
               // TODO: Wait for server's response
             }
