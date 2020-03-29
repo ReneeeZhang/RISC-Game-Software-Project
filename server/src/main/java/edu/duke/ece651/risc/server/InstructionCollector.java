@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 
-import shared.Instruction;
+import shared.instructions.*;
 
 public class InstructionCollector {
   private Selector selector;

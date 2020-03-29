@@ -1,6 +1,7 @@
-package shared;
+package shared.instructions;
 
 import java.io.Serializable;
+import shared.*;
 import shared.checkers.*;
 
 public class Move extends R2RInstruction implements Serializable {

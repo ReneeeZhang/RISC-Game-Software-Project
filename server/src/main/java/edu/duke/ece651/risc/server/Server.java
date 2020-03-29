@@ -21,11 +21,14 @@ public class Server {
       Server server = new Server(Integer.valueOf(args[0]));
       System.out.println("Create a new game for how many players:");
       Scanner sc = new Scanner(System.in);
-      int playerNum = sc.nextInt();
+      while (sc.hasNext()) {
+        int playerNum = sc.nextInt();
+        List<SocketChannel> clientSockets = server.waitForClients(playerNum);
+        GameMaster gm = new GameMaster(clientSockets);
+        Thread t = new Thread(gm);
+        t.start();
+      }
       sc.close();
-      List<SocketChannel> clientSockets = server.waitForClients(playerNum);
-      GameMaster gm = new GameMaster(clientSockets);
-      gm.run();
     } catch (IOException e) {
       System.out.println(e);
     }
