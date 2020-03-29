@@ -12,24 +12,16 @@ public class TechUpgrade extends UpgradeInstruction implements Serializable {
     super(pname, oldL, newL);
   }
 
-  /* NOT USING */
   @Override
   public void execute(Board b) {
-  }
-
-  @Override
-  public boolean isValid(Board b) {
-    return true;
-  }
-  /* NOT USING */
-
-
-  public void execute(Player p) {
+    Player p = b.getPlayer(playerName);
     p.upgrade();
     p.decreaseTech(getCost(new UpgradeLookup()));
   }
 
-  public boolean isValid(Player p) {
+  @Override
+  public boolean isValid(Board b) {
+    // TODO: use checker!!!
     return true;
   }
 
