@@ -218,7 +218,8 @@ public class Client {
               // TODO: Enter to a phase of watching
               sendToServer(ans2Lost); // Send "yes" to server
               while (true) {
-                GameBoard board2Watch = (GameBoard)receiveFromServer();
+                GameBoard board2Watch = (GameBoard) receiveFromServer();
+                System.out.println(board2Watch.draw());
                 GameOverChecker gmoChecker = new GameOverChecker(board2Watch);
                 if (gmoChecker.isValid()) {
                   System.out.println("Game over~");
