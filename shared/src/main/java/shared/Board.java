@@ -8,11 +8,15 @@ public interface Board {
 
   public Region getRegion(String name);
 
+  public Player getPlayer(String name);
+
   public Set<String> getAllRegionNames();
 
   public List<Region> getAllRegions();
 
   public Set<String> getAllOwners();
+
+  public int getDistance(String src, String dst);
   
   public void move(String src, String dst, int num);
 
