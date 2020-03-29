@@ -25,18 +25,13 @@ public class Client {
   private Socket s;
   private Scanner scanner;
   private String name;
+  //private List<SocketChannel> games;
+  //private Map<SocketChannel, String> socketPlayerMap;
 
   public Client(String hostname, int port) throws IOException {
     SocketChannel sc = SocketChannel.open();
     sc.connect(new InetSocketAddress(hostname, port));
     this.s = sc.socket();
-    try{
-      this.name = (String)receiveFromServer();
-    } catch (IOException e) {
-      System.out.println(e);
-    } catch (ClassNotFoundException e) {
-      System.out.println(e);
-    }
     scanner = new Scanner(System.in);
   }
 
@@ -205,7 +200,8 @@ public class Client {
   
   public void run() {
     try {
-      sendToServer(2); // want to join a game of 2
+      sendToServer(3); // want to join a game of 2
+      this.name = (String) receiveFromServer();
       while (true) {
         // receive the board from GameMaster
         GameBoard board = (GameBoard)receiveFromServer();
