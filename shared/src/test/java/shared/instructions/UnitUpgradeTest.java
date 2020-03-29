@@ -10,6 +10,7 @@ public class UnitUpgradeTest {
   public void test_() {
     Board b = new GameBoard();
     Player p = new Player("Drew");
+    p.increaseTech(100);
     UnitUpgrade u = new UnitUpgrade("Hudson", 0, 1, 1);
     u.execute(b);
     assertEquals(true, u.isValid(b));

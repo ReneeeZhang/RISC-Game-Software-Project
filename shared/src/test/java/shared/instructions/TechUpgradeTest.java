@@ -10,6 +10,7 @@ public class TechUpgradeTest {
   public void test_() {
     GameBoard b = new GameBoard();
     Player p = new Player("Drew");
+    p.increaseTech(100);
     TechUpgrade t = new TechUpgrade(1, 2);
     t.execute(b);
     assertEquals(true, t.isValid(b));
