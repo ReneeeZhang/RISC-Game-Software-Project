@@ -25,7 +25,7 @@ public class Player {
   }
 
   public int getTechLevel() {
-
+    return tech.getCurrLevel();
   }
 
   public void decreaseFood(int n) {
