@@ -78,10 +78,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
-  int getDistance(String src, String dst) {
+  public int getDistance(String src, String dst) {
     for (Region r : getNeighbor(src)) {
       //TODO:get shortest path
     }
+    return 0;
   }
   
   @Override

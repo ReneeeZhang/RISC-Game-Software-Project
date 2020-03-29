@@ -24,13 +24,14 @@ public class Server {
       games.get(i).add(new GameMaster(i));
     }
   }
-  
+
   public static void main(String[] args) {
     try {
       // TODO: config port num
       Server server = new Server(Integer.valueOf(args[0]));
       while (true) {
         SocketChannel sc = server.accept();
+        System.out.println("accept");
         int playerNum = server.getPlayerNum(sc);
         System.out.println("Request a game for " + playerNum);
         GameMaster gm = server.getGameFor(playerNum);

@@ -1,6 +1,7 @@
 package shared.checkers;
 
 import shared.*;
+import shared.instructions.*;
 
 public class R2RInstructionChecker implements Checker {
 

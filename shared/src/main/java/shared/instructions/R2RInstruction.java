@@ -1,7 +1,6 @@
-package shared;
+package shared.instructions;
 
 import java.io.Serializable;
-import shared.checkers.*;
 
 abstract public class R2RInstruction implements Instruction, Serializable {
   protected String src;

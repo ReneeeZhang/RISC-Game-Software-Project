@@ -7,25 +7,28 @@ import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import shared.Attack;
 import shared.Board;
 import shared.Initializer;
-import shared.Instruction;
-import shared.Move;
 import shared.Region;
 import shared.checkers.Checker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
+import shared.instructions.Attack;
+import shared.instructions.Instruction;
+import shared.instructions.Move;
 
 public class GameMaster implements Runnable {
   private int playerNum;
   private Board board;
   private List<SocketChannel> playerSockets;
   private Map<SocketChannel, String> socketPlayerMap;
+  private Set<String> loser;
 
   public GameMaster(int n) {
     this.playerNum = n;
@@ -37,6 +40,7 @@ public class GameMaster implements Runnable {
     }
     this.playerSockets = new ArrayList<SocketChannel>();
     this.socketPlayerMap = new HashMap<SocketChannel, String>();
+    this.loser = new HashSet<String>();
   }
 
   public void run() {
@@ -58,8 +62,16 @@ public class GameMaster implements Runnable {
             System.out.println(player + "wins the game");
             return;
           }
-          if (loseCheck.isValid()) {
-            if (!recvYesFromClient(sc)) {
+          if (loseCheck.isValid() && !loser.contains(player)) {
+            System.out.println(player + "loses the game");
+            if (recvYesFromClient(sc)) {
+              System.out.println("yes");
+              loser.add(player);
+              Socket s = sc.socket();
+              ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+              serial.writeObject(this.board);
+            } else {
+              System.out.println("no");
               playerSockets.remove(sc);
             }
           }

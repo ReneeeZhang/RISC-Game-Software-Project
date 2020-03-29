@@ -10,7 +10,7 @@ public class ClientTest {
   public void test_client() {
     System.out.println("Test client");
     Thread serverThread = new Thread(new FakeServer());
-    serverThread.start();
+    //serverThread.start();
     try {
       System.setIn(new FileInputStream("src/test/resources/ClientTest.txt"));
     } catch (FileNotFoundException e) {
@@ -21,6 +21,6 @@ public class ClientTest {
     } catch (InterruptedException e) {
       System.out.println(e);
     }
-    Client.main(new String[] { "localhost", "6666" });
+    //Client.main(new String[] { "localhost", "6666" });
   }
 }

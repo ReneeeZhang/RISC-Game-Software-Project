@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import shared.*;
+import shared.instructions.*;
 
 public class FakeClient implements Runnable {
   private Scanner sc;
