@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import shared.*;
+import shared.instructions.*;
 
 public class FakeClient implements Runnable {
   private Scanner sc;
@@ -20,12 +21,15 @@ public class FakeClient implements Runnable {
   
   public void run() {
     try {
-      Thread.sleep(5);
+      Thread.sleep(50);
       SocketChannel socketChannel = SocketChannel.open();
       socketChannel.connect(new InetSocketAddress("localhost", 6666));
       Socket s = socketChannel.socket();
+      ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+      String name = (String) deserial.readObject();
+      System.out.println(name);
       while (true) {
-        ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
+        deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
         System.out.println(b.draw());
         ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());

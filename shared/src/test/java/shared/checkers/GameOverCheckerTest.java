@@ -12,7 +12,8 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class LoserCheckerTest {
+public class GameOverCheckerTest {
+
     @Test
     public void isValid() {
         Region r1 = mock(Region.class);
@@ -23,14 +24,26 @@ public class LoserCheckerTest {
         when(r2.getOwner()).thenReturn("A");
         when(r3.getOwner()).thenReturn("A");
 
+        //over
         List<Region> regions = Arrays.asList(r1, r2, r3);
         Board boardMock = mock(Board.class);
         when(boardMock.getAllRegions()).thenReturn(regions);
+        GameOverChecker gameOverChecker = new GameOverChecker(boardMock);
+        Assertions.assertTrue(gameOverChecker.isValid());
 
-        LoserChecker loserChecker = new LoserChecker(boardMock, "B");
-        Assertions.assertTrue(loserChecker.isValid());
+        WinnerChecker winnerChecker = new WinnerChecker(boardMock, "A");
+        gameOverChecker = new GameOverChecker(boardMock, winnerChecker);
+        Assertions.assertTrue(gameOverChecker.isValid());
 
+        winnerChecker = new WinnerChecker(boardMock, "B");
+        gameOverChecker = new GameOverChecker(boardMock, winnerChecker);
+        Assertions.assertFalse(gameOverChecker.isValid());
+
+        //not
         when(r3.getOwner()).thenReturn("B");
-        Assertions.assertFalse(loserChecker.isValid());
+        gameOverChecker = new GameOverChecker(boardMock);
+        Assertions.assertFalse(gameOverChecker.isValid());
+
+
     }
 }

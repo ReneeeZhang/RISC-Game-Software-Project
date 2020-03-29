@@ -10,8 +10,9 @@ import java.util.Map;
 
 import shared.*;
 import shared.checkers.*;
+import shared.instructions.*;
 
-public class GameMaster {
+public class GameMaster implements Runnable {
   private Board board;
   private List<SocketChannel> playerSockets;
 
@@ -26,22 +27,30 @@ public class GameMaster {
     }
   }
 
-  public void run() throws IOException {
-    sendPlayerNames();
+  public void run() {
+    try{
+      sendPlayerNames();
+    } catch (IOException e) {
+      System.out.println(e);
+    }
     int cnt = 1;
     while (true) {
       System.out.println("Round " + cnt + " Starts!");
-      sendBoardToClient();
-      Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClient();
-      executeAll(instrMap);
-      autoIncrement();
-      for (String player : board.getAllOwners()) {
-        Checker winCheck = new WinnerChecker(board, player);
-        if (winCheck.isValid()) {
-          System.out.println(player + "wins the game");
-          return;
+      try{
+        sendBoardToClients();
+        for (String player : board.getAllOwners()) {
+          Checker winCheck = new WinnerChecker(board, player);
+          if (winCheck.isValid()) {
+            System.out.println(player + "wins the game");
+            return;
+          }
         }
+        Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClients();
+        executeAll(instrMap);
+      } catch (IOException e) {
+        System.out.println(e);
       }
+      autoIncrement();
       cnt++;
     }
   }
@@ -55,7 +64,7 @@ public class GameMaster {
     }
   }
   
-  public void sendBoardToClient() throws IOException {
+  public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
       sc.configureBlocking(true);
       Socket s = sc.socket();
@@ -64,7 +73,7 @@ public class GameMaster {
     }
   }
 
-  public Map<SocketChannel, List<Instruction>> recvInstrFromClient() throws IOException {
+  public Map<SocketChannel, List<Instruction>> recvInstrFromClients() throws IOException {
     InstructionCollector ic = new InstructionCollector(playerSockets);
     return ic.collect();
   }
@@ -94,5 +103,7 @@ public class GameMaster {
     for (Region r : board.getAllRegions()) {
       r.autoIncrement();
     }
+    //for player:
+    //  autoIncrement() resource
   }
 }

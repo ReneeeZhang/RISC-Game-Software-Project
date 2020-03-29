@@ -4,6 +4,7 @@ package shared.checkers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import shared.*;
+import shared.instructions.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +65,6 @@ public class R2RInstructionCheckerTest {
         Assertions.assertFalse(r2RInstructionChecker.isValid());
 
         //invalid attack because of same owner
-        List<Region> regions3 = Arrays.asList(r2, r3);
         when(boardMock.getNeighbor("r1")).thenReturn(regions);
         r2RInstructionChecker = new R2RInstructionChecker(boardMock, a1);
         Assertions.assertFalse(r2RInstructionChecker.isValid());
@@ -77,6 +77,23 @@ public class R2RInstructionCheckerTest {
         //invalid attack
         when(a2.getNumUnit()).thenReturn(7);
         r2RInstructionChecker = new R2RInstructionChecker(boardMock, a2);
+        Assertions.assertFalse(r2RInstructionChecker.isValid());
+
+        //region not in board
+        Region r4 = mock(Region.class);
+        //name
+        when(r4.getName()).thenReturn("r4");
+        Move m2 = mock(Move.class);
+        //sources
+        when(m2.getSrc()).thenReturn("r1");
+        when(m2.getDest()).thenReturn("r4");
+        r2RInstructionChecker = new R2RInstructionChecker(boardMock, m2);
+        Assertions.assertFalse(r2RInstructionChecker.isValid());
+
+        //sources
+        when(m2.getSrc()).thenReturn("r4");
+        when(m2.getDest()).thenReturn("r1");
+        r2RInstructionChecker = new R2RInstructionChecker(boardMock, m2);
         Assertions.assertFalse(r2RInstructionChecker.isValid());
     }
 }
