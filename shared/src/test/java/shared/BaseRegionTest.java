@@ -18,9 +18,9 @@ public class BaseRegionTest {
     Map<String, List<BaseUnit>> bc1 = new HashMap<>();
     bc1.put("Teer", new ArrayList<>());
     units1.add(new BaseUnit());
-    br1 = new BaseRegion("Hudson", "Player1", "", units1, bc1);
+    br1 = new BaseRegion("Hudson", "Player1", "", 11, units1, bc1);
 
-    br2 = new BaseRegion("Teer", "Player2");
+    br2 = new BaseRegion("Teer", "Player2", 12);
     br1.initOneBorderCamp("Teer");
   }
   @Test
@@ -48,7 +48,7 @@ public class BaseRegionTest {
     br1.getColor();
     br1.dispatch("Teer", 1);
     assertTrue(br1.getBorderCamp("Teer").size() == 1);
-    assertTrue(br1.hasUnitWithLevel(0));
-    assertTrue(!br1.hasUnitWithLevel(1));
+    assertTrue(br1.numUnitWithLevel(0) != 0);
+    assertTrue(br1.numUnitWithLevel(1) == 0);
   }
 }
