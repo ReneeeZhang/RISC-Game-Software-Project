@@ -12,13 +12,16 @@ public class TechUpgradeTest {
     
     Player p = new Player("Drew");
     p.increaseTech(100);
+    assertEquals(100, p.getTechAmount());
+    
     TechUpgrade t = new TechUpgrade("Drew", 1, 2);
+    assertEquals(1, t.getOldLevel());
 
     Board b = mock(Board.class);
     when(b.getPlayer("Drew")).thenReturn(p);
-    
+
+    assertEquals(true, t.isValid(b))
     t.execute(b);
-    assertEquals(true, t.isValid(b));
     assertEquals(2, p.getCurrLevel());
   }
 
