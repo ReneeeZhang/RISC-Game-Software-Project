@@ -27,8 +27,8 @@ public class UnitUpgrade extends UpgradeInstruction implements Serializable {
 
   @Override
   public boolean isValid(Board b) {
-    // TODO: use checker!!!
-    return true;
+    UnitUpgradeChecker checker= new UnitUpgradeChecker(b, this);
+    return checker.isValid();
   }
   
   // Getters

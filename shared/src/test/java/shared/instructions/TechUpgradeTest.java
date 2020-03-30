@@ -20,7 +20,7 @@ public class TechUpgradeTest {
     Board b = mock(Board.class);
     when(b.getPlayer("Drew")).thenReturn(p);
 
-    assertEquals(true, t.isValid(b))
+    assertEquals(true, t.isValid(b));
     t.execute(b);
     assertEquals(2, p.getCurrLevel());
   }
