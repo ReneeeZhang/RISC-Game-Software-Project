@@ -36,7 +36,7 @@ public class GameBoard implements Board, Drawable, Serializable {
       } else {
         List<Region> regionList = new ArrayList<Region>();
         regionList.add(r);
-        playerRegionMap.put(r.getOwner().getName(), regionList);
+        playerRegionMap.put(r.getOwner(), regionList);
       }
     }
     this.playerNameMap = new HashMap<String, Player>();
@@ -45,11 +45,10 @@ public class GameBoard implements Board, Drawable, Serializable {
     }
   }
 
-  public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap, Map<String, Player> playerNamemap, Map<String, List<Region>> playerRegionMap) {
+  public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap, Map<String, List<Region>> playerRegionMap) {
     this.regionMap = regionMap;
     this.regionNameMap = regionNameMap;
     this.playerRegionMap = playerRegionMap;
-    this.playerNameMap = playerNamemap;
   }
 
   @Override
@@ -117,7 +116,7 @@ public class GameBoard implements Board, Drawable, Serializable {
     playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : getAllRegions()) {
       if (!playerRegionMap.containsKey(r.getOwner())) {
-        playerRegionMap.put(r.getOwner().getName(), new ArrayList<Region>());
+        playerRegionMap.put(r.getOwner(), new ArrayList<Region>());
       }
       playerRegionMap.get(r.getOwner()).add(r);
     }

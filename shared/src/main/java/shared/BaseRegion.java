@@ -9,13 +9,13 @@ import java.util.Map;
 public class BaseRegion implements Region, Serializable {
   private static final long serialVersionUID = 989463821;
   private String name;
-  private Player owner;
+  private String owner;
   private String color;
   private int size;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
   
-  public BaseRegion(String name, Player owner, String color, int size, List<BaseUnit> majorCamp,
+  public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp,
       Map<String, List<BaseUnit>> borderCamps) {
     this.name = name;
     this.owner = owner;
@@ -25,7 +25,7 @@ public class BaseRegion implements Region, Serializable {
     this.borderCamps = borderCamps;
   }
 
-  public BaseRegion(String name, Player owner, int size) {
+  public BaseRegion(String name, String owner, int size) {
     this.name = name;
     this.owner = owner;
     this.color = "";
@@ -41,7 +41,7 @@ public class BaseRegion implements Region, Serializable {
     return this.name;
   }
 
-  public Player getOwner() {
+  public String getOwner() {
     return this.owner;
   }
 
@@ -83,7 +83,7 @@ public class BaseRegion implements Region, Serializable {
     majorCamp.remove(majorCamp.size() - 1);
   }
   
-  public void setOwner(Player owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
 
