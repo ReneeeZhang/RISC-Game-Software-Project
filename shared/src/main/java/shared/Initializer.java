@@ -30,11 +30,12 @@ public class Initializer {
     // Parse playerRegionRelations
     Map<String, Region> regionNameMap = new HashMap<>();
     Map<String, List<Region>> playerRegionMap = new HashMap<>();
+    Map<String, Player> playerNameMap = new HashMap<>();
     Map<String, Integer> regionSizeMap = getRegionSizes(regionSizes);
-    parsePlayerRegionRelations(playerRegionRelations, regionNameMap, regionSizeMap, playerRegionMap);
+    parsePlayerRegionRelations(playerRegionRelations, regionNameMap, playerNameMap, regionSizeMap, playerRegionMap);
 
     Map<Region, List<Region>> regionMap = generateRegionMap(adjRegionRelations, regionNameMap);
-    return new GameBoard(regionMap, regionNameMap, playerRegionMap);
+    return new GameBoard(regionMap, regionNameMap, playerNameMap, playerRegionMap);
   }
 
   private String inputStream2String(InputStream is) throws IOException{
@@ -48,11 +49,13 @@ public class Initializer {
   }
 
   
-  private void parsePlayerRegionRelations(String playerRegionRelations, Map<String, Region> regionNameMap, Map<String, Integer> regionSizeMap, Map<String, List<Region>> playerRegionMap) {
+  private void parsePlayerRegionRelations(String playerRegionRelations, Map<String, Region> regionNameMap, Map<String, Player> playerNameMap, Map<String, Integer> regionSizeMap, Map<String, List<Region>> playerRegionMap) {
     Scanner sc = new Scanner(playerRegionRelations);
     while (sc.hasNextLine()) {
       String[] line = sc.nextLine().split(": ");
       String playerName = line[0];
+      Player currPlayer = new Player(playerName);
+      playerNameMap.put(playerName, currPlayer);
       String[] regionNames = line[1].split(", ");
       List<Region> playerRegions = new ArrayList<>();
       for (int i = 0; i < regionNames.length; i++) {
