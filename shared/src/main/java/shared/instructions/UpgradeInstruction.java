@@ -5,27 +5,32 @@ import shared.*;
 import shared.checkers.*;
 
 abstract public class UpgradeInstruction implements Instruction, Serializable{
+  protected String playerName;
   protected int oldLevel;
   protected int newLevel;
-  protected int cost;
   private static final long serialVersionUID = 435352124;
 
   // Default constructor
   public UpgradeInstruction() {
   }
-
   
   // Constructor
-  public UpgradeInstruction(int oldL, int newL) {
+  public UpgradeInstruction(String name, int oldL, int newL) {
+    this.playerName = name;
     this.oldLevel = oldL;
     this.newLevel = newL;
   }
 
-  public int getLevel() {
-    return newLevel;
+  // Getters
+  public String getPlayerName() {
+    return playerName;
   }
 
-  public int getCost() {
-    return cost;
+  public int getOldLevel() {
+    return oldLevel;
+  }
+  
+  public int getNewLevel() {
+    return newLevel;
   }
 }
