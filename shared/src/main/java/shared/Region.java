@@ -9,9 +9,9 @@ public interface Region {
 
   public String getColor();
   
-  public List<Unit> sendUnit(int num);
+  public List<BaseUnit> sendUnit(int num);
 
-  public void receiveUnit(List<Unit> toReceive);
+  public void receiveUnit(List<BaseUnit> toReceive);
 
   public void removeUnit(int num);
 
@@ -23,10 +23,11 @@ public interface Region {
 
   public void dispatch(String adjDest, int num);
 
-  public List<Unit> getBorderCamp(String dest);
+  public List<BaseUnit> getBorderCamp(String dest);
 
   public void initOneBorderCamp(String neighbor);
   
   public void autoIncrement();
 
+  public boolean hasUnitWithLevel(int level);
 }

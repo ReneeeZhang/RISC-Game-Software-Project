@@ -1,5 +1,7 @@
 package shared;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,24 +14,28 @@ public class BaseRegionTest {
   private BaseRegion br2;
 
   public BaseRegionTest() {
-    List<Unit> units1 = new ArrayList<>();
-    Map<String, List<Unit>> bc1 = new HashMap<>();
+    List<BaseUnit> units1 = new ArrayList<>();
+    Map<String, List<BaseUnit>> bc1 = new HashMap<>();
     bc1.put("Teer", new ArrayList<>());
     units1.add(new BaseUnit());
     br1 = new BaseRegion("Hudson", "Player1", "", units1, bc1);
 
     br2 = new BaseRegion("Teer", "Player2");
+    br1.initOneBorderCamp("Teer");
   }
   @Test
   public void test_getters() {
     String name1 = br1.getName();
+    assertTrue(name1.equals("Hudson"));
     String owner1 = br1.getOwner();
+    assertTrue(owner1.equals("Player1"));
     int num1 = br1.getNumBaseUnit();
+    assertTrue(num1 == 1);
   }
 
   @Test
   public void test_sendUnit() {
-    List<Unit> s = br1.sendUnit(1);
+    List<BaseUnit> s = br1.sendUnit(1);
     br1.receiveUnit(s);
     br1.setOwner("aa");
     br1.autoIncrement();
@@ -40,8 +46,9 @@ public class BaseRegionTest {
     br2.initOneBorderCamp("sdf");
     br2.getBorderCamp("sdf");
     br1.getColor();
+    br1.dispatch("Teer", 1);
+    assertTrue(br1.getBorderCamp("Teer").size() == 1);
+    assertTrue(br1.hasUnitWithLevel(0));
+    assertTrue(!br1.hasUnitWithLevel(1));
   }
-  
-  
-
 }
