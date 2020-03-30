@@ -43,4 +43,18 @@ public class UpgradeLookup {
   public int getBonus(int level) {
     return upMapUnit.get(level).getKey();
   }
+
+  public boolean validTechLevel(int n) {
+    if (upMapTech.get(n) == null || n < 1) {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean validUnitLevel(int n) {
+    if (upMapUnit.get(n) == null) {
+      return false;
+    }
+    return true;
+  }
 }
