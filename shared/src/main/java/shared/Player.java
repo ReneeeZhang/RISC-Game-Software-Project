@@ -1,15 +1,17 @@
 package shared;
 
-public class Player {
+public class Player implements Upgradable {
   private String name;
   private Food food;
   private Technology tech;
+  private int techLevel;
 
   public Player(String name) {
     this.name = name;
     // TODO: how many when init
     this.food = new Food(0);
     this.tech = new Technology(0);
+    this.techLevel = 1;
   }
 
   public String getName() {
@@ -24,8 +26,8 @@ public class Player {
     return tech.getAmount();
   }
 
-  public int getTechLevel() {
-    return tech.getCurrLevel();
+  public int getCurrLevel() {
+    return techLevel;
   }
 
   public void decreaseFood(int n) {
@@ -43,8 +45,14 @@ public class Player {
   public void increaseTech(int n) {
     tech.increase(n);
   }
-  
-  public void upgradeTech() {
-    tech.upgrade();
+
+  @Override
+  public void upgrade() {
+    techLevel++;
+  }
+
+  @Override
+  public void upgradeTo(int n) {
+    return;
   }
 }

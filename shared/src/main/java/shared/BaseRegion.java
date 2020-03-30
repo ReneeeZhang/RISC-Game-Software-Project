@@ -101,6 +101,14 @@ public class BaseRegion implements Region, Serializable {
     majorCamp.add(new BaseUnit());
   }
 
+  public void UnitUpgrade(int oldLevel, int newLevel, int numUnit) {
+    for (BaseUnit u: majorCamp) {
+      if (u.getCurrLevel() == oldLevel) {
+        u.upgradeTo(newLevel);
+      }
+    }
+  }
+
   public boolean hasUnitWithLevel(int level) {
     for (BaseUnit unit : majorCamp) {
       if (unit.getCurrLevel() == level) {
@@ -108,5 +116,6 @@ public class BaseRegion implements Region, Serializable {
       }
     }
     return false;
+
   }
 }
