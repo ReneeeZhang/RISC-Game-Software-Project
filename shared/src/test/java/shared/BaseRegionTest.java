@@ -51,4 +51,13 @@ public class BaseRegionTest {
     assertTrue(br1.numUnitWithLevel(0) != 0);
     assertTrue(br1.numUnitWithLevel(1) == 0);
   }
+
+  @Test
+  public void test_upgrade() {
+    BaseRegion reg = new BaseRegion("rname", "rowner", 10);
+    assertTrue(reg.getSize()==10);
+    reg.upgradeUnit(0, 1, 2);
+    assertTrue(reg.numUnitWithLevel(1)==2);
+    assertTrue(reg.numUnitWithLevel(0)==3);
+  }
 }
