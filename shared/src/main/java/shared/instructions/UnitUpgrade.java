@@ -39,4 +39,8 @@ public class UnitUpgrade extends UpgradeInstruction implements Serializable {
   public int getCost(UpgradeLookup table) {
     return table.getCostUnit(oldLevel, newLevel);
   }
+
+    public int getNumUnit() {
+        return numUnit;
+    }
 }
