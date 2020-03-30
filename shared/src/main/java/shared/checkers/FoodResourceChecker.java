@@ -1,6 +1,7 @@
 package shared.checkers;
 
 import shared.Board;
+import shared.Player;
 import shared.Region;
 
 public class FoodResourceChecker implements Checker {
@@ -22,8 +23,14 @@ public class FoodResourceChecker implements Checker {
 
     @Override
     public boolean isValid() {
-        //TODO, getOwner()
-
-        return false;
+        Player player = board.getPlayer(source.getOwner());
+        int distance = board.getDistance(source.getName(), dest.getName());
+        int food = player.getFoodAmount();
+        if (food < distance) {
+            System.out.println(String.format("Move failed because of lacking food. Source: %s, Destination: %s. " +
+                    "Having: %d, Expected: %d", source.getName(), dest.getName(), food, distance));
+            return false;
+        }
+        return next == null || next.isValid();
     }
 }
