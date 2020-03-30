@@ -15,7 +15,7 @@ public class TechUpgrade extends UpgradeInstruction implements Serializable {
   @Override
   public void execute(Board b) {
     Player p = b.getPlayer(playerName);
-    p.upgradeTech();
+    p.upgrade();
     p.decreaseTech(getCost(new UpgradeLookup()));
  } 
 

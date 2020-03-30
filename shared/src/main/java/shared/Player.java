@@ -1,6 +1,6 @@
 package shared;
 
-public class Player {
+public class Player implements Upgradable {
   private String name;
   private Food food;
   private Technology tech;
@@ -26,7 +26,7 @@ public class Player {
     return tech.getAmount();
   }
 
-  public int getTechLevel() {
+  public int getCurrLevel() {
     return techLevel;
   }
 
@@ -45,8 +45,14 @@ public class Player {
   public void increaseTech(int n) {
     tech.increase(n);
   }
-  
-  public void upgradeTech() {
+
+  @Override
+  public void upgrade() {
     techLevel++;
+  }
+
+  @Override
+  public void upgradeTo(int n) {
+    return;
   }
 }

@@ -19,7 +19,7 @@ public class TechUpgradeTest {
     
     t.execute(b);
     assertEquals(true, t.isValid(b));
-    assertEquals(2, p.getTechLevel());
+    assertEquals(2, p.getCurrLevel());
   }
 
 }

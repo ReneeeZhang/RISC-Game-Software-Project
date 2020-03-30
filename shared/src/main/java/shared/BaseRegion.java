@@ -102,11 +102,11 @@ public class BaseRegion implements Region, Serializable {
   }
 
   public void UnitUpgrade(int oldLevel, int newLevel, int numUnit) {
-    // for (Unit u: majorCamp) {
-    //   if (u.getLevel() == oldLevel) {
-    //     u.upgradeTo(newLevel);
-    //   }
-    // }
+    for (BaseUnit u: majorCamp) {
+      if (u.getCurrLevel() == oldLevel) {
+        u.upgradeTo(newLevel);
+      }
+    }
   }
 
   public boolean hasUnitWithLevel(int level) {
