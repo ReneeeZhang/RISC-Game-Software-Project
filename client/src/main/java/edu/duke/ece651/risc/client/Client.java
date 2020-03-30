@@ -16,12 +16,11 @@ import shared.GameBoard;
 import shared.instructions.*;
 
 import shared.checkers.Checker;
-import shared.checkers.ClientInstructionChecker;
 import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
-public class Client {
+public class Client implements Runnable{
   private Socket s;
   private Scanner scanner;
   private String name;
@@ -35,22 +34,12 @@ public class Client {
     scanner = new Scanner(System.in);
   }
 
-  private Object receiveFromServer() throws IOException, ClassNotFoundException {
+  private Object receive() throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     return deserial.readObject();
   }
-  /*
-  private String receiveNameFromServer() throws IOException, ClassNotFoundException {
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    return (String) deserial.readObject();
-  }
-  
-  private GameBoard receiveFromServer() throws IOException, ClassNotFoundException {
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    return (GameBoard) deserial.readObject();
-  }
-  */
-  private void sendToServer(Object obj) throws IOException {
+
+  private void send(Object obj) throws IOException {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
     serial.writeObject(obj);
   }
@@ -105,7 +94,7 @@ public class Client {
    * Return all the instructions (in the order of what the user input)
    * At the same time, it will also check each single instruction that the user input for validity  
    */
-  private List<Instruction> inputInst(Board board) {
+  private List<Instruction> collectInsts(Board board) {
     List<Instruction> insts = new ArrayList<>();
     System.out.println("You are " + name);
     System.out.println("Please input your instrution:");
@@ -120,12 +109,13 @@ public class Client {
         System.out.println("Please reinput your instruction:");
         continue;
       } else {
+        realInst.execute(board);
         insts.add(realInst);
       }
       System.out.println("Instruction recorded.\nPlease input your next instruction:");
     }
   }
-
+  /*
   private void sortInsts(List<Instruction> insts) {
     insts.sort((o1, o2) -> {
       if (!o1.getClass().equals(o2.getClass())) {
@@ -143,7 +133,7 @@ public class Client {
    * Simulate all the instructions. 
    * Return true if simulation results are valid;
    * Otherwise, return false  
-   */
+   
   private boolean simulateAllInsts(List<Instruction> insts, Board board) {
     ClientInstructionChecker cic = new ClientInstructionChecker(board, insts);
     if (!cic.isValid()) {
@@ -152,7 +142,7 @@ public class Client {
     }
     return true;
   }
-
+  
   // return a list of sorted instructions (move comes before attack)
   private List<Instruction> packInsts(Board board){
     while (true) {
@@ -164,7 +154,7 @@ public class Client {
       return insts;
     }
   }
-
+  */
   private boolean hasWon(Board board) {
     Checker winnerChecker = new WinnerChecker(board, name);
     if (winnerChecker.isValid()) {
@@ -200,11 +190,11 @@ public class Client {
   
   public void run() {
     try {
-      sendToServer(3); // want to join a game of 2
-      this.name = (String) receiveFromServer();
+      send(3); // want to join a game of 2. Send the number of players to server
+      this.name = (String) receive();
       while (true) {
         // receive the board from GameMaster
-        GameBoard board = (GameBoard)receiveFromServer();
+        GameBoard board = (GameBoard)receive();
         if (hasWon(board)) {
           System.out.println("Game over~");
           return;
@@ -215,10 +205,9 @@ public class Client {
             String ans2Lost = scanner.nextLine().toLowerCase();
 
             if (ans2Lost.equals("yes")) {
-              // TODO: Enter to a phase of watching
-              sendToServer(ans2Lost); // Send "yes" to server
+              send(ans2Lost); // Send "yes" to server
               while (true) {
-                GameBoard board2Watch = (GameBoard) receiveFromServer();
+                GameBoard board2Watch = (GameBoard) receive();
                 System.out.println(board2Watch.draw());
                 GameOverChecker gmoChecker = new GameOverChecker(board2Watch);
                 if (gmoChecker.isValid()) {
@@ -226,15 +215,13 @@ public class Client {
                   return;
                 }
                 else {
-                  sendToServer(new ArrayList<Instruction>());
+                  send(new ArrayList<Instruction>());
                 }
               }
             }
             else if (ans2Lost.equals("no")) {
-              sendToServer(ans2Lost);  // send "no" to server
-              //              receiveFromServer();
+              send(ans2Lost);  // send "no" to server
               return;
-              // TODO: Wait for server's response
             }
             else {
               System.out.println("You can only input yes or no.");
@@ -243,9 +230,9 @@ public class Client {
         }
         System.out.println(board.draw());
         // integrate all the instructions that a user input
-        List<Instruction> packedInsts = packInsts(board);
+        List<Instruction> collectedInsts = collectInsts(board);
         // send those packed instructions to server
-        sendToServer(packedInsts);
+        send(collectedInsts);
       }
     } catch (IOException e) {
       System.out.println(e);
@@ -258,7 +245,8 @@ public class Client {
     try {
       Client client = new Client(args[0], Integer.valueOf(args[1]));
       System.out.println("Connected");
-      client.run();
+      Thread t = new Thread(client);
+      t.start();
     } catch (IOException e) {
       System.out.println(e);
     }

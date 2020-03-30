@@ -21,6 +21,7 @@ public class GameBoard implements Board, Drawable, Serializable {
     this.regionMap = new HashMap<Region, List<Region>>();
     this.regionNameMap = new HashMap<String, Region>();
     this.playerRegionMap = new HashMap<String, List<Region>>();
+    this.playerNameMap = new HashMap<String, Player>();
   }
 
   public GameBoard(Map<Region, List<Region>> regionMap) {
@@ -37,6 +38,10 @@ public class GameBoard implements Board, Drawable, Serializable {
         regionList.add(r);
         playerRegionMap.put(r.getOwner(), regionList);
       }
+    }
+    this.playerNameMap = new HashMap<String, Player>();
+    for (String player : playerRegionMap.keySet()) {
+      playerNameMap.put(player, new Player(player));
     }
   }
 
@@ -118,7 +123,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   private void fightAgainst(Region src, Region dst) {
-    List<Unit> units = src.getBorderCamp(dst.getName());
+    List<BaseUnit> units = src.getBorderCamp(dst.getName());
     Random rand = new Random();
     while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
       int randA = rand.nextInt(20);
