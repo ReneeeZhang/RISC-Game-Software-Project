@@ -11,11 +11,11 @@ public class BaseRegion implements Region, Serializable {
   private String name;
   private String owner;
   private String color;
-  private List<Unit> majorCamp; // For moving and defensing
-  private Map<String, List<Unit>> borderCamps;
+  private List<BaseUnit> majorCamp; // For moving and defensing
+  private Map<String, List<BaseUnit>> borderCamps;
   
-  public BaseRegion(String name, String owner, String color, List<Unit> majorCamp,
-      Map<String, List<Unit>> borderCamps) {
+  public BaseRegion(String name, String owner, String color, List<BaseUnit> majorCamp,
+      Map<String, List<BaseUnit>> borderCamps) {
     this.name = name;
     this.owner = owner;
     this.color = color;
@@ -34,34 +34,6 @@ public class BaseRegion implements Region, Serializable {
     this.borderCamps = new HashMap<>();
   }
 
-  /* // Copy constructor
-  public BaseRegion(BaseRegion that) {
-    this.name = new String(that.name);
-    this.owner = new String(that.owner);
-    this.color = new String(that.color);
-    this.majorCamp = deepCopy(that.majorCamp);
-    this.boarderCamps = deepCopy(that.boarderCamps);
-  }
-
-  private List<Unit> deepCopy(List<Unit> that) {
-    List<Unit> copy = new ArrayList<>();
-    for (Unit unit : that) {
-      Unit copiedUnit = new BaseUnit(unit.getName());
-      copy.add(copiedUnit);
-    }
-    return copy;
-  }
-
-  private Map<String, List<Unit>> deepCopy(Map<String, List<Unit>> that) {
-    Map<String, List<Unit>> copy = new HashMap<>();
-    for (String dest : that.keySet()) {
-      List<Unit> copiedBoarderCamp = deepCopy(that.get(dest));
-      copy.put(dest, copiedBoarderCamp);
-    }
-    return copy;
-  }
-  */
-
   public String getName() {
     return this.name;
   }
@@ -79,16 +51,16 @@ public class BaseRegion implements Region, Serializable {
     return majorCamp.size();
   }
 
-  public List<Unit> sendUnit(int num) {
-    List<Unit> toSend = new ArrayList<>();
+  public List<BaseUnit> sendUnit(int num) {
+    List<BaseUnit> toSend = new ArrayList<>();
     for (int i = 0; i < num; i++) {
       toSend.add(majorCamp.remove(majorCamp.size()  - 1));
     }
     return toSend;
   }
 
-  public void receiveUnit(List<Unit> toReceive) {
-    for (Unit unit : toReceive) {
+  public void receiveUnit(List<BaseUnit> toReceive) {
+    for (BaseUnit unit : toReceive) {
       majorCamp.add(unit);
     }
   }
@@ -109,14 +81,14 @@ public class BaseRegion implements Region, Serializable {
   }
 
   public void dispatch(String adjDest, int num) {
-    List<Unit> boarderCamp = borderCamps.get(adjDest);
+    List<BaseUnit> boarderCamp = borderCamps.get(adjDest);
     for (int i = 0; i < num; i++) {
       boarderCamp.add(majorCamp.remove(majorCamp.size() - 1));
     }
   }
 
-  public List<Unit> getBorderCamp(String dest) {
-    List<Unit> troop = borderCamps.get(dest);
+  public List<BaseUnit> getBorderCamp(String dest) {
+    List<BaseUnit> troop = borderCamps.get(dest);
     borderCamps.replace(dest, new ArrayList<>());
     return troop;
   }
@@ -135,5 +107,15 @@ public class BaseRegion implements Region, Serializable {
     //     u.upgradeTo(newLevel);
     //   }
     // }
+  }
+
+  public boolean hasUnitWithLevel(int level) {
+    for (BaseUnit unit : majorCamp) {
+      if (unit.getCurrLevel() == level) {
+        return true;
+      }
+    }
+    return false;
+
   }
 }
