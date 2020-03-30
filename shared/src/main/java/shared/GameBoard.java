@@ -118,7 +118,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   private void fightAgainst(Region src, Region dst) {
-    List<Unit> units = src.getBorderCamp(dst.getName());
+    List<BaseUnit> units = src.getBorderCamp(dst.getName());
     Random rand = new Random();
     while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
       int randA = rand.nextInt(20);

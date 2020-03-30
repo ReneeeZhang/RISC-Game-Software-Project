@@ -7,7 +7,11 @@ import org.junit.jupiter.api.Test;
 public class BaseUnitTest {
   @Test
   public void test_baseUnit() {
-    System.out.println("Test Library");
+    BaseUnit bu = new BaseUnit();
+    bu.upgrade();
+    assertTrue(bu.getCurrLevel() == 1);
+    bu.upgradeTo(3);
+    assertTrue(bu.getCurrLevel() == 3);
   }
 
 }
