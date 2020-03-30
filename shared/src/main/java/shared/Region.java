@@ -5,7 +5,7 @@ import java.util.List;
 public interface Region {
   public String getName();
 
-  public String getOwner();
+  public Player getOwner();
 
   public String getColor();
 
@@ -21,7 +21,7 @@ public interface Region {
   
   public int getNumBaseUnit();
 
-  public void setOwner(String owner);
+  public void setOwner(Player owner);
 
   public void dispatch(String adjDest, int num);
 

@@ -18,17 +18,19 @@ public class BaseRegionTest {
     Map<String, List<BaseUnit>> bc1 = new HashMap<>();
     bc1.put("Teer", new ArrayList<>());
     units1.add(new BaseUnit());
-    br1 = new BaseRegion("Hudson", "Player1", "", 11, units1, bc1);
+    Player player1 = new Player("player1");
+    Player player2 = new Player("player2");
+    br1 = new BaseRegion("Hudson", player1, "", 11, units1, bc1);
 
-    br2 = new BaseRegion("Teer", "Player2", 12);
+    br2 = new BaseRegion("Teer", player2, 12);
     br1.initOneBorderCamp("Teer");
   }
   @Test
   public void test_getters() {
     String name1 = br1.getName();
     assertTrue(name1.equals("Hudson"));
-    String owner1 = br1.getOwner();
-    assertTrue(owner1.equals("Player1"));
+    Player owner1 = br1.getOwner();
+    assertTrue(owner1.getName().equals("player1"));
     int num1 = br1.getNumBaseUnit();
     assertTrue(num1 == 1);
   }
@@ -37,7 +39,7 @@ public class BaseRegionTest {
   public void test_sendUnit() {
     List<BaseUnit> s = br1.sendUnit(1);
     br1.receiveUnit(s);
-    br1.setOwner("aa");
+    br1.setOwner(new Player("newplayer1"));
     br1.autoIncrement();
     br1.autoIncrement();
     br1.removeUnit();
