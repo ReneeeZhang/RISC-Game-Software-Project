@@ -8,6 +8,8 @@ public interface Region {
   public String getOwner();
 
   public String getColor();
+
+  public int getSize();
   
   public List<BaseUnit> sendUnit(int num);
 
@@ -29,5 +31,5 @@ public interface Region {
   
   public void autoIncrement();
 
-  public boolean hasUnitWithLevel(int level);
+  public int numUnitWithLevel(int level);
 }

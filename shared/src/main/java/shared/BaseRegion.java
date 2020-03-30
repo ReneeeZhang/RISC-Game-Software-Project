@@ -11,22 +11,25 @@ public class BaseRegion implements Region, Serializable {
   private String name;
   private String owner;
   private String color;
+  private int size;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
   
-  public BaseRegion(String name, String owner, String color, List<BaseUnit> majorCamp,
+  public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp,
       Map<String, List<BaseUnit>> borderCamps) {
     this.name = name;
     this.owner = owner;
     this.color = color;
+    this.size = size;
     this.majorCamp = majorCamp;
     this.borderCamps = borderCamps;
   }
 
-  public BaseRegion(String name, String owner) {
+  public BaseRegion(String name, String owner, int size) {
     this.name = name;
     this.owner = owner;
     this.color = "";
+    this.size = size;
     this.majorCamp = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       majorCamp.add(new BaseUnit());
@@ -46,6 +49,10 @@ public class BaseRegion implements Region, Serializable {
     return this.color;
   }
 
+  public int getSize() {
+    return this.size;
+  }
+  
   public int getNumBaseUnit() {
     // TODO: Better way is to iterate the list of units and count all base units
     return majorCamp.size();
@@ -101,6 +108,7 @@ public class BaseRegion implements Region, Serializable {
     majorCamp.add(new BaseUnit());
   }
 
+
   public void upgradeUnit(int oldLevel, int newLevel, int numUnit) {
     for (BaseUnit u: majorCamp) {
       if (u.getCurrLevel() == oldLevel && numUnit > 0) {
@@ -110,13 +118,13 @@ public class BaseRegion implements Region, Serializable {
     }
   }
 
-  public boolean hasUnitWithLevel(int level) {
+  public int numUnitWithLevel(int level) {
+    int num = 0;
     for (BaseUnit unit : majorCamp) {
       if (unit.getCurrLevel() == level) {
-        return true;
+        num++;
       }
     }
-    return false;
-
+    return num;
   }
 }
