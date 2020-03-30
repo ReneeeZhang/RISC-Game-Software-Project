@@ -11,7 +11,7 @@ public class GameBoardTest {
   public void test_GameBoard() {
     Board b1 = new GameBoard();
     Board b2 = new GameBoard(new HashMap<Region, List<Region>>());
-    Initializer init = new Initializer(5);
+    Initializer init = new Initializer(2);
     try{
       Board board = init.initGame();
       board.getAllOwners();
