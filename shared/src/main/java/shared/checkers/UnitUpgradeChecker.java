@@ -19,7 +19,6 @@ public class UnitUpgradeChecker implements Checker {
         this(board, instruction, null);
     }
 
-
     @Override
     public boolean isValid() {
         BaseRegion region = (BaseRegion)board.getRegion(instruction.getSrc());
@@ -30,20 +29,26 @@ public class UnitUpgradeChecker implements Checker {
         }
         int newLevel = instruction.getNewLevel();
         int oldLevel = instruction.getOldLevel();
-
-        //TODO: check lower level
+        if (oldLevel >= newLevel) {
+            System.out.println(String.format("Unit Upgrade failed because old level is not less than new level. Old level: %d, New level: %d",oldLevel,newLevel));
+            return false;
+        }
+        //check lower level
         int num = instruction.getNumUnit();
-        for (Unit unit : region.)
-        //TODO:check upper bound
+        if (num > region.numUnitWithLevel(oldLevel)) {
+            System.out.println(String.format("Unit Upgrade failed because of lacing units at level: %d",oldLevel));
+            return false;
+        }
+        //check upper bound
         if (!new UpgradeLookup().validUnitLevel(newLevel)) {
             System.out.println("Unit Upgrade failed because level is out of bound");
             return false;
         }
         //check cost
-        int cost = instruction.getCost(new UpgradeLookup());
+        int cost = new UpgradeLookup().getCostUnit(oldLevel, newLevel);
         Player player = board.getPlayer(playerName);
         if (player.getTechAmount() < cost) {
-            System.out.println(String.format("Unit Upgrade failed because of lacing technology resource. Expected: %d, Having: %d", cost, player.getTechAmount()));
+            System.out.println(String.format("Unit Upgrade failed because of lacking technology resource. Expected: %d, Having: %d", cost, player.getTechAmount()));
             return false;
         }
         return next == null || next.isValid();
