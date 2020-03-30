@@ -10,7 +10,7 @@ public class UpgradeChecker implements Checker{
     UpgradeInstruction instruction;
 
 
-    public UpgradeChecker(Board board, UpgradeInstruction instruction, Checker next) {
+    public UpgradeChecker(Board board, UpgradeInstruction instruction) {
         this.board = board;
         this.instruction = instruction;
     }
