@@ -21,7 +21,8 @@ public class TechUpgrade extends UpgradeInstruction implements Serializable {
 
   @Override
   public boolean isValid(Board b) {
-    // TODO: use checker!!!
+    // TechUpgradeChecker checker= new TechUpgradeChecker(b, this);
+    // return checker.isValid();
     return true;
   }
 
