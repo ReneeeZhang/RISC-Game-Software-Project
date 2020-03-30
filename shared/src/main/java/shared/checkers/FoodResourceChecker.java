@@ -25,7 +25,10 @@ public class FoodResourceChecker implements Checker {
     public boolean isValid() {
         Player player = board.getPlayer(source.getOwner());
         int distance = board.getDistance(source.getName(), dest.getName());
-        if (player.getFood() < distance) {
+        int food = player.getFoodAmount();
+        if (food < distance) {
+            System.out.println(String.format("Move failed because of lacking food. Source: %s, Destination: %s. " +
+                    "Having: %d, Expected: %d", source.getName(), dest.getName(), food, distance));
             return false;
         }
         return next == null || next.isValid();
