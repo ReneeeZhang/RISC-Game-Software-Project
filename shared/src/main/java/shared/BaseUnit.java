@@ -18,4 +18,8 @@ public class BaseUnit implements Unit, Upgradable, Serializable {
   public void upgradeTo(int level) {
     this.level = level;
   }
+
+  public int getLevel() {
+    return level;
+  }
 }

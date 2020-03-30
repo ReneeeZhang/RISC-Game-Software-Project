@@ -128,4 +128,12 @@ public class BaseRegion implements Region, Serializable {
   public void autoIncrement(){
     majorCamp.add(new BaseUnit());
   }
+
+  public void UnitUpgrade(int oldLevel, int newLevel, int numUnit) {
+    // for (Unit u: majorCamp) {
+    //   if (u.getLevel() == oldLevel) {
+    //     u.upgradeTo(newLevel);
+    //   }
+    // }
+  }
 }
