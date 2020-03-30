@@ -19,7 +19,7 @@ public class BaseUnit implements Unit, Upgradable, Serializable {
     this.level = level;
   }
 
-  public int getLevel() {
+  public int getCurrLevel() {
     return level;
   }
 }
