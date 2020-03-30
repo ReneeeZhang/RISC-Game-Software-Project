@@ -47,7 +47,7 @@ public class R2RInstructionCheckerTest {
         when(a1.getNumUnit()).thenReturn(3);
         //player
         Player player = mock(Player.class);
-        when(player.getFood()).thenReturn(10);
+        when(player.getFoodAmount()).thenReturn(10);
         //r1 -> r2, r1 -> r3
         List<Region> regions = Arrays.asList(r2, r3);
         Board boardMock = mock(Board.class);

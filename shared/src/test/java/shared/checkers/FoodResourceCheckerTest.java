@@ -27,7 +27,7 @@ public class FoodResourceCheckerTest {
         when(r2.getName()).thenReturn("r2");
         //player
         Player player = mock(Player.class);
-        when(player.getFood()).thenReturn(10);
+        when(player.getFoodAmount()).thenReturn(10);
         //board
         Board boardMock = mock(Board.class);
         when(boardMock.getPlayer("A")).thenReturn(player);

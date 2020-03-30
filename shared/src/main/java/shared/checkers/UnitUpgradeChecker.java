@@ -33,9 +33,12 @@ public class UnitUpgradeChecker implements Checker {
 
         //TODO: check lower level
         int num = instruction.getNumUnit();
-//        for (Unit unit : )
+        for (Unit unit : region.)
         //TODO:check upper bound
-        if (!)
+        if (!new UpgradeLookup().validUnitLevel(newLevel)) {
+            System.out.println("Unit Upgrade failed because level is out of bound");
+            return false;
+        }
         //check cost
         int cost = instruction.getCost(new UpgradeLookup());
         Player player = board.getPlayer(playerName);

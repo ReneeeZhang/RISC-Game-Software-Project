@@ -25,13 +25,14 @@ public class TechUpgradeChecker implements Checker {
     public boolean isValid() {
         String playerName = instruction.getPlayerName();
         Player player = board.getPlayer(playerName);
-        int newLevel = instruction.getNewLevel();
-        int oldLevel = instruction.getOldLevel();
-        if (newLevel - oldLevel > 1) {
-            System.out.println("Tech Upgrade failed because you can only go up one level at a time.");
+        int oldLevel = player.getCurrLevel();
+        int newLevel = oldLevel + 1;
+
+        if (!new UpgradeLookup().validTechLevel(newLevel)) {
+            System.out.println(String.format("Tech Upgrade failed because it's the most advanced.Upper Current level: %d", oldLevel));
             return false;
         }
-        int cost = instruction.getCost(new UpgradeLookup());
+        int cost = new UpgradeLookup().getCostTech(newLevel);
         if (player.getTechAmount() < cost) {
             System.out.println(String.format("Unit Upgrade failed because of lacing technology resource. Expected: %d, Having: %d", cost, player.getTechAmount()));
             return false;
