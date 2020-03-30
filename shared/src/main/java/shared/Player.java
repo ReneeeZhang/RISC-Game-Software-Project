@@ -2,32 +2,30 @@ package shared;
 
 public class Player {
   private String name;
-  private FoodResource food;
-  private TechResource tech;
-  private int level;
+  private Food food;
+  private Technology tech;
 
   public Player(String name) {
     this.name = name;
     // TODO: how many when init
-    this.food = new FoodResource(0);
-    this.tech = new TechResource(0);
-    this.level = 0;
+    this.food = new Food(0);
+    this.tech = new Technology(0);
   }
 
   public String getName() {
     return name;
   }
 
-  public int getFood() {
-    return food.getNum();
+  public int getFoodAmount() {
+    return food.getAmount();
   }
 
-  public int getTech() {
-    return tech.getNum();
+  public int getTechAmount() {
+    return tech.getAmount();
   }
-  
-  public int getLevel() {
-    return level;
+
+  public int getTechLevel() {
+    return tech.getCurrLevel();
   }
 
   public void decreaseFood(int n) {
@@ -46,7 +44,7 @@ public class Player {
     tech.increase(n);
   }
   
-  public void upgrade(int n) {
-    level += n;
+  public void upgradeTech() {
+    tech.upgrade();
   }
 }
