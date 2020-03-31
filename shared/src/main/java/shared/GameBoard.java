@@ -45,12 +45,14 @@ public class GameBoard implements Board, Drawable, Serializable {
     }
   }
 
-  public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap, Map<String, List<Region>> playerRegionMap) {
+  public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap,
+      Map<String, Player> playerNamemap, Map<String, List<Region>> playerRegionMap) {
     this.regionMap = regionMap;
     this.regionNameMap = regionNameMap;
     this.playerRegionMap = playerRegionMap;
+    this.playerNameMap = playerNamemap;
   }
-
+  
   @Override
   public List<Region> getNeighbor(String name) {
     Region r = regionNameMap.get(name);
