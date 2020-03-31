@@ -31,5 +31,7 @@ public interface Region {
   
   public void autoIncrement();
 
+  public void upgradeUnit(int oldLevel, int newLevel, int numUnit);
+
   public int numUnitWithLevel(int level);
 }

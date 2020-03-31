@@ -20,15 +20,15 @@ public class UnitUpgrade extends UpgradeInstruction implements Serializable {
   @Override
   public void execute(Board b) {
     Player p = b.getPlayer(playerName);
-    //Region source = b.getRegion(src);
-    //source.upgradeUnit(oldLevel, newLevel, numUnit);
-    p.decreaseTech(getCost(new UpgradeLookup()));
+    Region source = b.getRegion(src);
+    source.upgradeUnit(oldLevel, newLevel, numUnit);
+    p.decreaseTech(numUnit * getCost(new UpgradeLookup()));
   }
 
   @Override
   public boolean isValid(Board b) {
-    // TODO: use checker!!!
-    return true;
+    UnitUpgradeChecker checker= new UnitUpgradeChecker(b, this);
+    return checker.isValid();
   }
   
   // Getters
