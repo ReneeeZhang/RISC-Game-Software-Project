@@ -24,6 +24,18 @@ public class Client extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
+    
+    window.setScene(gameScene());
+    window.show();
+  }
+
+  public Scene loginScene() throws Exception {
+    BorderPane borderPane = new BorderPane();
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+  public Scene gameScene() throws Exception {
     HBox roomChange = new HBox();
     Button button1 = new Button("Room1");
     Button button2 = new Button("Room2");
@@ -47,14 +59,13 @@ public class Client extends Application {
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, sourceLabel, sourceInput, destLabel, destInput, actionButton, doneButton);
     
-
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
 
     Scene scene = new Scene(borderPane, 600, 400);
-    window.setScene(scene);
-    window.show();
+    return scene;
   }
+  
 }
 
