@@ -2,7 +2,7 @@ package shared;
 
 import java.io.Serializable;
 
-public class BaseUnit implements Unit, Upgradable, Serializable {
+public class BaseUnit implements Unit, Upgradable, Serializable, Comparable {
   int level;
   // for serialization
   private static final long serialVersionUID = 19407245;
@@ -21,5 +21,17 @@ public class BaseUnit implements Unit, Upgradable, Serializable {
 
   public int getCurrLevel() {
     return level;
+  }
+
+  public int compareTo(BaseUnit that) {
+    if (this.getCurrLevel() < that.getCurrLevel()) {
+      return -1;
+    }
+    else if (this.getCurrLevel() > that.getCurrLevel()) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 }
