@@ -2,7 +2,7 @@ package shared;
 
 import java.io.Serializable;
 
-public class BaseUnit implements Unit, Upgradable, Serializable, Comparable {
+public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<BaseUnit> {
   int level;
   // for serialization
   private static final long serialVersionUID = 19407245;
