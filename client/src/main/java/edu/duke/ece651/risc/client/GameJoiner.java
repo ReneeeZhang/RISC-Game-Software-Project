@@ -164,8 +164,7 @@ public class GameJoiner extends Connector implements Runnable{
     if (hasWon(board)) {
       System.out.println("Game over~");
       return true;
-    }
-    
+    }    
   }
   */
   
