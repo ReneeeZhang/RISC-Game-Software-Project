@@ -1,11 +1,6 @@
 package edu.duke.ece651.risc.client;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,30 +15,16 @@ import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
-public class GameJoiner implements Runnable{
-  private Socket s;
+public class GameJoiner extends Connector implements Runnable{
   private Scanner scanner;
   private String name;
   //private List<SocketChannel> games;
   //private Map<SocketChannel, String> socketPlayerMap;
 
   public GameJoiner(String hostname, int port) throws IOException {
-    SocketChannel sc = SocketChannel.open();
-    sc.connect(new InetSocketAddress(hostname, port));
-    this.s = sc.socket();
+    super(hostname, port);
     scanner = new Scanner(System.in);
   }
-
-  private Object receive() throws IOException, ClassNotFoundException {
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    return deserial.readObject();
-  }
-
-  private void send(Object obj) throws IOException {
-    ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-    serial.writeObject(obj);
-  }
-
   
   private boolean isValidInstName(String instName) {
     return instName.equals("move") || instName.equals("attack") || instName.equals("done");
@@ -243,7 +224,7 @@ public class GameJoiner implements Runnable{
   
   public static void main(String[] args) {
     try {
-      GameJoiner client = new GameJoiner(args[0], Integer.valueOf(args[1]));
+      GameJoiner client = new GameJoiner(args[0], Integer.parseInt(args[1]));
       System.out.println("Connected");
       Thread t = new Thread(client);
       t.start();
