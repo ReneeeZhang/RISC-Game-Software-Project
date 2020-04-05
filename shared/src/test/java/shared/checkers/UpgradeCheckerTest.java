@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 import shared.BaseRegion;
 import shared.Board;
 import shared.Player;
+import shared.instructions.Instruction;
 import shared.instructions.TechUpgrade;
 import shared.instructions.UnitUpgrade;
+import shared.instructions.UpgradeInstruction;
 
 
 import static org.mockito.Mockito.mock;
@@ -43,5 +45,7 @@ public class UpgradeCheckerTest {
         when(player.getTechAmount()).thenReturn(200);
         upgradeChecker = new UpgradeChecker(board, instruction1);
         Assertions.assertTrue(upgradeChecker.isValid());
+
     }
+
 }
