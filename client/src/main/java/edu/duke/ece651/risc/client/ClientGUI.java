@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,7 +32,7 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(loseScene(roomBox()));
+    window.setScene(numPlayersScene());
     window.show();
   }
 
@@ -42,20 +43,18 @@ public class ClientGUI extends Application {
   }
 
   public Scene numPlayersScene() throws Exception {
-    HBox numPlayer = new HBox();
-    Button button1 = new Button("2 Players");
-    Button button2 = new Button("3 Players");
-    Button button3 = new Button("4 Players");
-    Button button4 = new Button("5 Players");
-    Button button5 = new Button("Start");
+    Label numPlayers = new Label("Select number of players in this game:");
+    ChoiceBox<Integer> numChoice = new ChoiceBox<>();
+    numChoice.getItems().addAll(2, 3, 4, 5);
+    Button button = new Button("Start");
 
     // TODO: set on action -> set player number
     
-    numPlayer.getChildren().addAll(button1, button2, button3, button4, button5);
-
-    BorderPane borderPane = new BorderPane();
-    borderPane.setCenter(numPlayer);
-    Scene scene = new Scene(borderPane, 600, 400);
+    VBox box = new VBox();
+    box.getChildren().addAll(numPlayers, numChoice, button);
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().addAll(box);
+    Scene scene = new Scene(stackPane, 600, 400);
     return scene;
   }
 
