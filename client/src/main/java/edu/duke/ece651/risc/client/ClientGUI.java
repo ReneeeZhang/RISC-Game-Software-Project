@@ -10,21 +10,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Client extends Application {
+public class ClientGUI extends Application {
 
   Stage window;
 
   public static void main(String[] args) {
     launch(args);
   }
-  
 
   @Override
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
 
-    
     window.setScene(gameScene());
     window.show();
   }
