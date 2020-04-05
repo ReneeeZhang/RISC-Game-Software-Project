@@ -25,6 +25,8 @@ public interface Region {
 
   public void dispatch(String adjDest, int num);
 
+  public List<BaseUnit> getMajorCamp();
+  
   public List<BaseUnit> getBorderCamp(String dest);
 
   public void initOneBorderCamp(String neighbor);

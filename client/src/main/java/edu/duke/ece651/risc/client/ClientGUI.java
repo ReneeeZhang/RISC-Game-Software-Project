@@ -76,6 +76,4 @@ public class ClientGUI extends Application {
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
-  
 }
-
