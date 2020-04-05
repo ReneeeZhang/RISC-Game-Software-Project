@@ -1,5 +1,8 @@
 package edu.duke.ece651.risc.client;
 
+import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import shared.*;
 
 import javafx.application.Application;
@@ -11,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ClientGUI extends Application {
 
@@ -35,10 +40,41 @@ public class ClientGUI extends Application {
     window.show();
   }
 
+
   public Scene loginScene() throws Exception {
-    BorderPane borderPane = new BorderPane();
-    Scene scene = new Scene(borderPane, 600, 400);
-    return scene;
+    GridPane grid = new GridPane();
+    grid.setPadding(new Insets(20, 20, 20, 20));
+    grid.setHgap(10);
+    grid.setVgap(10);
+    Label user = new Label("User Name");
+    GridPane.setConstraints(user, 0, 0);
+    TextField userText = new TextField();
+    userText.setPromptText("user name");
+    GridPane.setConstraints(userText, 1, 0);
+
+    Label password = new Label("Password");
+    GridPane.setConstraints(password, 0, 1);
+    TextField pwdText = new TextField();
+    pwdText.setPromptText("password");
+    GridPane.setConstraints(pwdText, 1, 1);
+
+    Button login = new Button("Log in");
+    login.setOnAction(e -> {
+      String userName = userText.getText();
+      String pwd = pwdText.getText();
+      try {
+        client.send(userName + "&&" + pwd);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    GridPane.setConstraints(login, 1, 2);
+
+    grid.getChildren().addAll(user, userText, password, pwdText, login);
+
+    BorderPane layout = new BorderPane();
+    layout.setCenter(grid);
+    return new Scene(layout, 600, 400);
   }
 
   public Scene numPlayersScene() throws Exception {
