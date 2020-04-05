@@ -31,12 +31,26 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(gameScene());
+    window.setScene(numPlayersScene());
     window.show();
   }
 
   public Scene loginScene() throws Exception {
     BorderPane borderPane = new BorderPane();
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+  public Scene numPlayersScene() throws Exception {
+    HBox numPlayer = new HBox();
+    Button button1 = new Button("2 Players");
+    Button button2 = new Button("3 Players");
+    Button button3 = new Button("4 Players");
+    Button button4 = new Button("5 Players");
+    numPlayer.getChildren().addAll(button1, button2, button3, button4);
+
+    BorderPane borderPane = new BorderPane();
+    borderPane.setCenter(numPlayer);
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
