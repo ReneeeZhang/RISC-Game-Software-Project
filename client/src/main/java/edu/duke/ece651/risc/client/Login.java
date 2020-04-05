@@ -11,9 +11,8 @@ import javafx.stage.Stage;
 
 public class Login {
 
-    public static boolean display() {
+    public static Scene createLoginScene() {
         boolean res = true;
-        Stage window = new Stage();
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
@@ -40,8 +39,7 @@ public class Login {
         layout.setCenter(grid);
 
         Scene scene = new Scene(layout, 300, 200);
-        window.setScene(scene);
-        window.show();
-        return res;
+
+        return scene;
     }
 }
