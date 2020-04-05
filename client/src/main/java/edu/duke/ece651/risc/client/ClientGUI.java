@@ -31,7 +31,7 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(numPlayersScene());
+    window.setScene(loseScene(roomBox()));
     window.show();
   }
 
@@ -47,7 +47,11 @@ public class ClientGUI extends Application {
     Button button2 = new Button("3 Players");
     Button button3 = new Button("4 Players");
     Button button4 = new Button("5 Players");
-    numPlayer.getChildren().addAll(button1, button2, button3, button4);
+    Button button5 = new Button("Start");
+
+    // TODO: set on action -> set player number
+    
+    numPlayer.getChildren().addAll(button1, button2, button3, button4, button5);
 
     BorderPane borderPane = new BorderPane();
     borderPane.setCenter(numPlayer);
@@ -55,14 +59,8 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene gameScene() throws Exception {
-    // Rome switch
-    HBox roomChange = new HBox();
-    Button button1 = new Button("Room1");
-    Button button2 = new Button("Room2");
-    Button button3 = new Button("Room3");
-    roomChange.getChildren().addAll(button1, button2, button3);
-
+  public Scene gameScene(HBox roomChange) throws Exception {
+    
     // Instruction selection
     HBox insChange = new HBox();
     Button button4 = new Button("Move");
@@ -98,4 +96,52 @@ public class ClientGUI extends Application {
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
+
+  public Scene winScene(HBox roomChange) throws Exception {
+    VBox winOption = new VBox();
+    Button button1 = new Button("Play again");
+    Button button2 = new Button("Exit");
+
+    // TODO: actions
+    
+    winOption.getChildren().addAll(button1, button2);
+    
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(winOption);
+
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+  public Scene loseScene(HBox roomChange) throws Exception {
+    VBox loseOption = new VBox();
+    Button button1 = new Button("Watch the game");
+    Button button2 = new Button("Exit");
+
+    // TODO: actions
+    
+    loseOption.getChildren().addAll(button1, button2);
+    
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(loseOption);
+
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+
+  /* ========== Elements in gameScene ========== */
+  public HBox roomBox() {
+    // Rome switch
+    HBox roomChange = new HBox();
+    Button button1 = new Button("Room1");
+    Button button2 = new Button("Room2");
+    Button button3 = new Button("Room3");
+
+    // TODO: action: switch gameJoiner
+    
+    roomChange.getChildren().addAll(button1, button2, button3);
+    return roomChange;
+  }
+ 
 }
