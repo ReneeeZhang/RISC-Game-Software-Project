@@ -1,5 +1,7 @@
 package edu.duke.ece651.risc.client;
 
+import shared.*;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,9 +15,15 @@ import javafx.stage.Stage;
 public class ClientGUI extends Application {
 
   Stage window;
+  Client client;
 
   public static void main(String[] args) {
     launch(args);
+  }
+
+  @Override
+  public void init() throws Exception{
+    //client = new Client("localhost", 6666);
   }
 
   @Override
