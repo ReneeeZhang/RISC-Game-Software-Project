@@ -12,7 +12,9 @@ public class Client extends Connector {
 
   public static void main(String[] args) {
     try{
+      // ClientGUI gui = new ClientGUI();
       Client client = new Client(args[0], Integer.parseInt(args[1]));
+      
       // TODO: for debug
       System.out.println("Client connected");
       while (true) {
