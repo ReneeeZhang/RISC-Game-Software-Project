@@ -1,30 +1,26 @@
 package edu.duke.ece651.risc.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends Connector {
+  private String hostname;
+  private int port;
   private List<GameJoiner> matches;
 
+  
   public Client(String hostname, int port) throws IOException {
     super(hostname, port);
+    this.hostname = hostname;
+    this.port = port;
+    matches = new ArrayList<>();
   }
 
-  public static void main(String[] args) {
-    try{
-      // ClientGUI gui = new ClientGUI();
-      Client client = new Client(args[0], Integer.parseInt(args[1]));
-      
-      // TODO: for debug
-      System.out.println("Client connected");
-      while (true) {
-        // TODO: authentication omitted
-        
-        // TODO: something must trigger multi-thread
-      }
-    }
-    catch (IOException e) {
-      System.out.println(e);
-    }
+  public void joinGame() throws IOException {
+    GameJoiner gj = new GameJoiner(hostname, port);
+    matches.add(gj);
+    Thread t = new Thread(gj);
+    t.start();
   }
 }
