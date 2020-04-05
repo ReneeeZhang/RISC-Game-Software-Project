@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,6 +42,7 @@ public class ClientGUI extends Application {
   }
 
 
+  /* ========== scenes ========== */
   public Scene loginScene() throws Exception {
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(20, 20, 20, 20));
@@ -78,27 +80,30 @@ public class ClientGUI extends Application {
   }
 
   public Scene numPlayersScene() throws Exception {
-    HBox numPlayer = new HBox();
-    Button button1 = new Button("2 Players");
-    Button button2 = new Button("3 Players");
-    Button button3 = new Button("4 Players");
-    Button button4 = new Button("5 Players");
-    numPlayer.getChildren().addAll(button1, button2, button3, button4);
+    Label numPlayers = new Label("Select number of players in this game:");
+    ChoiceBox<Integer> numChoice = new ChoiceBox<>();
+    numChoice.getItems().addAll(2, 3, 4, 5);
+    Button button = new Button("Start");
 
-    BorderPane borderPane = new BorderPane();
-    borderPane.setCenter(numPlayer);
-    Scene scene = new Scene(borderPane, 600, 400);
+    // button action
+    button.setOnAction(e -> {
+      try {
+        client.send(numChoice.getValue());
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    
+    VBox box = new VBox();
+    box.getChildren().addAll(numPlayers, numChoice, button);
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().addAll(box);
+    Scene scene = new Scene(stackPane, 600, 400);
     return scene;
   }
 
-  public Scene gameScene() throws Exception {
-    // Rome switch
-    HBox roomChange = new HBox();
-    Button button1 = new Button("Room1");
-    Button button2 = new Button("Room2");
-    Button button3 = new Button("Room3");
-    roomChange.getChildren().addAll(button1, button2, button3);
-
+  public Scene gameScene(HBox roomChange) throws Exception {
+    
     // Instruction selection
     HBox insChange = new HBox();
     Button button4 = new Button("Move");
@@ -114,13 +119,11 @@ public class ClientGUI extends Application {
     ChoiceBox<String> destChoice = new ChoiceBox<>();
     destChoice.getItems().addAll("placeholder3", "placeholder4");
 
-    // Listen for changes
-    srcChoice.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> System.out.println(newValue));
-    destChoice.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> System.out.println(newValue));
-
     // Commit changes
     Button actionButton = new Button("Add action");
     Button doneButton = new Button("Done");
+
+    // TODO: button actions
 
     // All instruction related display
     VBox allIns = new VBox();
@@ -134,4 +137,52 @@ public class ClientGUI extends Application {
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
+
+  public Scene winScene(HBox roomChange) throws Exception {
+    VBox winOption = new VBox();
+    Button button1 = new Button("Play again");
+    Button button2 = new Button("Exit");
+
+    // TODO: actions
+    
+    winOption.getChildren().addAll(button1, button2);
+    
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(winOption);
+
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+  public Scene loseScene(HBox roomChange) throws Exception {
+    VBox loseOption = new VBox();
+    Button button1 = new Button("Watch the game");
+    Button button2 = new Button("Exit");
+
+    // TODO: actions
+    
+    loseOption.getChildren().addAll(button1, button2);
+    
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(loseOption);
+
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+
+  /* ========== Elements in gameScene ========== */
+  public HBox roomBox() {
+    // Rome switch
+    HBox roomChange = new HBox();
+    Button button1 = new Button("Room1");
+    Button button2 = new Button("Room2");
+    Button button3 = new Button("Room3");
+
+    // TODO: action: switch gameJoiner
+    
+    roomChange.getChildren().addAll(button1, button2, button3);
+    return roomChange;
+  }
+ 
 }
