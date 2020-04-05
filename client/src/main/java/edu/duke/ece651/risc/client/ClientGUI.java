@@ -42,6 +42,7 @@ public class ClientGUI extends Application {
   }
 
 
+  /* ========== scenes ========== */
   public Scene loginScene() throws Exception {
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(20, 20, 20, 20));
@@ -84,7 +85,14 @@ public class ClientGUI extends Application {
     numChoice.getItems().addAll(2, 3, 4, 5);
     Button button = new Button("Start");
 
-    // TODO: set on action -> set player number
+    // button action
+    button.setOnAction(e -> {
+      try {
+        client.send(numChoice.getValue());
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
     
     VBox box = new VBox();
     box.getChildren().addAll(numPlayers, numChoice, button);
@@ -111,13 +119,11 @@ public class ClientGUI extends Application {
     ChoiceBox<String> destChoice = new ChoiceBox<>();
     destChoice.getItems().addAll("placeholder3", "placeholder4");
 
-    // Listen for changes
-    srcChoice.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> System.out.println(newValue));
-    destChoice.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> System.out.println(newValue));
-
     // Commit changes
     Button actionButton = new Button("Add action");
     Button doneButton = new Button("Done");
+
+    // TODO: button actions
 
     // All instruction related display
     VBox allIns = new VBox();
