@@ -11,8 +11,8 @@ public class UnitNameLookup {
     this.nameMap.put(1, "sophomore");
     this.nameMap.put(2, "junior");
     this.nameMap.put(3, "senior");
-    this.nameMap.put(4, "grad1");
-    this.nameMap.put(5, "grad2");
+    this.nameMap.put(4, "master");
+    this.nameMap.put(5, "phdcandidate");
     this.nameMap.put(6, "phd");
   }
 

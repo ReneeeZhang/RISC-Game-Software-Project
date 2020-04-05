@@ -2,6 +2,7 @@ package shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -125,16 +126,15 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   private void fightAgainst(Region src, Region dst) {
-    List<BaseUnit> units = src.getBorderCamp(dst.getName());
+    List<BaseUnit> attackUnits = src.getBorderCamp(dst.getName());
+    List<BaseUnit> defenseUnits = dst.getMajorCamp();
+    Collections.sort(attackUnits);
+    Collections.sort(defenseUnits);
     Random rand = new Random();
-    while (units.size() > 0 && dst.getNumBaseUnit() > 0) {
+    while (attackUnits.size() > 0 && defenseUnits.size() > 0) {
       int randA = rand.nextInt(20);
       int randB = rand.nextInt(20);
-      if (randA > randB) {
-        dst.removeUnit();
-      } else {
-        units.remove(0);
-      }
+      if()
     }
     // if wins, send rest units and change owner.
     if (units.size() > 0) {
