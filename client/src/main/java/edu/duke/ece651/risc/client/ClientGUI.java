@@ -37,7 +37,7 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(numPlayersScene());
+    window.setScene(loseScene(roomBox()));
     window.show();
   }
 
@@ -143,7 +143,23 @@ public class ClientGUI extends Application {
     Button button1 = new Button("Play again");
     Button button2 = new Button("Exit");
 
-    // TODO: actions
+    // button actions
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(numPlayersScene());
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button2.setOnAction(e -> {
+        try {
+          window.close();
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
     
     winOption.getChildren().addAll(button1, button2);
     
@@ -157,15 +173,54 @@ public class ClientGUI extends Application {
   public Scene loseScene(HBox roomChange) throws Exception {
     VBox loseOption = new VBox();
     Button button1 = new Button("Watch the game");
-    Button button2 = new Button("Exit");
+    Button button2 = new Button("Play again");
+    Button button3 = new Button("Exit");
 
-    // TODO: actions
-    
-    loseOption.getChildren().addAll(button1, button2);
+    button1.setOnAction(e -> {
+      try {
+          window.setScene(watchScene(roomBox()));
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button2.setOnAction(e -> {
+        try {
+          window.setScene(numPlayersScene());
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button3.setOnAction(e -> {
+        try {
+          window.close();
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+
+    loseOption.getChildren().addAll(button1, button2, button3);
     
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(loseOption);
 
+    Scene scene = new Scene(borderPane, 600, 400);
+    return scene;
+  }
+
+  public Scene watchScene(HBox roomChange) throws Exception {
+    Button button = new Button("Exit");
+    button.setOnAction(e -> {
+      try {
+        window.setScene(numPlayersScene());
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    });
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(button);
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
