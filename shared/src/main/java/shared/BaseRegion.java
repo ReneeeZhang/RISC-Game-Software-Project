@@ -94,6 +94,12 @@ public class BaseRegion implements Region, Serializable {
     }
   }
 
+  public List<BaseUnit> getMajorCamp() {
+    List<BaseUnit> camp = majorCamp;
+    majorCamp = new ArrayList<>();
+    return camp;
+  }
+  
   public List<BaseUnit> getBorderCamp(String dest) {
     List<BaseUnit> troop = borderCamps.get(dest);
     borderCamps.replace(dest, new ArrayList<>());
