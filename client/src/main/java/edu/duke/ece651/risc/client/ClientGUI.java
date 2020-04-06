@@ -36,6 +36,7 @@ public class ClientGUI extends Application {
 
   Stage window;
   Client client;
+  int activeGames;
 
   public static void main(String[] args) {
     launch(args);
@@ -54,8 +55,9 @@ public class ClientGUI extends Application {
   
   @Override
   public void init() throws Exception{
+    activeGames = 0;
     List<String> configs = readConfig();
-    Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+    //Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
   }
 
   @Override
@@ -102,7 +104,7 @@ public class ClientGUI extends Application {
 
     BorderPane layout = new BorderPane();
     layout.setCenter(grid);
-    return new Scene(layout, 600, 400);
+    return new Scene(layout, 800, 600);
   }
   public Node Map() {
     //Creating an image
@@ -154,7 +156,7 @@ public class ClientGUI extends Application {
     box.getChildren().addAll(numPlayers, numChoice, button);
     StackPane stackPane = new StackPane();
     stackPane.getChildren().addAll(box);
-    Scene scene = new Scene(stackPane, 600, 400);
+    Scene scene = new Scene(stackPane, 800, 600);
     return scene;
   }
 
@@ -191,7 +193,9 @@ public class ClientGUI extends Application {
     borderPane.setRight(allIns);
     //map
     borderPane.setCenter(Map());
-    Scene scene = new Scene(borderPane, 600, 400);
+
+    Scene scene = new Scene(borderPane, 800, 600);
+
     return scene;
   }
 
@@ -200,30 +204,85 @@ public class ClientGUI extends Application {
     Button button1 = new Button("Play again");
     Button button2 = new Button("Exit");
 
-    // TODO: actions
+    // button actions
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(numPlayersScene());
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button2.setOnAction(e -> {
+        try {
+          window.close();
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
     
     winOption.getChildren().addAll(button1, button2);
     
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(winOption);
 
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
   public Scene loseScene(HBox roomChange) throws Exception {
     VBox loseOption = new VBox();
     Button button1 = new Button("Watch the game");
-    Button button2 = new Button("Exit");
+    Button button2 = new Button("Play again");
+    Button button3 = new Button("Exit");
 
-    // TODO: actions
-    
-    loseOption.getChildren().addAll(button1, button2);
+    button1.setOnAction(e -> {
+      try {
+          window.setScene(watchScene(roomBox()));
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button2.setOnAction(e -> {
+        try {
+          window.setScene(numPlayersScene());
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+    button3.setOnAction(e -> {
+        try {
+          window.close();
+      }
+      catch(Exception ex) {
+        ex.printStackTrace();
+      }
+      });
+
+    loseOption.getChildren().addAll(button1, button2, button3);
     
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(loseOption);
 
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
+    return scene;
+  }
+
+  public Scene watchScene(HBox roomChange) throws Exception {
+    Button button = new Button("Exit");
+    button.setOnAction(e -> {
+      try {
+        window.setScene(numPlayersScene());
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    });
+    BorderPane borderPane = new BorderPane();
+    borderPane.setRight(button);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
@@ -235,10 +294,37 @@ public class ClientGUI extends Application {
     Button button1 = new Button("Room1");
     Button button2 = new Button("Room2");
     Button button3 = new Button("Room3");
+    Button button4 = new Button("Start new game");
 
-    // TODO: action: switch gameJoiner
+    // TODO: action
+    button4.setOnAction(e -> {
+        if (activeGames < 3) {
+          // start new game
+          try {
+            client.joinGame();
+          }
+          catch (IOException ex) {
+            ex.printStackTrace();
+          }
+        }
+      });
+
+    // button usability
+    if (activeGames == 0) {
+      button1.setDisable(true);
+      button2.setDisable(true);
+      button3.setDisable(true);
+    }
+    else if (activeGames == 1) {
+      button2.setDisable(true);
+      button3.setDisable(true);
+    }
+    else if (activeGames == 2) {
+      button3.setDisable(true);
+    }
     
-    roomChange.getChildren().addAll(button1, button2, button3);
+    
+    roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
  
