@@ -15,9 +15,10 @@ import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
-public class GameJoiner extends Connector implements Runnable{
+public class GameJoiner extends Connector {
   private Scanner scanner;
   private String name;
+  private Board board;
   //private List<SocketChannel> games;
   //private Map<SocketChannel, String> socketPlayerMap;
 
@@ -25,11 +26,25 @@ public class GameJoiner extends Connector implements Runnable{
     super(hostname, port);
     scanner = new Scanner(System.in);
   }
-  
+
+  // Must init GameJoiner after receiving name and board
+  public void init(String name, Board board) {
+    setName(name);
+    setBoard(board);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
   private boolean isValidInstName(String instName) {
     return instName.equals("move") || instName.equals("attack") || instName.equals("done");
   }
-  
+
   private boolean canGenerateInst(String[] parts) {
     // Check instruction length
     if (parts.length != 4) {
@@ -43,16 +58,15 @@ public class GameJoiner extends Connector implements Runnable{
       return false;
     }
     // Check number
-    try{
+    try {
       Integer.parseInt(parts[3]);
-    }
-    catch (NumberFormatException e) {
+    } catch (NumberFormatException e) {
       System.out.println("Wrong number format! Please input a number as the last element of your instruction.");
       return false;
     }
     return true;
   }
-  
+
   private Instruction generateInst(String inst) {
     String[] parts = inst.split("\\s+");
     if (!canGenerateInst(parts)) {
@@ -64,8 +78,7 @@ public class GameJoiner extends Connector implements Runnable{
     Instruction r2rinst = null;
     if (parts[0].equals("move")) {
       //r2rinst = new Move(parts[1], parts[2], num);
-    }
-    else if (parts[0].equals("attack")) {
+    } else if (parts[0].equals("attack")) {
       //r2rinst = new Attack(parts[1], parts[2], num);
     }
     return r2rinst;
@@ -96,6 +109,7 @@ public class GameJoiner extends Connector implements Runnable{
       System.out.println("Instruction recorded.\nPlease input your next instruction:");
     }
   }
+
   /*
   private void sortInsts(List<Instruction> insts) {
     insts.sort((o1, o2) -> {
@@ -136,7 +150,7 @@ public class GameJoiner extends Connector implements Runnable{
     }
   }
   */
-  private boolean hasWon(Board board) {
+  public boolean hasWon() {
     Checker winnerChecker = new WinnerChecker(board, name);
     if (winnerChecker.isValid()) {
       System.out.println(name + ", you have won!");
@@ -145,7 +159,7 @@ public class GameJoiner extends Connector implements Runnable{
     return false;
   }
 
-  private boolean hasLost(Board board) {
+  public boolean hasLost() {
     Checker loserChecker = new LoserChecker(board, name);
     if (loserChecker.isValid()) {
       System.out.println(name + ", you have lost...");
@@ -154,6 +168,10 @@ public class GameJoiner extends Connector implements Runnable{
     return false;
   }
 
+  public boolean isGameOver(){
+    GameOverChecker gmoChecker = new GameOverChecker(board);
+    return gmoChecker.isValid();
+  }
   /**
    * Check game result based on given {@argv board}
    * Return true if this client is the winner
@@ -167,19 +185,18 @@ public class GameJoiner extends Connector implements Runnable{
     }    
   }
   */
-  
-  public void run() {
+   public void run() {
     try {
       //send(3); // want to join a game of 2. Send the number of players to server
       this.name = (String) receive();
       while (true) {
         // receive the board from GameMaster
         GameBoard board = (GameBoard)receive();
-        if (hasWon(board)) {
+        if (hasWon()) {
           System.out.println("Game over~");
           return;
         }
-        if (hasLost(board)) {
+        if (hasLost()) {
           System.out.println("Would you like to continue to watch the game? Please answer yes/no:");
           while (true) {
             String ans2Lost = scanner.nextLine().toLowerCase();
