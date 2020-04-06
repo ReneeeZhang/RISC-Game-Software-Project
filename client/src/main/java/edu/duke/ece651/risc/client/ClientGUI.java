@@ -43,8 +43,9 @@ public class ClientGUI extends Application {
   
   @Override
   public void init() throws Exception{
+    activeGames = 0;
     List<String> configs = readConfig();
-    Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+    //Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
   }
 
   @Override
@@ -52,7 +53,7 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(loseScene(roomBox()));
+    window.setScene(gameScene(roomBox()));
     window.show();
   }
 
@@ -250,20 +251,31 @@ public class ClientGUI extends Application {
     Button button3 = new Button("Room3");
     Button button4 = new Button("Start new game");
 
-    // TODO: action:
+    // TODO: action
     button4.setOnAction(e -> {
         if (activeGames < 3) {
           // start new game
+          try {
+            client.joinGame();
+          }
+          catch (IOException ex) {
+            ex.printStackTrace();
+          }
         }
       });
 
-    // button visibility
-    if (activeGames == 1) {
-      button2.setVisible(false);
-      button3.setVisible(false);
+    // button usability
+    if (activeGames == 0) {
+      button1.setDisable(true);
+      button2.setDisable(true);
+      button3.setDisable(true);
+    }
+    else if (activeGames == 1) {
+      button2.setDisable(true);
+      button3.setDisable(true);
     }
     else if (activeGames == 2) {
-      button3.setVisible(false);
+      button3.setDisable(true);
     }
     
     
