@@ -8,12 +8,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import shared.Board;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MapScene {
 
-    public static Node createTwoPlayerMap(Board board) {
-        //Creating an image
-        Image image = new Image(MapScene.class.getResourceAsStream("/Map_2_players.jpg"));
-        String[] regions = {"Fitzpatrick", "Perkins", "Bostock", "Hudson", "Wilson", "Teer"};
+    public static Node createMapView(Image image, Map<String, Circle> circles) {
+
         //Setting the image view
         ImageView imageView = new ImageView(image);
 
@@ -40,20 +41,16 @@ public class MapScene {
         Group root = new Group(imageView, circle);
         return root;
     }
+    public static Node createTwoPlayerMap(Board board) {
+        //Creating an image
+        Image image = new Image(MapScene.class.getResourceAsStream("/Map_2_players.jpg"));
+        String[] regions = {"Fitzpatrick", "Perkins", "Bostock", "Hudson", "Wilson", "Teer"};
+        Map<String, Circle> circles = new HashMap<>();
 
-    enum MapCircle {
+        Circle Fiz = new Circle(250.0f, 122.0f, 10.0f, Color.BLUE);
 
-        ;
-        float centerX;
-        float centerY;
-        float radius;
-        Color color;
 
-        MapCircle(float centerX, float centerY, float radius, Color color) {
-            this.centerX = centerX;
-            this.centerY = centerY;
-            this.radius = radius;
-            this.color = color;
-        }
+        return createMapView(image, circles);
     }
+
 }
