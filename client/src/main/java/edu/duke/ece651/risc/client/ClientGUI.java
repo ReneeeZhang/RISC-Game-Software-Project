@@ -176,6 +176,10 @@ public class ClientGUI extends Application {
     Label destLabel = new Label("Destination");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
     destChoice.getItems().addAll("placeholder3", "placeholder4");
+    Label level = new Label("Level to operate on:");
+    TextField levelText = new TextField();
+    Label num = new Label("The number of units:");
+    TextField numText = new TextField();
 
     // Commit changes
     Button actionButton = new Button("Add action");
@@ -185,7 +189,8 @@ public class ClientGUI extends Application {
 
     // All instruction related display
     VBox allIns = new VBox();
-    allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice, actionButton, doneButton);
+    allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
+                                level, levelText, num, numText, actionButton, doneButton);
 
     // Overall layout
     BorderPane borderPane = new BorderPane();
@@ -302,10 +307,14 @@ public class ClientGUI extends Application {
           // start new game
           try {
             client.joinGame();
+            activeGames++;
           }
           catch (IOException ex) {
             ex.printStackTrace();
           }
+        }
+        else {
+          Popup.showInfo("You can have 3 games at most!");
         }
       });
 
@@ -327,5 +336,5 @@ public class ClientGUI extends Application {
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
- 
+  
 }
