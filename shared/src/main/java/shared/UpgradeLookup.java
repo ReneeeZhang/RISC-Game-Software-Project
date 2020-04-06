@@ -1,6 +1,7 @@
 package shared;
 
 import java.util.HashMap;
+
 import javafx.util.Pair;
 
 public class UpgradeLookup {

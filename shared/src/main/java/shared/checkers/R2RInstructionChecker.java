@@ -22,7 +22,7 @@ public class R2RInstructionChecker implements Checker {
             return false;
         }
         int units = instruction.getNumUnit();
-        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, units);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, instruction.getLevel(), units);
         if (instruction instanceof Move) {
             FoodResourceChecker foodResourceChecker = new FoodResourceChecker(board, source, dest);
             AccessibleChecker accessibleChecker = new AccessibleChecker(board, source, dest, foodResourceChecker);
