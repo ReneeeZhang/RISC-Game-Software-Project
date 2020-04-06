@@ -1,5 +1,6 @@
 package edu.duke.ece651.risc.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;
@@ -27,12 +29,11 @@ public class Server {
 
   public static void main(String[] args) {
     try {
-      // TODO: config port num
-      
-      AuthServer auth = new AuthServer(7777);
+      Scanner config = new Scanner(new File("/src/resources/config.txt"));
+      Server server = new Server(config.nextInt());
+      AuthServer auth = new AuthServer(config.nextInt());
       Thread tAuth = new Thread(auth);
       tAuth.start();
-      Server server = new Server(6666);
       while (true) {
         SocketChannel sc = server.accept();
         int playerNum = server.getPlayerNum(sc);
