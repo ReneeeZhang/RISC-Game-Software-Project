@@ -163,17 +163,17 @@ public class ClientGUI extends Application {
   public Scene gameScene(HBox roomChange) throws Exception {
     
     // Instruction selection
-    HBox insChange = new HBox();
-    Button button4 = new Button("Move");
-    Button button5 = new Button("Attack");
-    Button button6 = new Button("Upgrade");
-    insChange.getChildren().addAll(button4, button5, button6);
+    VBox insChange = new VBox();
+    Label insLabel = new Label("Select order:");
+    ChoiceBox<String> insChoice = new ChoiceBox<>();
+    insChoice.getItems().addAll("Move", "Attack", "Upgrade");
+    insChange.getChildren().addAll(insLabel, insChoice);
 
     // Instruction specs
-    Label srcLabel = new Label("Source");
+    Label srcLabel = new Label("Source:");
     ChoiceBox<String> srcChoice = new ChoiceBox<>();
     srcChoice.getItems().addAll("placeholder1", "placeholder2");
-    Label destLabel = new Label("Destination");
+    Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
     destChoice.getItems().addAll("placeholder3", "placeholder4");
     Label level = new Label("Level to operate on:");
@@ -186,6 +186,12 @@ public class ClientGUI extends Application {
     Button doneButton = new Button("Done");
 
     // TODO: button actions
+    
+    actionButton.setOnAction(e -> {
+        // Move
+        if (insChoice.getValue() == "Move") {
+        }
+    });
 
     // All instruction related display
     VBox allIns = new VBox();
