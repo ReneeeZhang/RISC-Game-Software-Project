@@ -1,22 +1,24 @@
 package edu.duke.ece651.risc.client;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import shared.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ClientGUI extends Application {
 
@@ -28,9 +30,21 @@ public class ClientGUI extends Application {
     launch(args);
   }
 
+  private List<String> readConfig() {
+    List<String> configs = new ArrayList<>();
+    InputStream is = getClass().getResourceAsStream("/config/connection.config");
+    Scanner scanner = new Scanner(is);
+    while (scanner.hasNext()) {
+      configs.add(scanner.nextLine());
+    }
+    scanner.close();
+    return configs;
+  }
+  
   @Override
   public void init() throws Exception{
-    //client = new Client("localhost", 6666);
+    List<String> configs = readConfig();
+    Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
   }
 
   @Override
