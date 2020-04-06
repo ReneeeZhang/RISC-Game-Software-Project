@@ -10,8 +10,12 @@ public interface Region {
   public String getColor();
 
   public int getSize();
+
+  public String getInfo();
   
   public List<BaseUnit> sendUnit(int num);
+
+  public List<BaseUnit> sendUnit(int level, int num);
 
   public void receiveUnit(List<BaseUnit> toReceive);
 
@@ -24,6 +28,8 @@ public interface Region {
   public void setOwner(String owner);
 
   public void dispatch(String adjDest, int num);
+
+  public void dispatch(String adjDest, int level, int num);
 
   public List<BaseUnit> getMajorCamp();
   
