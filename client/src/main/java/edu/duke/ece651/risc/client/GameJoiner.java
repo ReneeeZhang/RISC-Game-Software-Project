@@ -170,7 +170,7 @@ public class GameJoiner extends Connector implements Runnable{
   
   public void run() {
     try {
-      send(3); // want to join a game of 2. Send the number of players to server
+      //send(3); // want to join a game of 2. Send the number of players to server
       this.name = (String) receive();
       while (true) {
         // receive the board from GameMaster
@@ -217,17 +217,6 @@ public class GameJoiner extends Connector implements Runnable{
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
-    }
-  }
-  
-  public static void main(String[] args) {
-    try {
-      GameJoiner client = new GameJoiner(args[0], Integer.parseInt(args[1]));
-      System.out.println("Connected");
-      Thread t = new Thread(client);
-      t.start();
-    } catch (IOException e) {
       System.out.println(e);
     }
   }
