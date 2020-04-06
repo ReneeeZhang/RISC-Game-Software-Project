@@ -63,10 +63,10 @@ public class GameJoiner extends Connector implements Runnable{
     parts[0] = parts[0].toLowerCase();
     Instruction r2rinst = null;
     if (parts[0].equals("move")) {
-      r2rinst = new Move(parts[1], parts[2], num);
+      //r2rinst = new Move(parts[1], parts[2], num);
     }
     else if (parts[0].equals("attack")) {
-      r2rinst = new Attack(parts[1], parts[2], num);
+      //r2rinst = new Attack(parts[1], parts[2], num);
     }
     return r2rinst;
   }

@@ -22,6 +22,7 @@ public class ClientGUI extends Application {
 
   Stage window;
   Client client;
+  int activeGames;
 
   public static void main(String[] args) {
     launch(args);
@@ -76,7 +77,7 @@ public class ClientGUI extends Application {
 
     BorderPane layout = new BorderPane();
     layout.setCenter(grid);
-    return new Scene(layout, 600, 400);
+    return new Scene(layout, 800, 600);
   }
 
   public Scene numPlayersScene() throws Exception {
@@ -98,7 +99,7 @@ public class ClientGUI extends Application {
     box.getChildren().addAll(numPlayers, numChoice, button);
     StackPane stackPane = new StackPane();
     stackPane.getChildren().addAll(box);
-    Scene scene = new Scene(stackPane, 600, 400);
+    Scene scene = new Scene(stackPane, 800, 600);
     return scene;
   }
 
@@ -134,7 +135,7 @@ public class ClientGUI extends Application {
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
 
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
@@ -166,7 +167,7 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(winOption);
 
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
@@ -206,7 +207,7 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(loseOption);
 
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
@@ -221,7 +222,7 @@ public class ClientGUI extends Application {
     });
     BorderPane borderPane = new BorderPane();
     borderPane.setRight(button);
-    Scene scene = new Scene(borderPane, 600, 400);
+    Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
@@ -233,10 +234,26 @@ public class ClientGUI extends Application {
     Button button1 = new Button("Room1");
     Button button2 = new Button("Room2");
     Button button3 = new Button("Room3");
+    Button button4 = new Button("Start new game");
 
-    // TODO: action: switch gameJoiner
+    // TODO: action:
+    button4.setOnAction(e -> {
+        if (activeGames < 3) {
+          // start new game
+        }
+      });
+
+    // button visibility
+    if (activeGames == 1) {
+      button2.setVisible(false);
+      button3.setVisible(false);
+    }
+    else if (activeGames == 2) {
+      button3.setVisible(false);
+    }
     
-    roomChange.getChildren().addAll(button1, button2, button3);
+    
+    roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
  
