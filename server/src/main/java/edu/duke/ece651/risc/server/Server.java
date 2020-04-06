@@ -29,10 +29,10 @@ public class Server {
     try {
       // TODO: config port num
       
-      AuthServer auth = new AuthServer(7777);
+      AuthServer auth = new AuthServer(6666);
       Thread tAuth = new Thread(auth);
       tAuth.start();
-      Server server = new Server(6666);
+      Server server = new Server(7777);
       while (true) {
         SocketChannel sc = server.accept();
         int playerNum = server.getPlayerNum(sc);

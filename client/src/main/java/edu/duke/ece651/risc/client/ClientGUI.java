@@ -1,6 +1,10 @@
 package edu.duke.ece651.risc.client;
 
+import shared.*;
+import shared.instructions.*;
+
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -9,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import shared.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +60,7 @@ public class ClientGUI extends Application {
   public void init() throws Exception{
     activeGames = 0;
     List<String> configs = readConfig();
-    //Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+    client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
   }
 
   @Override
@@ -65,7 +68,7 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(gameScene(roomBox()));
+    window.setScene(loginScene());
     window.show();
   }
 
@@ -94,18 +97,51 @@ public class ClientGUI extends Application {
       String pwd = pwdText.getText();
       try {
         client.send(userName + "&&" + pwd);
+        String loginValid = (String)client.receive();
+        System.out.println("receive  ================================" + loginValid);
+        if (loginValid.equals("yes")) {
+          window.setScene(startScene());
+        }
+        else {
+          Popup.showInfo("Incorrect username or password");
+          window.setScene(loginScene());
+        }
       } catch (IOException ex) {
         ex.printStackTrace();
+      } catch (ClassNotFoundException ex1) {
+        ex1.printStackTrace();
+      } catch (Exception ex2) {
+        ex2.printStackTrace();
       }
+      
     });
+    
     GridPane.setConstraints(login, 1, 2);
-
     grid.getChildren().addAll(user, userText, password, pwdText, login);
 
     BorderPane layout = new BorderPane();
     layout.setCenter(grid);
     return new Scene(layout, 800, 600);
   }
+
+  public Scene startScene() {
+    Button b = new Button("Start a new game");
+    b.setOnAction(e -> {
+      window.setScene(numPlayersScene());
+      activeGames+=1;
+      try {
+        client.joinGame();
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+      });
+    b.setAlignment(Pos.CENTER);
+    StackPane pane = new StackPane();
+    pane.getChildren().add(b);
+    Scene scene = new Scene(pane, 800, 600);
+    return scene;
+  }
+  
   public Node Map() {
     //Creating an image
     Image image = new Image(getClass().getResourceAsStream("/Map_2_players.jpg"));
@@ -137,7 +173,8 @@ public class ClientGUI extends Application {
 
     return root;
   }
-  public Scene numPlayersScene() throws Exception {
+  
+  public Scene numPlayersScene() {
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
     numChoice.getItems().addAll(2, 3, 4, 5);
@@ -147,8 +184,11 @@ public class ClientGUI extends Application {
     button.setOnAction(e -> {
       try {
         client.send(numChoice.getValue());
+        window.setScene(gameScene(roomBox()));
       } catch (IOException ex) {
         ex.printStackTrace();
+      } catch (Exception ex1) {
+        ex1.printStackTrace();
       }
     });
     
@@ -166,7 +206,7 @@ public class ClientGUI extends Application {
     VBox insChange = new VBox();
     Label insLabel = new Label("Select order:");
     ChoiceBox<String> insChoice = new ChoiceBox<>();
-    insChoice.getItems().addAll("Move", "Attack", "Upgrade");
+    insChoice.getItems().addAll("Move", "Attack", "Upgrade Units", "Upgrade Technology");
     insChange.getChildren().addAll(insLabel, insChoice);
 
     // Instruction specs
@@ -176,8 +216,10 @@ public class ClientGUI extends Application {
     Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
     destChoice.getItems().addAll("placeholder3", "placeholder4");
-    Label level = new Label("Level to operate on:");
+    Label levelLabel = new Label("Level to operate on:");
     TextField levelText = new TextField();
+    Label newLevelLabel = new Label("Level to upgrade to:");
+    TextField newLevelText = new TextField();
     Label num = new Label("The number of units:");
     TextField numText = new TextField();
 
@@ -189,14 +231,33 @@ public class ClientGUI extends Application {
     
     actionButton.setOnAction(e -> {
         // Move
-        if (insChoice.getValue() == "Move") {
+        if (insChoice.getValue().equals("Move")) {
+          Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
+                                  Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
         }
+        // Attack
+        else if (insChoice.getValue().equals("Attack")) {
+          Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
+                                  Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
+        }
+        // Upgrade unit
+        else if (insChoice.getValue().equals("Upgrade Units")) {
+          UnitUpgrade upUnitIns = new UnitUpgrade("name", srcChoice.getValue(), Integer.parseInt(levelText.getText()),
+                                                  Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
+        }
+        // Upgrade technology
+        else if (insChoice.getValue().equals("Upgrade Units")) {
+          TechUpgrade upTechIns = new TechUpgrade("name", Integer.parseInt(levelText.getText()),
+                                                  Integer.parseInt(newLevelText.getText()));
+        }
+        
     });
 
     // All instruction related display
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
-                                level, levelText, num, numText, actionButton, doneButton);
+                                levelLabel, levelText, newLevelLabel, newLevelText,
+                                num, numText, actionButton, doneButton);
 
     // Overall layout
     BorderPane borderPane = new BorderPane();
@@ -312,8 +373,9 @@ public class ClientGUI extends Application {
         if (activeGames < 3) {
           // start new game
           try {
+            window.setScene(numPlayersScene());
+            activeGames+=1;
             client.joinGame();
-            activeGames++;
           }
           catch (IOException ex) {
             ex.printStackTrace();
@@ -325,12 +387,7 @@ public class ClientGUI extends Application {
       });
 
     // button usability
-    if (activeGames == 0) {
-      button1.setDisable(true);
-      button2.setDisable(true);
-      button3.setDisable(true);
-    }
-    else if (activeGames == 1) {
+    if (activeGames == 1) {
       button2.setDisable(true);
       button3.setDisable(true);
     }
