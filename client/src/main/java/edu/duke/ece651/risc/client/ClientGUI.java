@@ -1,10 +1,22 @@
 package edu.duke.ece651.risc.client;
 
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import shared.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -58,7 +70,7 @@ public class ClientGUI extends Application {
   }
 
 
-  /* ========== scenes ========== */
+  /** ========== scenes ========== */
   public Scene loginScene() throws Exception {
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(20, 20, 20, 20));
@@ -94,7 +106,37 @@ public class ClientGUI extends Application {
     layout.setCenter(grid);
     return new Scene(layout, 800, 600);
   }
+  public Node Map() {
+    //Creating an image
+    Image image = new Image(getClass().getResourceAsStream("/Map_2_players.jpg"));
 
+    //Setting the image view
+    ImageView imageView = new ImageView(image);
+
+    //Setting the position of the image
+    imageView.setX(20);
+    imageView.setY(50);
+
+    //setting the fit height and width of the image view
+    imageView.setFitHeight(300);
+    imageView.setFitWidth(500);
+
+    //Setting the preserve ratio of the image view
+    imageView.setPreserveRatio(true);
+
+    //Drawing a Circle
+    Circle circle = new Circle();
+
+    //Setting the properties of the circle
+    circle.setCenterX(250.0f);
+    circle.setCenterY(122.0f);
+    circle.setRadius(10.0f);
+    circle.setFill(Color.BLUE);
+    //Creating a Group object
+    Group root = new Group(imageView, circle);
+
+    return root;
+  }
   public Scene numPlayersScene() throws Exception {
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
@@ -149,8 +191,11 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
+    //map
+    borderPane.setCenter(Map());
 
     Scene scene = new Scene(borderPane, 800, 600);
+
     return scene;
   }
 
