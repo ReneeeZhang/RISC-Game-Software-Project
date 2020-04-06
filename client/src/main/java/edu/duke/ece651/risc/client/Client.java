@@ -6,21 +6,19 @@ import java.util.List;
 
 public class Client extends Connector {
   private String hostname;
-  private int port;
+  private int ccPort;
   private List<GameJoiner> matches;
 
   
-  public Client(String hostname, int port) throws IOException {
-    super(hostname, port);
+  public Client(String hostname, int authenticationPort, int ccPort) throws IOException {
+    super(hostname, authenticationPort);
     this.hostname = hostname;
-    this.port = port;
+    this.ccPort = ccPort;
     matches = new ArrayList<>();
   }
 
   public void joinGame() throws IOException {
-    GameJoiner gj = new GameJoiner(hostname, port);
+    GameJoiner gj = new GameJoiner(hostname, ccPort);
     matches.add(gj);
-    Thread t = new Thread(gj);
-    t.start();
   }
 }
