@@ -63,6 +63,11 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public List<Region> getAllRegions(String owner) {
+    return playerRegionMap.get(owner);
+  }
+  
+  @Override
   public Set<String> getAllOwners() {
     return playerRegionMap.keySet();
   }

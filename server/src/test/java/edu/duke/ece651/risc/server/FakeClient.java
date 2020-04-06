@@ -7,24 +7,20 @@ import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import shared.*;
-import shared.instructions.*;
+import shared.GameBoard;
+import shared.instructions.Instruction;
 
 public class FakeClient implements Runnable {
-  private Scanner sc;
-
-  public FakeClient(Scanner sc) {
-    this.sc = sc;
+  public FakeClient() {
   }
   
   public void run() {
     try {
       Thread.sleep(50);
-      SocketChannel socketChannel = SocketChannel.open();
-      socketChannel.connect(new InetSocketAddress("localhost", 6666));
-      Socket s = socketChannel.socket();
+      SocketChannel sc = SocketChannel.open();
+      sc.connect(new InetSocketAddress("localhost", 6666));
+      Socket s = sc.socket();
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String name = (String) deserial.readObject();
       System.out.println(name);
@@ -36,8 +32,7 @@ public class FakeClient implements Runnable {
         List<Instruction> ins = new ArrayList<Instruction>();
         serial.writeObject(ins);
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       System.out.println(e);
     }
   }
