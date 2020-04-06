@@ -72,7 +72,22 @@ public class BaseRegion implements Region, Serializable {
   public List<BaseUnit> sendUnit(int num) {
     List<BaseUnit> toSend = new ArrayList<>();
     for (int i = 0; i < num; i++) {
-      toSend.add(majorCamp.remove(majorCamp.size()  - 1));
+      toSend.add(majorCamp.remove(majorCamp.size() - 1));
+    }
+    return toSend;
+  }
+
+  public List<BaseUnit> sendUnit(int level, int num) {
+    List<BaseUnit> toSend = new ArrayList<>();
+    for (BaseUnit bu : majorCamp) {
+      if (num == 0) {
+        break;
+      }
+      if (bu.getCurrLevel() == level) {
+        toSend.add(bu);
+        majorCamp.remove(bu);
+        --num;
+      }
     }
     return toSend;
   }
@@ -99,9 +114,23 @@ public class BaseRegion implements Region, Serializable {
   }
 
   public void dispatch(String adjDest, int num) {
-    List<BaseUnit> boarderCamp = borderCamps.get(adjDest);
+    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
     for (int i = 0; i < num; i++) {
-      boarderCamp.add(majorCamp.remove(majorCamp.size() - 1));
+      borderCamp.add(majorCamp.remove(majorCamp.size() - 1));
+    }
+  }
+
+  public void dispatch(String adjDest, int level, int num) {
+    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
+    for (BaseUnit bu : majorCamp) {
+      if (num == 0) {
+        break;
+      }
+      if (bu.getCurrLevel() == level) {
+        borderCamp.add(bu);
+        majorCamp.remove(bu);
+        --num;
+      }
     }
   }
 
