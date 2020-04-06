@@ -3,6 +3,7 @@ package shared;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class BaseRegionTest {
     br2 = new BaseRegion("Teer", "Player2", 12);
     br1.initOneBorderCamp("Teer");
   }
+
   @Test
   public void test_getters() {
     String name1 = br1.getName();
@@ -50,6 +52,16 @@ public class BaseRegionTest {
     assertTrue(br1.getBorderCamp("Teer").size() == 1);
     assertTrue(br1.numUnitWithLevel(0) != 0);
     assertTrue(br1.numUnitWithLevel(1) == 0);
+  }
+
+  @Test
+  public void test_getInfo() {
+    System.out.println(br1.getInfo());
+  }
+
+  @Test
+  public void test_getMajorCamp() {
+    Collections.sort(br1.getMajorCamp());
   }
 
   @Test
