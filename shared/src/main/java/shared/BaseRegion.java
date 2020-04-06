@@ -14,6 +14,8 @@ public class BaseRegion implements Region, Serializable {
   private int size;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
+  private static final int minUnitLevel = 0;
+  private static final int maxUnitLevel = 6;
   
   public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp,
       Map<String, List<BaseUnit>> borderCamps) {
@@ -51,6 +53,15 @@ public class BaseRegion implements Region, Serializable {
 
   public int getSize() {
     return this.size;
+  }
+
+  public String getInfo() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(name).append("\nWho owns: ").append(owner).append("\nSize: ").append(size).append("\nUnits Info:\n");
+    for (int i = minUnitLevel; i < maxUnitLevel; i++) {
+      sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
+    }
+    return sb.toString();
   }
   
   public int getNumBaseUnit() {

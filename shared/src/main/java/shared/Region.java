@@ -10,6 +10,8 @@ public interface Region {
   public String getColor();
 
   public int getSize();
+
+  public String getInfo();
   
   public List<BaseUnit> sendUnit(int num);
 
