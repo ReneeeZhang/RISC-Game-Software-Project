@@ -14,6 +14,8 @@ public class BaseRegion implements Region, Serializable {
   private int size;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
+  private static final int minUnitLevel = 0;
+  private static final int maxUnitLevel = 6;
   
   public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp,
       Map<String, List<BaseUnit>> borderCamps) {
@@ -52,6 +54,15 @@ public class BaseRegion implements Region, Serializable {
   public int getSize() {
     return this.size;
   }
+
+  public String getInfo() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(name).append("\nWho owns: ").append(owner).append("\nSize: ").append(size).append("\nUnits Info:\n");
+    for (int i = minUnitLevel; i < maxUnitLevel; i++) {
+      sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
+    }
+    return sb.toString();
+  }
   
   public int getNumBaseUnit() {
     // TODO: Better way is to iterate the list of units and count all base units
@@ -61,7 +72,22 @@ public class BaseRegion implements Region, Serializable {
   public List<BaseUnit> sendUnit(int num) {
     List<BaseUnit> toSend = new ArrayList<>();
     for (int i = 0; i < num; i++) {
-      toSend.add(majorCamp.remove(majorCamp.size()  - 1));
+      toSend.add(majorCamp.remove(majorCamp.size() - 1));
+    }
+    return toSend;
+  }
+
+  public List<BaseUnit> sendUnit(int level, int num) {
+    List<BaseUnit> toSend = new ArrayList<>();
+    for (BaseUnit bu : majorCamp) {
+      if (num == 0) {
+        break;
+      }
+      if (bu.getCurrLevel() == level) {
+        toSend.add(bu);
+        majorCamp.remove(bu);
+        --num;
+      }
     }
     return toSend;
   }
@@ -88,12 +114,32 @@ public class BaseRegion implements Region, Serializable {
   }
 
   public void dispatch(String adjDest, int num) {
-    List<BaseUnit> boarderCamp = borderCamps.get(adjDest);
+    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
     for (int i = 0; i < num; i++) {
-      boarderCamp.add(majorCamp.remove(majorCamp.size() - 1));
+      borderCamp.add(majorCamp.remove(majorCamp.size() - 1));
     }
   }
 
+  public void dispatch(String adjDest, int level, int num) {
+    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
+    for (BaseUnit bu : majorCamp) {
+      if (num == 0) {
+        break;
+      }
+      if (bu.getCurrLevel() == level) {
+        borderCamp.add(bu);
+        majorCamp.remove(bu);
+        --num;
+      }
+    }
+  }
+
+  public List<BaseUnit> getMajorCamp() {
+    List<BaseUnit> camp = majorCamp;
+    majorCamp = new ArrayList<>();
+    return camp;
+  }
+  
   public List<BaseUnit> getBorderCamp(String dest) {
     List<BaseUnit> troop = borderCamps.get(dest);
     borderCamps.replace(dest, new ArrayList<>());

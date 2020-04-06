@@ -28,10 +28,13 @@ public class Server {
   public static void main(String[] args) {
     try {
       // TODO: config port num
-      Server server = new Server(Integer.valueOf(args[0]));
+      
+      AuthServer auth = new AuthServer(7777);
+      Thread tAuth = new Thread(auth);
+      tAuth.start();
+      Server server = new Server(6666);
       while (true) {
         SocketChannel sc = server.accept();
-        System.out.println("accept");
         int playerNum = server.getPlayerNum(sc);
         System.out.println("Request a game for " + playerNum);
         GameMaster gm = server.getGameFor(playerNum);
@@ -68,15 +71,4 @@ public class Server {
     }
     return game;
   }
-  
-  /*
-  public List<SocketChannel> waitForClients(int n) throws IOException {
-    List<SocketChannel> clientSockets = new ArrayList<SocketChannel>();
-    for (int i = 0; i < n; i++) {
-      SocketChannel sc = serverSocketChannel.accept();
-      clientSockets.add(sc);
-    }
-    return clientSockets;
-  }
-  */
 }

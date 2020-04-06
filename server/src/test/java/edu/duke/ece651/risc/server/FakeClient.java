@@ -34,10 +34,6 @@ public class FakeClient implements Runnable {
         System.out.println(b.draw());
         ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
         List<Instruction> ins = new ArrayList<Instruction>();
-        Instruction move = new Move(sc.nextLine(), sc.nextLine(), Integer.valueOf(sc.nextLine()));
-        ins.add(move);
-        Instruction attack = new Attack(sc.nextLine(), sc.nextLine(), Integer.valueOf(sc.nextLine()));
-        ins.add(attack);
         serial.writeObject(ins);
       }
     }

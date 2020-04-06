@@ -1,11 +1,6 @@
 package edu.duke.ece651.risc.client;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,30 +15,16 @@ import shared.checkers.GameOverChecker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
 
-public class GameJoiner implements Runnable{
-  private Socket s;
+public class GameJoiner extends Connector implements Runnable{
   private Scanner scanner;
   private String name;
   //private List<SocketChannel> games;
   //private Map<SocketChannel, String> socketPlayerMap;
 
   public GameJoiner(String hostname, int port) throws IOException {
-    SocketChannel sc = SocketChannel.open();
-    sc.connect(new InetSocketAddress(hostname, port));
-    this.s = sc.socket();
+    super(hostname, port);
     scanner = new Scanner(System.in);
   }
-
-  private Object receive() throws IOException, ClassNotFoundException {
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    return deserial.readObject();
-  }
-
-  private void send(Object obj) throws IOException {
-    ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-    serial.writeObject(obj);
-  }
-
   
   private boolean isValidInstName(String instName) {
     return instName.equals("move") || instName.equals("attack") || instName.equals("done");
@@ -82,10 +63,10 @@ public class GameJoiner implements Runnable{
     parts[0] = parts[0].toLowerCase();
     Instruction r2rinst = null;
     if (parts[0].equals("move")) {
-      r2rinst = new Move(parts[1], parts[2], num);
+      //r2rinst = new Move(parts[1], parts[2], num);
     }
     else if (parts[0].equals("attack")) {
-      r2rinst = new Attack(parts[1], parts[2], num);
+      //r2rinst = new Attack(parts[1], parts[2], num);
     }
     return r2rinst;
   }
@@ -183,14 +164,13 @@ public class GameJoiner implements Runnable{
     if (hasWon(board)) {
       System.out.println("Game over~");
       return true;
-    }
-    
+    }    
   }
   */
   
   public void run() {
     try {
-      send(3); // want to join a game of 2. Send the number of players to server
+      //send(3); // want to join a game of 2. Send the number of players to server
       this.name = (String) receive();
       while (true) {
         // receive the board from GameMaster
@@ -237,17 +217,6 @@ public class GameJoiner implements Runnable{
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
-    }
-  }
-  
-  public static void main(String[] args) {
-    try {
-      GameJoiner client = new GameJoiner(args[0], Integer.valueOf(args[1]));
-      System.out.println("Connected");
-      Thread t = new Thread(client);
-      t.start();
-    } catch (IOException e) {
       System.out.println(e);
     }
   }
