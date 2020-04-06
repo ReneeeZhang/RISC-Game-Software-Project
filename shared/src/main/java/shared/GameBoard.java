@@ -71,6 +71,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   public int getDistance(String src, String dst) {
     for (Region r : getNeighbor(src)) {
       //TODO:get shortest path
+       
     }
     return 0;
   }
@@ -93,7 +94,7 @@ public class GameBoard implements Board, Drawable, Serializable {
     for (String player : playerRegionMap.keySet()) {
       for (Region srcRegion : playerRegionMap.get(player)) {
         for (Region dstRegion : regionMap.get(srcRegion)) {
-          fightAgainst(srcRegion, dstRegion);
+          fight(srcRegion, dstRegion);
         }
       }
     }
@@ -107,7 +108,7 @@ public class GameBoard implements Board, Drawable, Serializable {
     }
   }
 
-  private void fightAgainst(Region src, Region dst) {
+  private void fight(Region src, Region dst) {
     List<BaseUnit> attackUnits = src.getBorderCamp(dst.getName());
     List<BaseUnit> defenseUnits = dst.getMajorCamp();
     Collections.sort(attackUnits);
