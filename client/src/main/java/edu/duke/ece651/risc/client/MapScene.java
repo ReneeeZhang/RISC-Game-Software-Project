@@ -41,6 +41,7 @@ public class MapScene {
         Group root = new Group(imageView, circle);
         return root;
     }
+
     public static Node createTwoPlayerMap(Board board) {
         //Creating an image
         Image image = new Image(MapScene.class.getResourceAsStream("/Map_2_players.jpg"));
@@ -52,5 +53,4 @@ public class MapScene {
 
         return createMapView(image, circles);
     }
-
 }
