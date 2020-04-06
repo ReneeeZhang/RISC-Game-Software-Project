@@ -12,9 +12,9 @@ public interface Board {
 
   public Set<String> getAllRegionNames();
 
-  public List<Region> getAllRegions();
+  public Set<String> getRegionNames(String owner);
 
-  public List<Region> getAllRegions(String owner);
+  public List<Region> getAllRegions();
 
   public Set<String> getAllOwners();
 
