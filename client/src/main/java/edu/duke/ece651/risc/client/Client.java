@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import shared.Board;
+
 public class Client extends Connector {
   private String hostname;
   private int ccPort;
@@ -21,4 +23,29 @@ public class Client extends Connector {
     GameJoiner gj = new GameJoiner(hostname, ccPort);
     matches.add(gj);
   }
+
+  public void sendViaChannel(int matchIdx, Object obj) throws IOException {
+    matches.get(matchIdx).send(obj);
+  }
+
+  public Object receiveViaChannel(int matchIdx) throws IOException, ClassNotFoundException {
+    return matches.get(matchIdx).receive();
+  }
+
+  public void initMatch(int matchIdx, String name, Board board) {
+    matches.get(matchIdx).init(name, board);
+  }
+  
+  public boolean hasWon(int matchIdx) {
+    return matches.get(matchIdx).hasWon();
+  }
+
+  public boolean hasLost(int matchIdx) {
+    return matches.get(matchIdx).hasLost();
+  }
+
+  public boolean isGameOver(int matchIdx) {
+    return matches.get(matchIdx).isGameOver();
+  }
+  
 }
