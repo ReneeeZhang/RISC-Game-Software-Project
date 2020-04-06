@@ -49,8 +49,8 @@ public class AccessibleCheckerTest {
         AccessibleChecker accessibleChecker2 = new AccessibleChecker(boardMock2, r1, r3);
         Assertions.assertTrue(accessibleChecker2.isValid());
         //add next
-        when(r1.getNumBaseUnit()).thenReturn(4);
-        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 3);
+        when(r1.numUnitWithLevel(0)).thenReturn(4);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 0, 3);
         accessibleChecker2 = new AccessibleChecker(boardMock2, r1, r3, unitQuantityChecker);
         Assertions.assertTrue(accessibleChecker2.isValid());
         /*

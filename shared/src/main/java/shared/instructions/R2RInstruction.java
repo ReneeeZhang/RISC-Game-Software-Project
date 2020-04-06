@@ -33,6 +33,10 @@ abstract public class R2RInstruction implements Instruction, Serializable {
     return dest;
   }
 
+  public int getLevel() {
+    return level;
+  }
+
   public int getNumUnit() {
     return numUnit;
   }
