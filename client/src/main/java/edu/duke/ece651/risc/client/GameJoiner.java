@@ -110,6 +110,10 @@ public class GameJoiner extends Connector {
     }
   }
 
+  public boolean isValidInst(Instruction inst) {
+    return inst.isValid(board);
+  }
+  
   /*
   private void sortInsts(List<Instruction> insts) {
     insts.sort((o1, o2) -> {

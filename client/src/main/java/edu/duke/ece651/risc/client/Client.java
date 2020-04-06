@@ -3,8 +3,8 @@ package edu.duke.ece651.risc.client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import shared.Board;
+import shared.instructions.*;
 
 public class Client extends Connector {
   private String hostname;
@@ -47,5 +47,8 @@ public class Client extends Connector {
   public boolean isGameOver(int matchIdx) {
     return matches.get(matchIdx).isGameOver();
   }
-  
+
+  public boolean isValidInst(int matchIdx, Instruction inst) {
+    return matches.get(matchIdx).isValidInst(inst);
+  }
 }
