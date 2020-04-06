@@ -18,9 +18,9 @@ public interface Board {
 
   public int getDistance(String src, String dst);
   
-  public void move(String src, String dst, int level, int num);
+  public void move(String src, String dst, int num);
 
-  public void attack(String src, String dst, int level, int num);
+  public void attack(String src, String dst, int num);
   
   public void resolve();
 }

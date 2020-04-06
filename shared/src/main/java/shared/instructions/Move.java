@@ -13,7 +13,7 @@ public class Move extends R2RInstruction implements Serializable {
 
   @Override
   public void execute(Board b) {
-    b.move(src, dest, level, numUnit);
+    //b.move(src, dest, level, numUnit);
   }
 
   @Override

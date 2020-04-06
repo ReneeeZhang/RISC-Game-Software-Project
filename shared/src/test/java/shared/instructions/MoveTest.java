@@ -40,14 +40,14 @@ public class MoveTest {
     when(boardMock.getRegion("r3")).thenReturn(r3);
     //doNothing().when(boardMock.move("r1","r2"));
 
-    Move m1 = new Move("r1", "r2", 1);
+    Move m1 = new Move("r1", "r2", 0, 1);
     assertEquals(1, m1.getNumUnit());
     assertEquals(true, m1.isValid(boardMock));
     m1.execute(boardMock);
 
     m1.toString();
 
-    Move m2 = new Move("r1", "r3", 1);
+    Move m2 = new Move("r1", "r3", 0, 1);
     assertEquals(false, m2.isValid(boardMock));
     m2.execute(boardMock);
 
