@@ -33,6 +33,8 @@ public class AttackTest {
     when(r2.getNumBaseUnit()).thenReturn(1);
     when(r3.getNumBaseUnit()).thenReturn(1);
 
+    when(r1.numUnitWithLevel(0)).thenReturn(1);
+
     List<Region> regions = Arrays.asList(r2, r3);
     Board boardMock = mock(Board.class);
     when(boardMock.getNeighbor("r1")).thenReturn(regions);

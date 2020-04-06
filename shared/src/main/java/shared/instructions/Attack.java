@@ -23,6 +23,7 @@ public class Attack extends R2RInstruction implements Serializable{
     AdjacentChecker checker = new AdjacentChecker(b, source, destination);
     UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit);
     boolean sameOwner = source.getOwner().equals(destination.getOwner());
+    
     return checker.isValid() && uChecker.isValid() && !sameOwner;
   }
 }
