@@ -1,8 +1,14 @@
 package edu.duke.ece651.risc.client;
 
 import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import shared.*;
 
 import javafx.application.Application;
@@ -16,6 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ClientGUI extends Application {
@@ -37,12 +45,12 @@ public class ClientGUI extends Application {
     window = primaryStage;
     window.setTitle("RISC");
 
-    window.setScene(numPlayersScene());
+    window.setScene(gameScene(roomBox()));
     window.show();
   }
 
 
-  /* ========== scenes ========== */
+  /** ========== scenes ========== */
   public Scene loginScene() throws Exception {
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(20, 20, 20, 20));
@@ -78,7 +86,37 @@ public class ClientGUI extends Application {
     layout.setCenter(grid);
     return new Scene(layout, 600, 400);
   }
+  public Node Map() throws FileNotFoundException {
+    //Creating an image
+    Image image = new Image(getClass().getResourceAsStream("/Map_2_players.jpg"));
 
+    //Setting the image view
+    ImageView imageView = new ImageView(image);
+
+    //Setting the position of the image
+    imageView.setX(20);
+    imageView.setY(50);
+
+    //setting the fit height and width of the image view
+    imageView.setFitHeight(300);
+    imageView.setFitWidth(500);
+
+    //Setting the preserve ratio of the image view
+    imageView.setPreserveRatio(true);
+
+    //Drawing a Circle
+    Circle circle = new Circle();
+
+    //Setting the properties of the circle
+    circle.setCenterX(250.0f);
+    circle.setCenterY(122.0f);
+    circle.setRadius(10.0f);
+    circle.setFill(Color.BLUE);
+    //Creating a Group object
+    Group root = new Group(imageView, circle);
+
+    return root;
+  }
   public Scene numPlayersScene() throws Exception {
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
@@ -133,7 +171,8 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
-
+    //map
+    borderPane.setCenter(Map());
     Scene scene = new Scene(borderPane, 600, 400);
     return scene;
   }
