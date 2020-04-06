@@ -23,6 +23,7 @@ public class FakeServer implements Runnable {
       serial.writeObject("Player1");
       Initializer init = new Initializer(2);
       Board board = init.initGame();
+      /*
       serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(board);
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
@@ -53,10 +54,13 @@ public class FakeServer implements Runnable {
       serial.writeObject(board);
       deserial = new ObjectInputStream(s.getInputStream());
       deserial.readObject();
+      */
     } catch (IOException e) {
       System.out.println(e);
-    } catch (ClassNotFoundException e) {
+    }
+    /* catch (ClassNotFoundException e) {
       System.out.println(e);
     }
+     */
   }
 }

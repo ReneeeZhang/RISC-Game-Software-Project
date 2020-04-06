@@ -40,20 +40,4 @@ public class MapScene {
         Group root = new Group(imageView, circle);
         return root;
     }
-
-    enum MapCircle {
-
-        ;
-        float centerX;
-        float centerY;
-        float radius;
-        Color color;
-
-        MapCircle(float centerX, float centerY, float radius, Color color) {
-            this.centerX = centerX;
-            this.centerY = centerY;
-            this.radius = radius;
-            this.color = color;
-        }
-    }
 }
