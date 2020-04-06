@@ -35,6 +35,10 @@ public class Client extends Connector {
   public void initMatch(int matchIdx, String name, Board board) {
     matches.get(matchIdx).init(name, board);
   }
+
+  public void setBoard(int matchIdx, Board board) {
+    matches.get(matchIdx).setBoard(board);
+  }
   
   public boolean hasWon(int matchIdx) {
     return matches.get(matchIdx).hasWon();
