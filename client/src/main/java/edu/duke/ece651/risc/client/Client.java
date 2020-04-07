@@ -36,6 +36,10 @@ public class Client extends Connector {
     matches.get(matchIdx).init(name, board);
   }
 
+  public Board getBoard(int matchIdx) {
+    return matches.get(matchIdx).getBoard();
+  }
+  
   public void setBoard(int matchIdx, Board board) {
     matches.get(matchIdx).setBoard(board);
   }
