@@ -10,7 +10,7 @@ public class AuthServerTest {
     fake1.start();
     fake2.start();
     try {
-      AuthServer auth = new AuthServer(7777);
+      AuthServer auth = new AuthServer(6666);
       auth.handleRequest();
     } catch (Exception e) {
       System.out.println(e);

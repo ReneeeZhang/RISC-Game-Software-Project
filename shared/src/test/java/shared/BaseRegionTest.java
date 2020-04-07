@@ -33,6 +33,7 @@ public class BaseRegionTest {
     assertTrue(owner1.equals("Player1"));
     int num1 = br1.getNumBaseUnit();
     assertTrue(num1 == 1);
+    int resource = br1.getResourceProduction();
   }
 
   @Test
