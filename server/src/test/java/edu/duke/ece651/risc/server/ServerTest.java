@@ -7,8 +7,12 @@ public class ServerTest {
   public void test_Server() {
     try{
       Server server = new Server(7777);
-      for (int i = 0; i < 4; i++) {
-        Thread fc = new Thread(new FakeClient());
+      Thread fc1 = new Thread(new FakeClient("Hudson\nFitzpatrick\n0\n3\nHudson\nWilson\n0\n2\n"));
+      Thread fc2 = new Thread(new FakeClient("Wilson\nBostock\n0\n5\nTeer\nPerkins\n0\n5\n"));
+      fc1.start();
+      fc2.start();
+      for (int i = 0; i < 2; i++) {
+        Thread fc = new Thread(new FakeClient(""));
         fc.start();
       }
       for (int i = 0; i < 4; i++) {
