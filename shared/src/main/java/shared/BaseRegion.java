@@ -35,6 +35,8 @@ public class BaseRegion implements Region, Serializable {
     this.owner = owner;
     this.color = "";
     this.size = size;
+    Random rand = new Random();
+    this.resourceProduction = size + rand.nextInt();
     this.majorCamp = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       majorCamp.add(new BaseUnit());

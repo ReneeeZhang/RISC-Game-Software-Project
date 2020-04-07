@@ -25,9 +25,7 @@ public class AuthServer implements Runnable{
     while (true) {
       try {
         handleRequest();
-      } catch (IOException e) {
-        System.out.println(e);
-      } catch (ClassNotFoundException e) {
+      } catch (Exception e) {
         System.out.println(e);
       }
     }
