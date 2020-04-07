@@ -50,9 +50,7 @@ public class GameMaster implements Runnable {
     } catch (IOException e) {
       System.out.println(e);
     }
-    int cnt = 1;
     while (true) {
-      System.out.println("Round " + cnt + " Starts!");
       try{
         sendBoardToClients();
         for (SocketChannel sc :playerSockets) {
@@ -83,7 +81,6 @@ public class GameMaster implements Runnable {
         System.out.println(e);
       }
       autoIncrement();
-      cnt++;
     }
   }
 
@@ -162,7 +159,7 @@ public class GameMaster implements Runnable {
       Player p = board.getPlayer(player);
       int resource = 0;
       for (Region r : board.getAllRegions(player)) {
-        resource += r.getSize();
+        resource += r.getResourceProduction();
       }
       p.increaseFood(resource);
       p.increaseTech(resource);

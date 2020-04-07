@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class BaseRegion implements Region, Serializable {
   private static final long serialVersionUID = 989463821;
@@ -12,17 +13,19 @@ public class BaseRegion implements Region, Serializable {
   private String owner;
   private String color;
   private int size;
+  private int resourceProduction;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
   private static final int minUnitLevel = 0;
   private static final int maxUnitLevel = 6;
   
-  public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp,
-      Map<String, List<BaseUnit>> borderCamps) {
+  public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp, Map<String, List<BaseUnit>> borderCamps) {
     this.name = name;
     this.owner = owner;
     this.color = color;
     this.size = size;
+    Random rand = new Random();
+    this.resourceProduction = size + rand.nextInt();
     this.majorCamp = majorCamp;
     this.borderCamps = borderCamps;
   }
@@ -55,9 +58,15 @@ public class BaseRegion implements Region, Serializable {
     return this.size;
   }
 
+  public int getResourceProduction() {
+    return this.resourceProduction;
+  }
+  
   public String getInfo() {
     StringBuilder sb = new StringBuilder();
-    sb.append(name).append("\nWho owns: ").append(owner).append("\nSize: ").append(size).append("\nUnits Info:\n");
+    sb.append(name).append("\nOwned by: ").append(owner).append("\nSize: ").append(size);
+    sb.append("\nResource Production: ").append(resourceProduction);
+    sb.append("\nUnits Info:\n");
     for (int i = minUnitLevel; i < maxUnitLevel; i++) {
       sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
     }

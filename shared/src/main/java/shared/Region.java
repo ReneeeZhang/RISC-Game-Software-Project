@@ -11,6 +11,8 @@ public interface Region {
 
   public int getSize();
 
+  public int getResourceProduction();
+
   public String getInfo();
   
   public List<BaseUnit> sendUnit(int num);
