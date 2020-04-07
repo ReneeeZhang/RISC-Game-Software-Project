@@ -14,12 +14,13 @@ public class GameBoardTest {
       board.getPlayer("Player1");
       board.getAllOwners();
       board.getAllRegionNames();
+      board.getRegionNames("Player1");
       board.getAllRegions();
       board.getNeighbor("Hudson");
       board.getRegion("Hudson");
       board.getDistance("Hudson", "Fitzpatrick");
-      board.move("Hudson", "Fitzpatrick", 1, 1);
-      board.attack("Fitzpatrick", "Wilson", 1, 3);
+      board.move("Hudson", "Fitzpatrick", 0, 1);
+      board.attack("Fitzpatrick", "Wilson", 0, 3);
       board.resolve();
     } catch (IOException e) {
       System.out.println(e);

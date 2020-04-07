@@ -5,13 +5,14 @@ import java.nio.channels.SocketChannel;
 import org.junit.jupiter.api.Test;
 
 public class ServerTest {
-  @Test
+  //@Test
   public void test_Server() {
     try{
       Server server = new Server(6666);
-      Thread fakeClient = new Thread(new FakeClient());
-      fakeClient.start();
-      /*
+      Thread fc1 = new Thread(new FakeClient());
+      Thread fc2 = new Thread(new FakeClient());
+      fc1.start();
+      fc2.start();
       for(int i = 0; i<2; i++){
         SocketChannel sc = server.accept();
         int n = server.getPlayerNum(sc);
@@ -19,10 +20,9 @@ public class ServerTest {
         gm.addPlayer(sc);
         if(gm.isFull()){
           Thread gameMaster = new Thread(gm);
-          gameMaster.start();
+          //gameMaster.start();
         }
       }
-      */
     } catch (Exception e) {
       System.out.println(e);
     }
