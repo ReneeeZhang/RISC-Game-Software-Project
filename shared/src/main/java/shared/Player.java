@@ -1,10 +1,14 @@
 package shared;
 
-public class Player implements Upgradable {
+import java.io.Serializable;
+
+public class Player implements Upgradable, Serializable {
   private String name;
   private Food food;
   private Technology tech;
   private int techLevel;
+
+  private static final long serialVersionUID = 923749365;
 
   public Player(String name) {
     this.name = name;
