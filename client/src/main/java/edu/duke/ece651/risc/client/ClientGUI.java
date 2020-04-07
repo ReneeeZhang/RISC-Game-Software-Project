@@ -1,7 +1,13 @@
 package edu.duke.ece651.risc.client;
 
+
 import javafx.fxml.FXMLLoader;
+
+import shared.*;
+import shared.instructions.*;
+
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -36,6 +42,7 @@ public class ClientGUI extends Application {
   static Stage window;
   Client client;
   int activeGames;
+  ArrayList<String> playerNames;
 
   public static void main(String[] args) {
     launch(args);
@@ -56,7 +63,8 @@ public class ClientGUI extends Application {
   public void init() throws Exception{
     activeGames = 0;
     List<String> configs = readConfig();
-    //Client client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+    client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+    playerNames = new ArrayList<>();
   }
 
   @Override
@@ -68,14 +76,16 @@ public class ClientGUI extends Application {
 
     Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
 
+
     Scene scene = new Scene(root, 900, 600);
     window.setScene(scene);
+
     window.show();
   }
 
 
   /** ========== scenes ========== */
-  public Scene loginScene() throws Exception {
+  public Scene loginScene() {
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(20, 20, 20, 20));
     grid.setHgap(10);
@@ -98,12 +108,25 @@ public class ClientGUI extends Application {
       String pwd = pwdText.getText();
       try {
         client.send(userName + "&&" + pwd);
+        String loginValid = (String)client.receive();
+        if (loginValid.equals("yes")) {
+          window.setScene(startScene());
+        }
+        else {
+          Popup.showInfo("Incorrect username or password");
+          window.setScene(loginScene());
+        }
       } catch (IOException ex) {
         ex.printStackTrace();
+      } catch (ClassNotFoundException ex1) {
+        ex1.printStackTrace();
+      } catch (Exception ex2) {
+        ex2.printStackTrace();
       }
+      
     });
+    
     GridPane.setConstraints(login, 1, 2);
-
     grid.getChildren().addAll(user, userText, password, pwdText, login);
 
     BorderPane layout = new BorderPane();
@@ -111,7 +134,35 @@ public class ClientGUI extends Application {
     return new Scene(layout, 800, 600);
   }
 
-  public Scene numPlayersScene() throws Exception {
+
+
+  public Scene startScene() {
+    Button b = new Button("Start a new game");
+    b.setOnAction(e -> {
+  
+      try {
+        client.joinGame();
+        window.setScene(numPlayersScene());
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+      });
+    b.setAlignment(Pos.CENTER);
+    StackPane pane = new StackPane();
+    pane.getChildren().add(b);
+    Scene scene = new Scene(pane, 800, 600);
+    return scene;
+  }
+  
+
+  
+  public Scene numPlayersScene() {
+    // Get player name and board
+    String pName = new String();
+    Board board = new GameBoard();
+
+    // display
+
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
     numChoice.getItems().addAll(2, 3, 4, 5);
@@ -121,10 +172,30 @@ public class ClientGUI extends Application {
     button.setOnAction(e -> {
       try {
         client.send(numChoice.getValue());
+        window.setScene(gameScene(activeGames));
       } catch (IOException ex) {
         ex.printStackTrace();
+      } catch (Exception ex1) {
+        ex1.printStackTrace();
       }
     });
+
+    try {
+      // add name to list
+      pName = (String) client.receiveViaChannel(activeGames);
+      playerNames.add(pName);
+      // init game
+      board = (GameBoard) client.receiveViaChannel(activeGames);
+      client.initMatch(activeGames, playerNames.get(activeGames), board);
+
+      // increment active game count
+      activeGames+=1;
+      
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    } catch (ClassNotFoundException ex1) {
+      ex1.printStackTrace();
+    }
     
     VBox box = new VBox();
     box.getChildren().addAll(numPlayers, numChoice, button);
@@ -134,24 +205,53 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene gameScene(HBox roomChange) throws Exception {
+  public Scene gameScene(int currentRoom) {
+    Board board = new GameBoard();
+    try {
+      board = (GameBoard) client.receiveViaChannel(currentRoom);
+      client.initMatch(currentRoom, playerNames.get(currentRoom), board);
+
+      // check win/lose
+      if (client.hasWon(currentRoom)) {
+        window.setScene(winScene());
+      }
+      else if (client.hasLost(currentRoom)) {
+        window.setScene(loseScene());
+      }
+        
+      
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    } catch (ClassNotFoundException ex1) {
+      ex1.printStackTrace();
+    }
+    
+    HBox roomChange = roomBox();
     
     // Instruction selection
-    HBox insChange = new HBox();
-    Button button4 = new Button("Move");
-    Button button5 = new Button("Attack");
-    Button button6 = new Button("Upgrade");
-    insChange.getChildren().addAll(button4, button5, button6);
+    VBox insChange = new VBox();
+    Label insLabel = new Label("Select order:");
+    ChoiceBox<String> insChoice = new ChoiceBox<>();
+    insChoice.getItems().addAll("Move", "Attack", "Upgrade Units", "Upgrade Technology");
+    insChange.getChildren().addAll(insLabel, insChoice);
 
     // Instruction specs
-    Label srcLabel = new Label("Source");
+    Label srcLabel = new Label("Source:");
     ChoiceBox<String> srcChoice = new ChoiceBox<>();
-    srcChoice.getItems().addAll("placeholder1", "placeholder2");
-    Label destLabel = new Label("Destination");
+    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+      srcChoice.getItems().add(regionName);
+    }
+    
+    Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
-    destChoice.getItems().addAll("placeholder3", "placeholder4");
-    Label level = new Label("Level to operate on:");
+    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+      destChoice.getItems().add(regionName);
+    }
+    
+    Label levelLabel = new Label("Level to operate on:");
     TextField levelText = new TextField();
+    Label newLevelLabel = new Label("Level to upgrade to:");
+    TextField newLevelText = new TextField();
     Label num = new Label("The number of units:");
     TextField numText = new TextField();
 
@@ -159,12 +259,36 @@ public class ClientGUI extends Application {
     Button actionButton = new Button("Add action");
     Button doneButton = new Button("Done");
 
-    // TODO: button actions
+    // button actions
+    actionButton.setOnAction(e -> {
+        // Move
+        if (insChoice.getValue().equals("Move")) {
+          Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
+                                  Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
+        }
+        // Attack
+        else if (insChoice.getValue().equals("Attack")) {
+          Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
+                                  Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
+        }
+        // Upgrade unit
+        else if (insChoice.getValue().equals("Upgrade Units")) {
+          UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
+                                                  Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
+        }
+        // Upgrade technology
+        else if (insChoice.getValue().equals("Upgrade Units")) {
+          TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
+                                                  Integer.parseInt(newLevelText.getText()));
+        }
+        
+    });
 
     // All instruction related display
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
-                                level, levelText, num, numText, actionButton, doneButton);
+                                levelLabel, levelText, newLevelLabel, newLevelText,
+                                num, numText, actionButton, doneButton);
 
     // Overall layout
     BorderPane borderPane = new BorderPane();
@@ -176,7 +300,8 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene winScene(HBox roomChange) throws Exception {
+  public Scene winScene() {
+    HBox roomChange = roomBox();
     VBox winOption = new VBox();
     Button button1 = new Button("Play again");
     Button button2 = new Button("Exit");
@@ -202,13 +327,15 @@ public class ClientGUI extends Application {
     winOption.getChildren().addAll(button1, button2);
     
     BorderPane borderPane = new BorderPane();
+    borderPane.setLeft(roomChange);
     borderPane.setRight(winOption);
 
     Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
-  public Scene loseScene(HBox roomChange) throws Exception {
+  public Scene loseScene() {
+    HBox roomChange = roomBox();
     VBox loseOption = new VBox();
     Button button1 = new Button("Watch the game");
     Button button2 = new Button("Play again");
@@ -242,13 +369,14 @@ public class ClientGUI extends Application {
     loseOption.getChildren().addAll(button1, button2, button3);
     
     BorderPane borderPane = new BorderPane();
+    borderPane.setLeft(roomChange);
     borderPane.setRight(loseOption);
 
     Scene scene = new Scene(borderPane, 800, 600);
     return scene;
   }
 
-  public Scene watchScene(HBox roomChange) throws Exception {
+  public Scene watchScene(HBox roomChange) {
     Button button = new Button("Exit");
     button.setOnAction(e -> {
       try {
@@ -273,13 +401,18 @@ public class ClientGUI extends Application {
     Button button3 = new Button("Room3");
     Button button4 = new Button("Start new game");
 
-    // TODO: action
+    // action
+    button1.setOnAction(e -> window.setScene(gameScene(0)));
+    button1.setOnAction(e -> window.setScene(gameScene(1)));
+    button1.setOnAction(e -> window.setScene(gameScene(2)));
+    
     button4.setOnAction(e -> {
         if (activeGames < 3) {
           // start new game
           try {
+            window.setScene(numPlayersScene());
+            activeGames+=1;
             client.joinGame();
-            activeGames++;
           }
           catch (IOException ex) {
             ex.printStackTrace();
@@ -291,12 +424,7 @@ public class ClientGUI extends Application {
       });
 
     // button usability
-    if (activeGames == 0) {
-      button1.setDisable(true);
-      button2.setDisable(true);
-      button3.setDisable(true);
-    }
-    else if (activeGames == 1) {
+    if (activeGames == 1) {
       button2.setDisable(true);
       button3.setDisable(true);
     }

@@ -12,6 +12,8 @@ public interface Board {
 
   public Set<String> getAllRegionNames();
 
+  public Set<String> getRegionNames(String owner);
+
   public List<Region> getAllRegions();
 
   public Set<String> getAllOwners();

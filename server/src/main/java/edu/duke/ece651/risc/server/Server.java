@@ -1,5 +1,6 @@
 package edu.duke.ece651.risc.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;
@@ -24,24 +26,25 @@ public class Server {
       games.get(i).add(new GameMaster(i));
     }
   }
-
+ 
   public static void main(String[] args) {
     try {
-      // TODO: config port num
+      //Scanner config = new Scanner(new File("/src/resources/config.txt"));
+      AuthServer auth = new AuthServer(6666);
+
+      Thread authServer = new Thread(auth);
+      authServer.start();
+      Server server = new Server(7777);
       
-      AuthServer auth = new AuthServer(7777);
-      Thread tAuth = new Thread(auth);
-      tAuth.start();
-      Server server = new Server(6666);
       while (true) {
         SocketChannel sc = server.accept();
         int playerNum = server.getPlayerNum(sc);
-        System.out.println("Request a game for " + playerNum);
+        System.out.println("Requesting a game for " + playerNum);
         GameMaster gm = server.getGameFor(playerNum);
         gm.addPlayer(sc);
         if (gm.isFull()) {
-          Thread t = new Thread(gm);
-          t.start();
+          Thread gameMaster = new Thread(gm);
+          gameMaster.start();
         }
       }
     } catch (IOException e) {
