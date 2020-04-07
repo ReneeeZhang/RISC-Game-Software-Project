@@ -78,11 +78,38 @@ public class GameBoard implements Board, Drawable, Serializable {
 
   @Override
   public int getDistance(String src, String dst) {
-    for (Region r : getNeighbor(src)) {
-      //TODO:get shortest path
-       
+    Region srcRegion = getRegion(src);
+    Region dstRegion = getRegion(dst);
+    List<Region> stack = new ArrayList<Region>();
+    String owner = getRegion(src).getOwner();
+    Set<Region> visited = new HashSet<Region>();
+    Map<Region, Integer> dist = new HashMap<Region, Integer>();
+    for (Region r : playerRegionMap.get(owner)) {
+      if(r.getName().equals(src)){
+        dist.put(r, 0);
+      } else {
+        dist.put(r, 1000);
+      }      
     }
-    return 0;
+    stack.add(srcRegion);
+    while (stack.size() > 0) {
+      Region curr = stack.remove(0);
+      // if not visited and under the same owner's control
+      if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
+        visited.add(curr);
+        for (Region r : regionMap.get(curr)) {
+          if (r.getOwner().equals(owner)) {
+            stack.add(r);
+            int cost = dist.get(curr) + curr.getSize();
+            if (cost < dist.get(r)) {
+              // update if it's shorter
+              dist.put(r, cost);
+            }
+          }
+        }
+      }
+    }
+    return dist.get(dstRegion);
   }
   
   @Override
