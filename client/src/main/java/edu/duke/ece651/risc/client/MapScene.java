@@ -8,12 +8,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import shared.Board;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapScene {
 
-    public static Node createMapView(Image image, Map<String, Circle> circles) {
+    private static Map<String, Circle> twoPlayerMapCircle;
+    public static Node createMapView(Image image) {
 
         //Setting the image view
         ImageView imageView = new ImageView(image);
@@ -28,17 +31,10 @@ public class MapScene {
 
         //Setting the preserve ratio of the image view
         imageView.setPreserveRatio(true);
-
-        //Drawing a Circle
-        Circle circle = new Circle();
-
-        //Setting the properties of the circle
-        circle.setCenterX(250.0f);
-        circle.setCenterY(122.0f);
-        circle.setRadius(10.0f);
-        circle.setFill(Color.BLUE);
+        Collection<Circle> circles = twoPlayerMapCircle.values();
         //Creating a Group object
-        Group root = new Group(imageView, circle);
+        Group root = new Group(imageView);
+        root.getChildren().addAll(circles);
         return root;
     }
 
@@ -46,11 +42,13 @@ public class MapScene {
         //Creating an image
         Image image = new Image(MapScene.class.getResourceAsStream("/Map_2_players.jpg"));
         String[] regions = {"Fitzpatrick", "Perkins", "Bostock", "Hudson", "Wilson", "Teer"};
-        Map<String, Circle> circles = new HashMap<>();
+        if (twoPlayerMapCircle == null) {
+            twoPlayerMapCircle = new HashMap<>();
 
-        Circle Fiz = new Circle(250.0f, 122.0f, 10.0f, Color.BLUE);
 
+            Circle Fiz = new Circle(250.0f, 122.0f, 10.0f, Color.BLUE);
 
-        return createMapView(image, circles);
+        }
+        return createMapView(image);
     }
 }

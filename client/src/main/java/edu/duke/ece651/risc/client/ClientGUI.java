@@ -1,32 +1,31 @@
 package edu.duke.ece651.risc.client;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import shared.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -62,11 +61,16 @@ public class ClientGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    window = primaryStage;
-    window.setTitle("RISC");
-
-    window.setScene(gameScene(roomBox()));
-    window.show();
+//    window = primaryStage;
+//    window.setTitle("RISC");
+//
+//    window.setScene(gameScene(roomBox()));
+//    window.show();
+    Parent root = FXMLLoader.load(getClass().getResource("/fxml/Map.fxml"));
+    primaryStage.setTitle("RISC");
+    Scene scene = new Scene(root, 900, 600);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 
 

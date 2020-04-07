@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.risc.client.MainController">
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </VBox.margin>
+            </Circle>
+            <Label text="Label">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="moveButton" mnemonicParsing="false" onAction="#createMove" text="Move">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="attackButton" layoutX="20.0" layoutY="56.0" mnemonicParsing="false" onAction="#createAttack" text="Attack">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="upgradeButton" layoutX="10.0" layoutY="83.0" mnemonicParsing="false" onAction="#createUpgrade" text="Upgrade">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Done" textFill="#d71919">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </right>
+   <top>
+      <TabPane prefHeight="37.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Untitled Tab 1" />
+          <Tab text="Untitled Tab 2" />
+        </tabs>
+      </TabPane>
+   </top>
+   <center>
+      <Group BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="431.0" fitWidth="742.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Map_2_players.jpg" />
+               </image>
+            </ImageView>
+            <Circle fill="DODGERBLUE" layoutX="402.0" layoutY="305.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="129.0" layoutY="91.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="395.0" layoutY="107.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#038c4b" layoutX="548.0" layoutY="206.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#038c4b" layoutX="589.0" layoutY="83.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#038c4b" layoutX="222.0" layoutY="290.0" radius="24.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </Group>
+   </center>
+</BorderPane>
