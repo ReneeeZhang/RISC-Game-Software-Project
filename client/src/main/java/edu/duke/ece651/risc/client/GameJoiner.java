@@ -19,8 +19,6 @@ public class GameJoiner extends Connector {
   private Scanner scanner;
   private String name;
   private Board board;
-  //private List<SocketChannel> games;
-  //private Map<SocketChannel, String> socketPlayerMap;
 
   public GameJoiner(String hostname, int port) throws IOException {
     super(hostname, port);
@@ -37,6 +35,10 @@ public class GameJoiner extends Connector {
     this.name = name;
   }
 
+  public Board getBoard() {
+    return board;
+  }
+  
   public void setBoard(Board board) {
     this.board = board;
   }
