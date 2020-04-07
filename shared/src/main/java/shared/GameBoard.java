@@ -121,12 +121,18 @@ public class GameBoard implements Board, Drawable, Serializable {
   public void move(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
+    Player player = playerNameMap.get(srcRegion.getOwner());
+    // costs total size of regions * number of units moving
+    player.decreaseFood(num*getDistance(src, dst));
     dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
   }
 
   @Override
   public void attack(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
+    // costs 1 food per unit attacking
+    Player player = playerNameMap.get(srcRegion.getOwner());
+    player.decreaseFood(num);
     srcRegion.dispatch(dst, level, num);
   }
   
