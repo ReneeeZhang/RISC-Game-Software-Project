@@ -72,29 +72,67 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
+  public List<Region> getAllRegions(String owner) {
+    return playerRegionMap.get(owner);
+  }
+  
+  @Override
   public Set<String> getAllOwners() {
     return playerRegionMap.keySet();
   }
 
   @Override
   public int getDistance(String src, String dst) {
-    for (Region r : getNeighbor(src)) {
-      //TODO:get shortest path
-       
+    Region srcRegion = getRegion(src);
+    Region dstRegion = getRegion(dst);
+    List<Region> stack = new ArrayList<Region>();
+    String owner = getRegion(src).getOwner();
+    Set<Region> visited = new HashSet<Region>();
+    Map<Region, Integer> dist = new HashMap<Region, Integer>();
+    for (Region r : playerRegionMap.get(owner)) {
+      if(r.getName().equals(src)){
+        dist.put(r, 0);
+      } else {
+        dist.put(r, 1000);
+      }      
     }
-    return 0;
+    stack.add(srcRegion);
+    while (stack.size() > 0) {
+      Region curr = stack.remove(0);
+      // if not visited and under the same owner's control
+      if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
+        visited.add(curr);
+        for (Region r : regionMap.get(curr)) {
+          if (r.getOwner().equals(owner)) {
+            stack.add(r);
+            int cost = dist.get(curr) + curr.getSize();
+            if (cost < dist.get(r)) {
+              // update if it's shorter
+              dist.put(r, cost);
+            }
+          }
+        }
+      }
+    }
+    return dist.get(dstRegion);
   }
   
   @Override
   public void move(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
+    Player player = playerNameMap.get(srcRegion.getOwner());
+    // costs total size of regions * number of units moving
+    player.decreaseFood(num*getDistance(src, dst));
     dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
   }
 
   @Override
   public void attack(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
+    // costs 1 food per unit attacking
+    Player player = playerNameMap.get(srcRegion.getOwner());
+    player.decreaseFood(num);
     srcRegion.dispatch(dst, level, num);
   }
   

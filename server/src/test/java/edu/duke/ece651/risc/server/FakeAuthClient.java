@@ -21,7 +21,7 @@ public class FakeAuthClient implements Runnable {
     try {
       Thread.sleep(50);
       SocketChannel sc = SocketChannel.open();
-      sc.connect(new InetSocketAddress("localhost", 7777));
+      sc.connect(new InetSocketAddress("localhost", 6666));
       Socket s = sc.socket();
       ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(login);

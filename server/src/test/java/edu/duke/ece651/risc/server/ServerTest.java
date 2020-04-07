@@ -1,27 +1,18 @@
 package edu.duke.ece651.risc.server;
 
-import java.nio.channels.SocketChannel;
-
 import org.junit.jupiter.api.Test;
 
 public class ServerTest {
-  //@Test
+  @Test
   public void test_Server() {
     try{
-      Server server = new Server(6666);
-      Thread fc1 = new Thread(new FakeClient());
-      Thread fc2 = new Thread(new FakeClient());
-      fc1.start();
-      fc2.start();
-      for(int i = 0; i<2; i++){
-        SocketChannel sc = server.accept();
-        int n = server.getPlayerNum(sc);
-        GameMaster gm = server.getGameFor(n);
-        gm.addPlayer(sc);
-        if(gm.isFull()){
-          Thread gameMaster = new Thread(gm);
-          //gameMaster.start();
-        }
+      Server server = new Server(7777);
+      for (int i = 0; i < 4; i++) {
+        Thread fc = new Thread(new FakeClient());
+        fc.start();
+      }
+      for (int i = 0; i < 4; i++) {
+        server.handleRequest();
       }
     } catch (Exception e) {
       System.out.println(e);

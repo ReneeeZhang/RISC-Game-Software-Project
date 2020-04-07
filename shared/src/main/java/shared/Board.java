@@ -16,6 +16,8 @@ public interface Board {
 
   public List<Region> getAllRegions();
 
+  public List<Region> getAllRegions(String owner);
+  
   public Set<String> getAllOwners();
 
   public int getDistance(String src, String dst);
