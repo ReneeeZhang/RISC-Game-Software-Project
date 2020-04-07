@@ -240,7 +240,7 @@ public class ClientGUI extends Application {
     
     Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
-    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+    for (String regionName: board.getAllRegionNames()) {
       destChoice.getItems().add(regionName);
     }
     
