@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 
 public class ClientGUI extends Application {
 
-  Stage window;
+  static Stage window;
   Client client;
   int activeGames;
 
@@ -61,16 +61,16 @@ public class ClientGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-//    window = primaryStage;
-//    window.setTitle("RISC");
+    window = primaryStage;
+    window.setTitle("RISC");
 //
 //    window.setScene(gameScene(roomBox()));
-//    window.show();
-    Parent root = FXMLLoader.load(getClass().getResource("/fxml/Map.fxml"));
-    primaryStage.setTitle("RISC");
+
+    Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+
     Scene scene = new Scene(root, 900, 600);
-    primaryStage.setScene(scene);
-    primaryStage.show();
+    window.setScene(scene);
+    window.show();
   }
 
 
@@ -110,37 +110,7 @@ public class ClientGUI extends Application {
     layout.setCenter(grid);
     return new Scene(layout, 800, 600);
   }
-  public Node Map() {
-    //Creating an image
-    Image image = new Image(getClass().getResourceAsStream("/Map_2_players.jpg"));
 
-    //Setting the image view
-    ImageView imageView = new ImageView(image);
-
-    //Setting the position of the image
-    imageView.setX(20);
-    imageView.setY(50);
-
-    //setting the fit height and width of the image view
-    imageView.setFitHeight(300);
-    imageView.setFitWidth(500);
-
-    //Setting the preserve ratio of the image view
-    imageView.setPreserveRatio(true);
-
-    //Drawing a Circle
-    Circle circle = new Circle();
-
-    //Setting the properties of the circle
-    circle.setCenterX(250.0f);
-    circle.setCenterY(122.0f);
-    circle.setRadius(10.0f);
-    circle.setFill(Color.BLUE);
-    //Creating a Group object
-    Group root = new Group(imageView, circle);
-
-    return root;
-  }
   public Scene numPlayersScene() throws Exception {
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
@@ -200,8 +170,6 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
-    //map
-    borderPane.setCenter(Map());
 
     Scene scene = new Scene(borderPane, 800, 600);
 
@@ -339,6 +307,12 @@ public class ClientGUI extends Application {
     
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
+  }
+
+  public static void switchToMain() throws IOException {
+    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
+    Scene scene = new Scene(root, 900, 600);
+    window.setScene(scene);
   }
   
 }

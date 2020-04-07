@@ -16,12 +16,12 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Circle fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+            <Circle fx:id="color" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" top="10.0" />
                </VBox.margin>
             </Circle>
-            <Label text="Label">
+            <Label fx:id="info" text="Label">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" />
                </VBox.margin>
@@ -41,7 +41,7 @@
                   <Insets bottom="10.0" left="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Done" textFill="#d71919">
+            <Button mnemonicParsing="false" onAction="#doDone" text="Done" textFill="#d71919">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
@@ -50,17 +50,16 @@
       </VBox>
    </right>
    <top>
-      <TabPane prefHeight="37.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="games" prefHeight="37.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Untitled Tab 1" />
-          <Tab text="Untitled Tab 2" />
+          <Tab text="Game 1" />
         </tabs>
       </TabPane>
    </top>
    <center>
       <Group BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="431.0" fitWidth="742.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="map" fitHeight="431.0" fitWidth="742.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Map_2_players.jpg" />
                </image>
