@@ -13,16 +13,35 @@ import shared.Initializer;
 import shared.Region;
 
 public class FakeServer implements Runnable {
+  private ServerSocketChannel ssc;
+  private Socket socket;
+
+  public FakeServer(int port) {
+    try {
+      System.out.println("Constructing fake server");
+      ssc = ServerSocketChannel.open();
+      ssc.socket().bind(new InetSocketAddress(port));
+      
+    }
+    catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+
   public void run() {
-    try{
-      ServerSocketChannel ssc = ServerSocketChannel.open();
-      ssc.socket().bind(new InetSocketAddress(6666));
+    try {
       SocketChannel sc = ssc.accept();
-      Socket s = sc.socket();
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      serial.writeObject("Player1");
+      System.out.println("accepted");
+      this.socket = sc.socket();
+      int num = (Integer) receive();
+      System.out.println(num);
+      send("Player1");
       Initializer init = new Initializer(2);
       Board board = init.initGame();
+      send(board);
+      receive();
+      /*
       serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(board);
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
@@ -53,10 +72,25 @@ public class FakeServer implements Runnable {
       serial.writeObject(board);
       deserial = new ObjectInputStream(s.getInputStream());
       deserial.readObject();
+      */
     } catch (IOException e) {
       System.out.println(e);
-    } catch (ClassNotFoundException e) {
+    }
+    catch (ClassNotFoundException e) {
       System.out.println(e);
     }
+    
   }
+
+
+    private Object receive() throws IOException, ClassNotFoundException {
+    ObjectInputStream deserial = new ObjectInputStream(socket.getInputStream());
+    return deserial.readObject();
+  }
+
+  private void send(Object obj) throws IOException {
+    ObjectOutputStream serial = new ObjectOutputStream(socket.getOutputStream());
+    serial.writeObject(obj);
+  }
+
 }

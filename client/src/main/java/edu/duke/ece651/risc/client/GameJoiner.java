@@ -1,0 +1,130 @@
+package edu.duke.ece651.risc.client;
+
+import java.io.IOException;
+import shared.Board;
+
+import shared.instructions.*;
+
+import shared.checkers.Checker;
+import shared.checkers.GameOverChecker;
+import shared.checkers.LoserChecker;
+import shared.checkers.WinnerChecker;
+
+public class GameJoiner extends Connector {
+  private String name;
+  private Board board;
+
+  public GameJoiner(String hostname, int port) throws IOException {
+    super(hostname, port);
+  }
+
+  // Must init GameJoiner after receiving name and board
+  public void init(String name, Board board) {
+    setName(name);
+    setBoard(board);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+  
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public boolean isValidInst(Instruction inst) {
+    return inst.isValid(board);
+  }
+  public boolean hasWon() {
+    Checker winnerChecker = new WinnerChecker(board, name);
+    if (winnerChecker.isValid()) {
+      System.out.println(name + ", you have won!");
+      return true;
+    }
+    return false;
+  }
+
+  public boolean hasLost() {
+    Checker loserChecker = new LoserChecker(board, name);
+    if (loserChecker.isValid()) {
+      System.out.println(name + ", you have lost...");
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isGameOver(){
+    GameOverChecker gmoChecker = new GameOverChecker(board);
+    return gmoChecker.isValid();
+  }
+  /**
+   * Check game result based on given {@argv board}
+   * Return true if this client is the winner
+   * Return false if this client loses  
+   */
+  /*
+  private void checkResult(GameBoard board) {
+    if (hasWon(board)) {
+      System.out.println("Game over~");
+      return true;
+    }    
+  }
+  
+   public void run() {
+    try {
+      //send(3); // want to join a game of 2. Send the number of players to server
+      this.name = (String) receive();
+      while (true) {
+        // receive the board from GameMaster
+        GameBoard board = (GameBoard)receive();
+        if (hasWon()) {
+          System.out.println("Game over~");
+          return;
+        }
+        if (hasLost()) {
+          System.out.println("Would you like to continue to watch the game? Please answer yes/no:");
+          while (true) {
+            String ans2Lost = scanner.nextLine().toLowerCase();
+
+            if (ans2Lost.equals("yes")) {
+              send(ans2Lost); // Send "yes" to server
+              while (true) {
+                GameBoard board2Watch = (GameBoard) receive();
+                System.out.println(board2Watch.draw());
+                GameOverChecker gmoChecker = new GameOverChecker(board2Watch);
+                if (gmoChecker.isValid()) {
+                  System.out.println("Game over~");
+                  return;
+                }
+                else {
+                  send(new ArrayList<Instruction>());
+                }
+              }
+            }
+            else if (ans2Lost.equals("no")) {
+              send(ans2Lost);  // send "no" to server
+              return;
+            }
+            else {
+              System.out.println("You can only input yes or no.");
+            }              
+          }
+        }
+        System.out.println(board.draw());
+        // integrate all the instructions that a user input
+        List<Instruction> collectedInsts = collectInsts(board);
+        // send those packed instructions to server
+        send(collectedInsts);
+      }
+    } catch (IOException e) {
+      System.out.println(e);
+    } catch (ClassNotFoundException e) {
+      System.out.println(e);
+    }
+  }
+  */
+}

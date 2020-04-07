@@ -8,15 +8,23 @@ public interface Board {
 
   public Region getRegion(String name);
 
+  public Player getPlayer(String name);
+
   public Set<String> getAllRegionNames();
+
+  public Set<String> getRegionNames(String owner);
 
   public List<Region> getAllRegions();
 
-  public Set<String> getAllOwners();
+  public List<Region> getAllRegions(String owner);
   
-  public void move(String src, String dst, int num);
+  public Set<String> getAllOwners();
 
-  public void attack(String src, String dst, int num);
+  public int getDistance(String src, String dst);
+  
+  public void move(String src, String dst, int level, int num);
+
+  public void attack(String src, String dst, int level, int num);
   
   public void resolve();
 }

@@ -1,5 +1,7 @@
-package shared;
+package shared.instructions;
+
 import shared.*;
+import shared.instructions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,8 @@ public class MoveTest {
     when(r2.getNumBaseUnit()).thenReturn(1);
     when(r3.getNumBaseUnit()).thenReturn(1);
 
+    when(r1.numUnitWithLevel(0)).thenReturn(1);
+
     List<Region> regions = Arrays.asList(r2, r3);
     Board boardMock = mock(Board.class);
     when(boardMock.getNeighbor("r1")).thenReturn(regions);
@@ -38,20 +42,19 @@ public class MoveTest {
     when(boardMock.getRegion("r3")).thenReturn(r3);
     //doNothing().when(boardMock.move("r1","r2"));
 
-    Move m1 = new Move("r1", "r2", 1);
+    Move m1 = new Move("r1", "r2", 0, 1);
     assertEquals(1, m1.getNumUnit());
     assertEquals(true, m1.isValid(boardMock));
     m1.execute(boardMock);
 
     m1.toString();
 
-    Move m2 = new Move("r1", "r3", 1);
+    Move m2 = new Move("r1", "r3", 0, 1);
     assertEquals(false, m2.isValid(boardMock));
     m2.execute(boardMock);
 
     assertEquals("r1", m2.getSrc());
     assertEquals("r3", m2.getDest());
-
   }
   @Test
   public void test_() {

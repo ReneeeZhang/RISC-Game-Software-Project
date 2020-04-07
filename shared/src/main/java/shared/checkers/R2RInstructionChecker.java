@@ -1,6 +1,7 @@
 package shared.checkers;
 
 import shared.*;
+import shared.instructions.*;
 
 public class R2RInstructionChecker implements Checker {
 
@@ -21,9 +22,11 @@ public class R2RInstructionChecker implements Checker {
             return false;
         }
         int units = instruction.getNumUnit();
-        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, units);
+        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(source, instruction.getLevel(), units);
         if (instruction instanceof Move) {
-            unitQuantityChecker.setNext(new AccessibleChecker(board, source, dest));
+            FoodResourceChecker foodResourceChecker = new FoodResourceChecker(board, source, dest);
+            AccessibleChecker accessibleChecker = new AccessibleChecker(board, source, dest, foodResourceChecker);
+            unitQuantityChecker.setNext(accessibleChecker);
         } else if (instruction instanceof Attack) {
             if (source.getOwner().equals(dest.getOwner())) {
                 System.out.println("Attack failed because of having same owner. Source: " + source.getName() + ", Destination: " + dest.getName());

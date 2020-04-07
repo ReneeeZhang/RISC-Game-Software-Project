@@ -1,6 +1,8 @@
 
-package shared;
+package shared.instructions;
+
 import shared.*;
+import shared.instructions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,8 @@ public class AttackTest {
     when(r2.getNumBaseUnit()).thenReturn(1);
     when(r3.getNumBaseUnit()).thenReturn(1);
 
+    when(r1.numUnitWithLevel(0)).thenReturn(1);
+
     List<Region> regions = Arrays.asList(r2, r3);
     Board boardMock = mock(Board.class);
     when(boardMock.getNeighbor("r1")).thenReturn(regions);
@@ -41,11 +45,11 @@ public class AttackTest {
     //when(boardMock.attack("r1", "r3", 1));
     
 
-    Attack a1 = new Attack("r1", "r3", 1);
+    Attack a1 = new Attack("r1", "r3", 0, 1);
     assertEquals(true, a1.isValid(boardMock));
     a1.execute(boardMock);
 
-     Attack a2 = new Attack("r1", "r2", 1);
+    Attack a2 = new Attack("r1", "r2", 0, 1);
     assertEquals(false, a2.isValid(boardMock));
     a2.execute(boardMock);
 

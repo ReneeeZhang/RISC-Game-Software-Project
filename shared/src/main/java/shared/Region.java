@@ -8,10 +8,18 @@ public interface Region {
   public String getOwner();
 
   public String getColor();
-  
-  public List<Unit> sendUnit(int num);
 
-  public void receiveUnit(List<Unit> toReceive);
+  public int getSize();
+
+  public int getResourceProduction();
+
+  public String getInfo();
+  
+  public List<BaseUnit> sendUnit(int num);
+
+  public List<BaseUnit> sendUnit(int level, int num);
+
+  public void receiveUnit(List<BaseUnit> toReceive);
 
   public void removeUnit(int num);
 
@@ -23,10 +31,17 @@ public interface Region {
 
   public void dispatch(String adjDest, int num);
 
-  public List<Unit> getBorderCamp(String dest);
+  public void dispatch(String adjDest, int level, int num);
+
+  public List<BaseUnit> getMajorCamp();
+  
+  public List<BaseUnit> getBorderCamp(String dest);
 
   public void initOneBorderCamp(String neighbor);
   
   public void autoIncrement();
 
+  public void upgradeUnit(int oldLevel, int newLevel, int numUnit);
+
+  public int numUnitWithLevel(int level);
 }

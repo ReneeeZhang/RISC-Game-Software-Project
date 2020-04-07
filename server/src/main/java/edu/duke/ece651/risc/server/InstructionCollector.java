@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 
-import shared.Instruction;
+import shared.instructions.*;
 
 public class InstructionCollector {
   private Selector selector;
@@ -50,12 +50,12 @@ public class InstructionCollector {
   private List<Instruction> recvInstructions(SocketChannel sc) throws IOException {
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    List<Instruction> ins = new ArrayList<Instruction>();
     try {
-      ins = (ArrayList<Instruction>) deserial.readObject();
+      List<Instruction> ins = (ArrayList<Instruction>) deserial.readObject();
+      return ins;
     } catch (ClassNotFoundException e) {
       System.out.println(e);
+      return new ArrayList<Instruction>();
     }
-    return ins;
   }
 }

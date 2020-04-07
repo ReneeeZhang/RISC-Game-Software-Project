@@ -22,10 +22,6 @@ public class LoserCheckerTest {
         when(r1.getOwner()).thenReturn("A");
         when(r2.getOwner()).thenReturn("A");
         when(r3.getOwner()).thenReturn("A");
-        //name
-        when(r1.getName()).thenReturn("r1");
-        when(r2.getName()).thenReturn("r2");
-        when(r3.getName()).thenReturn("r3");
 
         List<Region> regions = Arrays.asList(r1, r2, r3);
         Board boardMock = mock(Board.class);
