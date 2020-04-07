@@ -6,9 +6,12 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 import shared.GameBoard;
+import shared.instructions.Attack;
 import shared.instructions.Instruction;
+import shared.instructions.Move;
 
 public class FakeClient implements Runnable {
   public FakeClient() {
@@ -28,9 +31,13 @@ public class FakeClient implements Runnable {
       while (true) {
         deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
-        //System.out.println(b.draw());
         serial = new ObjectOutputStream(s.getOutputStream());
-        serial.writeObject(new ArrayList<Instruction>());
+        Instruction move = new Move("Perkins", "Teer", 0, 2);
+        Instruction attack = new Attack("Teer", "Wilson", 0, 1);
+        List<Instruction> ins = new ArrayList<Instruction>();
+        ins.add(move);
+        ins.add(attack);
+        serial.writeObject(ins);
       }
     } catch (Exception e) {
       System.out.println(e);
