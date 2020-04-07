@@ -221,8 +221,10 @@ public class ClientGUI extends Application {
       window.setScene(loseScene());
     }
    
-    
+    VBox rooms = new VBox();
     HBox roomChange = roomBox();
+    Label roomLabel = new Label("You are in Room: " + (currentRoom+1));
+    rooms.getChildren().addAll(roomChange, roomLabel);
     
     // Instruction selection
     VBox insChange = new VBox();
@@ -260,7 +262,7 @@ public class ClientGUI extends Application {
     // button actions
     actionButton.setOnAction(e -> {
         // Move
-        if (insChoice.getValue().equals("Move")) {
+        if (insChoice.getValue().equals("Move") && levelText.getText() != null && numText.getText() != null) {
           Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, moveIns)) {
@@ -274,7 +276,7 @@ public class ClientGUI extends Application {
               
         }
         // Attack
-        else if (insChoice.getValue().equals("Attack")) {
+        else if (insChoice.getValue().equals("Attack") && levelText.getText() != null && numText.getText() != null) {
           Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, attackIns)) {
@@ -286,9 +288,11 @@ public class ClientGUI extends Application {
           }
         }
         // Upgrade unit
-        else if (insChoice.getValue().equals("Upgrade Units")) {
+        else if (insChoice.getValue().equals("Upgrade Units") && levelText.getText() != null
+                 && newLevelText.getText() != null && numText.getText() != null) {
           UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
+          System.out.println("UUUUUUUUUU unit");
           if(client.isValidInst(currentRoom, upUnitIns)) {
             insList.add(upUnitIns);
             Popup.showInfo("instruction added!");
@@ -298,9 +302,11 @@ public class ClientGUI extends Application {
           }
         }
         // Upgrade technology
-        else if (insChoice.getValue().equals("Upgrade Units")) {
+        else if (insChoice.getValue().equals("Upgrade Technology") && levelText.getText() != null
+                 && newLevelText.getText() != null) {
           TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()));
+          System.out.println("UUUUUUUUUU tech");
           if(client.isValidInst(currentRoom, upTechIns)) {
             insList.add(upTechIns);
             Popup.showInfo("instruction added!");
@@ -309,8 +315,10 @@ public class ClientGUI extends Application {
             Popup.showInfo("invalid instruction!");
           }
         }
-
-        
+        // Not filled completely
+        else {
+          Popup.showInfo("You need to fill all required info!");
+        } 
     });
 
     // commit instructions
@@ -333,7 +341,7 @@ public class ClientGUI extends Application {
 
     // Overall layout
     BorderPane borderPane = new BorderPane();
-    borderPane.setTop(roomChange);
+    borderPane.setTop(rooms);
     borderPane.setRight(allIns);
     borderPane.setCenter(mapScene(board));
     Scene scene = new Scene(borderPane, 800, 600);
@@ -464,16 +472,26 @@ public class ClientGUI extends Application {
         ex.printStackTrace();
       }
     });
-    button1.setOnAction(e -> {
+    button2.setOnAction(e -> {
       try {
-        window.setScene(gameScene(1));
+        if (activeGames > 1) {
+          window.setScene(gameScene(1));
+        }
+        else {
+          Popup.showInfo("You need start a new game to access this room");
+        }
       } catch (IOException ex) {
         ex.printStackTrace();
       }
     });
-    button1.setOnAction(e -> {
+    button3.setOnAction(e -> {
       try {
-        window.setScene(gameScene(2));
+        if (activeGames > 2) {
+          window.setScene(gameScene(2));
+        }
+        else {
+          Popup.showInfo("You need start a new game to access this room");
+        }
       } catch (IOException ex) {
         ex.printStackTrace();
       }
@@ -483,9 +501,8 @@ public class ClientGUI extends Application {
         if (activeGames < 3) {
           // start new game
           try {
-            window.setScene(numPlayersScene());
-            activeGames+=1;
             client.joinGame();
+            window.setScene(numPlayersScene());
           }
           catch (IOException ex) {
             ex.printStackTrace();
@@ -495,15 +512,6 @@ public class ClientGUI extends Application {
           Popup.showInfo("You can have 3 games at most!");
         }
       });
-
-    // button usability
-    if (activeGames == 1) {
-      button2.setDisable(true);
-      button3.setDisable(true);
-    }
-    else if (activeGames == 2) {
-      button3.setDisable(true);
-    }
     
     
     roomChange.getChildren().addAll(button1, button2, button3, button4);
