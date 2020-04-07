@@ -21,6 +21,7 @@ public class Client extends Connector {
 
   public void joinGame() throws IOException {
     GameJoiner gj = new GameJoiner(hostname, ccPort);
+    System.out.println("ccport =============" + ccPort);
     matches.add(gj);
   }
 

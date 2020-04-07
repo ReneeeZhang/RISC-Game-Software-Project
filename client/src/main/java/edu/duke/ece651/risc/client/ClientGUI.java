@@ -128,13 +128,13 @@ public class ClientGUI extends Application {
   public Scene startScene() {
     Button b = new Button("Start a new game");
     b.setOnAction(e -> {
-  
+      
       try {
         client.joinGame();
-        window.setScene(numPlayersScene());
       } catch (IOException ex) {
         ex.printStackTrace();
       }
+      window.setScene(numPlayersScene());
       });
     b.setAlignment(Pos.CENTER);
     StackPane pane = new StackPane();
@@ -176,9 +176,6 @@ public class ClientGUI extends Application {
   }
   
   public Scene numPlayersScene() {
-    // Get player name and board
-    String pName = new String();
-    Board board = new GameBoard();
 
     // display
     Label numPlayers = new Label("Select number of players in this game:");
@@ -189,31 +186,40 @@ public class ClientGUI extends Application {
     // button action
     button.setOnAction(e -> {
       try {
-        client.send(numChoice.getValue());
-        window.setScene(gameScene(activeGames));
+        client.sendViaChannel(activeGames, numChoice.getValue());
+        System.out.println("send :" + numChoice.getValue());
       } catch (IOException ex) {
         ex.printStackTrace();
       } catch (Exception ex1) {
         ex1.printStackTrace();
       }
+
+      try {
+        // Get player name and board
+        String pName = new String();
+        Board board = new GameBoard();
+        
+        // add name to list
+        pName = (String) client.receiveViaChannel(activeGames);
+        System.out.println("receive player name: " + pName);
+        playerNames.add(pName);
+        // init game
+        board = (GameBoard) client.receiveViaChannel(activeGames);
+        System.out.println("receive board: ");
+
+        client.initMatch(activeGames, playerNames.get(activeGames), board);
+        System.out.println("game inited");
+        // increment active game count
+        window.setScene(gameScene(activeGames));
+        activeGames+=1;
+        System.out.println("Avtive games = " + activeGames);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      } catch (ClassNotFoundException ex1) {
+        ex1.printStackTrace();
+      }
     });
 
-    try {
-      // add name to list
-      pName = (String) client.receiveViaChannel(activeGames);
-      playerNames.add(pName);
-      // init game
-      board = (GameBoard) client.receiveViaChannel(activeGames);
-      client.initMatch(activeGames, playerNames.get(activeGames), board);
-
-      // increment active game count
-      activeGames+=1;
-      
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    } catch (ClassNotFoundException ex1) {
-      ex1.printStackTrace();
-    }
     
     VBox box = new VBox();
     box.getChildren().addAll(numPlayers, numChoice, button);
@@ -224,25 +230,16 @@ public class ClientGUI extends Application {
   }
 
   public Scene gameScene(int currentRoom) {
-    Board board = new GameBoard();
-    try {
-      board = (GameBoard) client.receiveViaChannel(currentRoom);
-      client.initMatch(currentRoom, playerNames.get(currentRoom), board);
-
-      // check win/lose
-      if (client.hasWon(currentRoom)) {
-        window.setScene(winScene());
-      }
-      else if (client.hasLost(currentRoom)) {
-        window.setScene(loseScene());
-      }
-        
-      
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    } catch (ClassNotFoundException ex1) {
-      ex1.printStackTrace();
+    Board board = client.getBoard(currentRoom);
+    
+    // check win/lose
+    if (client.hasWon(currentRoom)) {
+      window.setScene(winScene());
     }
+    else if (client.hasLost(currentRoom)) {
+      window.setScene(loseScene());
+    }
+   
     
     HBox roomChange = roomBox();
     
@@ -277,28 +274,40 @@ public class ClientGUI extends Application {
     Button actionButton = new Button("Add action");
     Button doneButton = new Button("Done");
 
+    ArrayList<Instruction> insList = new ArrayList<>();
+
     // button actions
     actionButton.setOnAction(e -> {
         // Move
         if (insChoice.getValue().equals("Move")) {
           Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
+          if(client.isValidInst(currentRoom, moveIns)) {
+              insList.add(moveIns);
+          }
+              
         }
         // Attack
         else if (insChoice.getValue().equals("Attack")) {
           Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
+          if(client.isValidInst(currentRoom, attackIns)) {
+            insList.add(attackIns);
+          }
         }
         // Upgrade unit
         else if (insChoice.getValue().equals("Upgrade Units")) {
           UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
+          client.isValidInst(currentRoom, upUnitIns);
         }
         // Upgrade technology
         else if (insChoice.getValue().equals("Upgrade Units")) {
           TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()));
+          client.isValidInst(currentRoom, upTechIns);
         }
+
         
     });
 
@@ -363,7 +372,7 @@ public class ClientGUI extends Application {
 
     button1.setOnAction(e -> {
       try {
-          window.setScene(watchScene(roomBox()));
+          window.setScene(watchScene());
       }
       catch(Exception ex) {
         ex.printStackTrace();
@@ -396,7 +405,8 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene watchScene(HBox roomChange) {
+  public Scene watchScene() {
+    HBox roomChange = roomBox();
     Button button = new Button("Exit");
     button.setOnAction(e -> {
       try {
@@ -406,6 +416,7 @@ public class ClientGUI extends Application {
       }
     });
     BorderPane borderPane = new BorderPane();
+    borderPane.setLeft(roomChange);
     borderPane.setRight(button);
     Scene scene = new Scene(borderPane, 800, 600);
     return scene;

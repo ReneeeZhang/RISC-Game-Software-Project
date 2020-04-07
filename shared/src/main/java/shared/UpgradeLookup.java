@@ -1,12 +1,15 @@
 package shared;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
 import javafx.util.Pair;
 
-public class UpgradeLookup {
+public class UpgradeLookup implements Serializable{
   private HashMap<Integer, Integer> upMapTech;
   private HashMap<Integer, Pair<Integer, Integer>> upMapUnit;
+
+  private static final long serialVersionUID = 923749355;
 
   public UpgradeLookup() {
     // tech upgrade: (level-- cost)
