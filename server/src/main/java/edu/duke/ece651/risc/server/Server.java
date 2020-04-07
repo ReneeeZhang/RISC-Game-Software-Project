@@ -21,8 +21,6 @@ public class Server {
     this.games = new HashMap<Integer, GameMaster>();
     for (int i = 2; i < 6; i++) {
       games.put(i, new GameMaster(i));
-      //games.put(i, new ArrayList<GameMaster>());
-      //games.get(i).add(new GameMaster(i));
     }
   }
  
