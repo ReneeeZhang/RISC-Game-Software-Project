@@ -1,5 +1,8 @@
 package edu.duke.ece651.risc.client;
 
+
+import javafx.fxml.FXMLLoader;
+
 import shared.*;
 import shared.instructions.*;
 
@@ -7,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,20 +20,18 @@ import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -37,7 +39,7 @@ import javafx.stage.Stage;
 
 public class ClientGUI extends Application {
 
-  Stage window;
+  static Stage window;
   Client client;
   int activeGames;
   ArrayList<String> playerNames;
@@ -69,8 +71,15 @@ public class ClientGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
+//
+//    window.setScene(gameScene(roomBox()));
 
-    window.setScene(loginScene());
+    Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+
+
+    Scene scene = new Scene(root, 900, 600);
+    window.setScene(scene);
+
     window.show();
   }
 
@@ -125,6 +134,8 @@ public class ClientGUI extends Application {
     return new Scene(layout, 800, 600);
   }
 
+
+
   public Scene startScene() {
     Button b = new Button("Start a new game");
     b.setOnAction(e -> {
@@ -143,37 +154,7 @@ public class ClientGUI extends Application {
     return scene;
   }
   
-  public Node Map() {
-    //Creating an image
-    Image image = new Image(getClass().getResourceAsStream("/Map_2_players.jpg"));
 
-    //Setting the image view
-    ImageView imageView = new ImageView(image);
-
-    //Setting the position of the image
-    imageView.setX(20);
-    imageView.setY(50);
-
-    //setting the fit height and width of the image view
-    imageView.setFitHeight(300);
-    imageView.setFitWidth(500);
-
-    //Setting the preserve ratio of the image view
-    imageView.setPreserveRatio(true);
-
-    //Drawing a Circle
-    Circle circle = new Circle();
-
-    //Setting the properties of the circle
-    circle.setCenterX(250.0f);
-    circle.setCenterY(122.0f);
-    circle.setRadius(10.0f);
-    circle.setFill(Color.BLUE);
-    //Creating a Group object
-    Group root = new Group(imageView, circle);
-
-    return root;
-  }
   
   public Scene numPlayersScene() {
     // Get player name and board
@@ -181,6 +162,7 @@ public class ClientGUI extends Application {
     Board board = new GameBoard();
 
     // display
+
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
     numChoice.getItems().addAll(2, 3, 4, 5);
@@ -312,8 +294,6 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
-    //map
-    borderPane.setCenter(Map());
 
     Scene scene = new Scene(borderPane, 800, 600);
 
@@ -455,6 +435,12 @@ public class ClientGUI extends Application {
     
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
+  }
+
+  public static void switchToMain() throws IOException {
+    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
+    Scene scene = new Scene(root, 900, 600);
+    window.setScene(scene);
   }
   
 }
