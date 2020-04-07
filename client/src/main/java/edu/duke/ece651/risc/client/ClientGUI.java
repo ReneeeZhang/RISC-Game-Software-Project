@@ -207,6 +207,8 @@ public class ClientGUI extends Application {
       client.initMatch(activeGames - 1, playerNames.get(activeGames - 1), board);
     } catch (IOException ex) {
       ex.printStackTrace();
+    } catch (ClassNotFoundException ex1) {
+      ex1.printStackTrace();
     }
     
     VBox box = new VBox();
@@ -271,7 +273,6 @@ public class ClientGUI extends Application {
     Button doneButton = new Button("Done");
 
     // button actions
-    
     actionButton.setOnAction(e -> {
         // Move
         if (insChoice.getValue().equals("Move")) {
@@ -285,15 +286,15 @@ public class ClientGUI extends Application {
         }
         // Upgrade unit
         else if (insChoice.getValue().equals("Upgrade Units")) {
-          UnitUpgrade upUnitIns = new UnitUpgrade(playerName, srcChoice.getValue(), Integer.parseInt(levelText.getText()),
+          UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
         }
         // Upgrade technology
         else if (insChoice.getValue().equals("Upgrade Units")) {
-          TechUpgrade upTechIns = new TechUpgrade(playerName, Integer.parseInt(levelText.getText()),
+          TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()));
         }
-        //////////////////////////////////////////////////////// player name!!!!!!!!!!!!!!!!!!!!! ////////////////////////
+        
     });
 
     // All instruction related display
