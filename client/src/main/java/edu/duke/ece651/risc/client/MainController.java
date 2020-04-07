@@ -30,7 +30,7 @@ public class MainController {
     public void createUpgrade() {
         System.out.println("Upgrade");
     }
-@FXML
+    @FXML
     public void doDone() {
         System.out.println("Done");
     }
