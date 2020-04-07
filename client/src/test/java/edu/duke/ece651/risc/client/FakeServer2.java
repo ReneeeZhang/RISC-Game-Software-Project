@@ -12,11 +12,11 @@ import shared.Board;
 import shared.Initializer;
 import shared.Region;
 
-public class FakeServer implements Runnable {
+public class FakeServer2 implements Runnable {
   private ServerSocketChannel ssc;
   private Socket socket;
 
-  public FakeServer(int port) {
+  public FakeServer2(int port) {
     try {
       System.out.println("Constructing fake server");
       ssc = ServerSocketChannel.open();
@@ -35,11 +35,7 @@ public class FakeServer implements Runnable {
       System.out.println("accepted");
       this.socket = sc.socket();
       int num = (Integer) receive();
-      System.out.println(num);
-      send("Player1");
-      Initializer init = new Initializer(2);
-      Board board = init.initGame();
-      send(board);
+      send("good");
       receive();
       /*
       serial = new ObjectOutputStream(s.getOutputStream());
@@ -92,5 +88,4 @@ public class FakeServer implements Runnable {
     ObjectOutputStream serial = new ObjectOutputStream(socket.getOutputStream());
     serial.writeObject(obj);
   }
-
 }
