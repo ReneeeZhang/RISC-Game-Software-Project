@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.Map"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.risc.client.TwoPlayerMapController">
+   <children>
+      <ImageView fitHeight="372.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Map_2_players.jpg" />
+         </image>
+      </ImageView>
+      <Circle fx:id="Fitzpatrick" fill="DODGERBLUE" layoutX="185.0" layoutY="241.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Bostock" fill="DODGERBLUE" layoutX="504.0" layoutY="72.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Teer" fill="DODGERBLUE" layoutX="458.0" layoutY="178.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Hudson" fill="DODGERBLUE" layoutX="113.0" layoutY="72.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Wilson" fill="DODGERBLUE" layoutX="334.0" layoutY="89.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Perkins" fill="DODGERBLUE" layoutX="334.0" layoutY="255.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</Group>

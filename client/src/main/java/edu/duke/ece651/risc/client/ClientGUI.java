@@ -1,6 +1,7 @@
 package edu.duke.ece651.risc.client;
 
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 import shared.*;
@@ -71,14 +72,13 @@ public class ClientGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
-//
-//    window.setScene(gameScene(roomBox()));
 
-    //Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-
-    //Scene scene = new Scene(root, 900, 600);
+//    HBox roomChange = roomBox();
+//    BorderPane borderPane = new BorderPane();
+//    borderPane.setTop(roomChange);
+//    borderPane.setCenter(mapScene(new GameBoard()));
+//    window.setScene(new Scene(borderPane, 900, 600));
     window.setScene(loginScene());
-
     window.show();
   }
 
@@ -210,7 +210,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene gameScene(int currentRoom) {
+  public Scene gameScene(int currentRoom) throws IOException {
     Board board = client.getBoard(currentRoom);
     
     // check win/lose
@@ -335,12 +335,22 @@ public class ClientGUI extends Application {
     BorderPane borderPane = new BorderPane();
     borderPane.setTop(roomChange);
     borderPane.setRight(allIns);
-
+    borderPane.setCenter(mapScene(board));
     Scene scene = new Scene(borderPane, 800, 600);
 
     return scene;
   }
 
+  public Node mapScene(Board board) throws IOException {
+    URL resource = getClass().getResource("/fxml/twoPlayerMap.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    Parent load = fxmlLoader.load();
+    TwoPlayerMapController controller = fxmlLoader.getController();
+    controller.setColor(board);
+
+    return load;
+  }
                            
   public Scene winScene() {
     HBox roomChange = roomBox();
@@ -447,9 +457,27 @@ public class ClientGUI extends Application {
     Button button4 = new Button("Start new game");
 
     // action
-    button1.setOnAction(e -> window.setScene(gameScene(0)));
-    button1.setOnAction(e -> window.setScene(gameScene(1)));
-    button1.setOnAction(e -> window.setScene(gameScene(2)));
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(gameScene(0));
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(gameScene(1));
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(gameScene(2));
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
     
     button4.setOnAction(e -> {
         if (activeGames < 3) {
@@ -482,10 +510,10 @@ public class ClientGUI extends Application {
     return roomChange;
   }
 
-  public static void switchToMain() throws IOException {
-    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
-    Scene scene = new Scene(root, 900, 600);
-    window.setScene(scene);
-  }
+//  public static void switchToMain() throws IOException {
+//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
+//    Scene scene = new Scene(root, 900, 600);
+//    window.setScene(scene);
+//  }
   
 }
