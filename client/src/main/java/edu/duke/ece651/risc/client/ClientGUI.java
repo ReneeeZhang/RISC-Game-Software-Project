@@ -128,10 +128,10 @@ public class ClientGUI extends Application {
   public Scene startScene() {
     Button b = new Button("Start a new game");
     b.setOnAction(e -> {
-      window.setScene(numPlayersScene());
-      activeGames+=1;
+  
       try {
         client.joinGame();
+        window.setScene(numPlayersScene());
       } catch (IOException ex) {
         ex.printStackTrace();
       }
@@ -190,7 +190,7 @@ public class ClientGUI extends Application {
     button.setOnAction(e -> {
       try {
         client.send(numChoice.getValue());
-        window.setScene(gameScene(activeGames - 1));
+        window.setScene(gameScene(activeGames));
       } catch (IOException ex) {
         ex.printStackTrace();
       } catch (Exception ex1) {
@@ -203,8 +203,12 @@ public class ClientGUI extends Application {
       pName = (String) client.receiveViaChannel(activeGames);
       playerNames.add(pName);
       // init game
-      board = (GameBoard) client.receiveViaChannel(activeGames - 1);
-      client.initMatch(activeGames - 1, playerNames.get(activeGames - 1), board);
+      board = (GameBoard) client.receiveViaChannel(activeGames);
+      client.initMatch(activeGames, playerNames.get(activeGames), board);
+
+      // increment active game count
+      activeGames+=1;
+      
     } catch (IOException ex) {
       ex.printStackTrace();
     } catch (ClassNotFoundException ex1) {
@@ -252,15 +256,16 @@ public class ClientGUI extends Application {
     // Instruction specs
     Label srcLabel = new Label("Source:");
     ChoiceBox<String> srcChoice = new ChoiceBox<>();
-    // for (String regionName: board.getAllRegionNames(playerName)) {
-    //   srcChoice.getItems().add(regionName);
-    // }
+    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+      srcChoice.getItems().add(regionName);
+    }
     
     Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
-    // for (String regionName: board.getAllRegionNames(playerName)) {
-    //   destChoice.getItems().add(regionName);
-    // }
+    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+      destChoice.getItems().add(regionName);
+    }
+    
     Label levelLabel = new Label("Level to operate on:");
     TextField levelText = new TextField();
     Label newLevelLabel = new Label("Level to upgrade to:");

@@ -56,6 +56,15 @@ public class GameBoard implements Board, Drawable, Serializable {
   public Set<String> getAllRegionNames() {
     return new HashSet<String>(regionNameMap.keySet());
   }
+
+  @Override
+  public Set<String> getRegionNames(String owner) {
+    Set<String> ans = new HashSet<String>();
+    for (Region r : playerRegionMap.get(owner)) {
+      ans.add(r.getName());
+    }
+    return ans;
+  }
   
   @Override
   public List<Region> getAllRegions() {

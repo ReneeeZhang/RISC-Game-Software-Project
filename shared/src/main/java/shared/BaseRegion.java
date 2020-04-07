@@ -85,9 +85,11 @@ public class BaseRegion implements Region, Serializable {
       }
       if (bu.getCurrLevel() == level) {
         toSend.add(bu);
-        majorCamp.remove(bu);
         --num;
       }
+    }
+    for (BaseUnit bu : toSend) {
+      majorCamp.remove(bu);
     }
     return toSend;
   }
@@ -128,9 +130,11 @@ public class BaseRegion implements Region, Serializable {
       }
       if (bu.getCurrLevel() == level) {
         borderCamp.add(bu);
-        majorCamp.remove(bu);
         --num;
       }
+    }
+    for (BaseUnit bu : borderCamp) {
+       majorCamp.remove(bu);
     }
   }
 
