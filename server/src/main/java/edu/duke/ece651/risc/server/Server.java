@@ -29,11 +29,13 @@ public class Server {
  
   public static void main(String[] args) {
     try {
-      Scanner config = new Scanner(new File("/src/resources/config.txt"));
-      Server server = new Server(config.nextInt());
-      AuthServer auth = new AuthServer(config.nextInt());
+      //Scanner config = new Scanner(new File("/src/resources/config.txt"));
+      AuthServer auth = new AuthServer(6666);
+
       Thread authServer = new Thread(auth);
       authServer.start();
+      Server server = new Server(7777);
+      
       while (true) {
         SocketChannel sc = server.accept();
         int playerNum = server.getPlayerNum(sc);
