@@ -35,6 +35,8 @@ public class FakeServer2 implements Runnable {
       System.out.println("accepted");
       this.socket = sc.socket();
       int num = (Integer) receive();
+      send("good");
+      receive();
       /*
       serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(board);
