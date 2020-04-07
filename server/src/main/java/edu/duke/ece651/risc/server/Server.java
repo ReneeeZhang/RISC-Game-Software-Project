@@ -7,45 +7,34 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Server {
   private ServerSocketChannel serverSocketChannel;
-  private Map<Integer, List<GameMaster>> games;
+  private Map<Integer, GameMaster> games;
 
   public Server(int port) throws IOException {
     this.serverSocketChannel = ServerSocketChannel.open();
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
-    this.games = new HashMap<Integer, List<GameMaster>>();
+    this.games = new HashMap<Integer, GameMaster>();
     for (int i = 2; i < 6; i++) {
-      games.put(i, new ArrayList<GameMaster>());
-      games.get(i).add(new GameMaster(i));
+      games.put(i, new GameMaster(i));
+      //games.put(i, new ArrayList<GameMaster>());
+      //games.get(i).add(new GameMaster(i));
     }
   }
  
   public static void main(String[] args) {
     try {
-      //Scanner config = new Scanner(new File("/src/resources/config.txt"));
-      AuthServer auth = new AuthServer(6666);
-
+      Scanner config = new Scanner(new File("/src/resources/config.txt"));
+      AuthServer auth = new AuthServer(config.nextInt());
       Thread authServer = new Thread(auth);
       authServer.start();
-      Server server = new Server(7777);
-      
+      Server server = new Server(config.nextInt());
       while (true) {
-        SocketChannel sc = server.accept();
-        int playerNum = server.getPlayerNum(sc);
-        System.out.println("Requesting a game for " + playerNum);
-        GameMaster gm = server.getGameFor(playerNum);
-        gm.addPlayer(sc);
-        if (gm.isFull()) {
-          Thread gameMaster = new Thread(gm);
-          gameMaster.start();
-        }
+        server.handleRequest();
       }
     } catch (IOException e) {
       System.out.println(e);
@@ -54,10 +43,6 @@ public class Server {
     }
   }
 
-  public SocketChannel accept() throws IOException {
-    return serverSocketChannel.accept();
-  }
-  
   public int getPlayerNum(SocketChannel sc) throws IOException, ClassNotFoundException{
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
@@ -66,12 +51,22 @@ public class Server {
   }
 
   public GameMaster getGameFor(int playerNum) {
-    List<GameMaster> gameList = games.get(playerNum);
-    GameMaster game = gameList.get(gameList.size() - 1);
+    GameMaster game = games.get(playerNum);
     if (game.isFull()) {
       game = new GameMaster(playerNum);
-      games.get(playerNum).add(game);
+      games.put(playerNum, game);
     }
     return game;
+  }
+
+  public void handleRequest() throws IOException, ClassNotFoundException{
+    SocketChannel sc = serverSocketChannel.accept();
+    int playerNum = getPlayerNum(sc);
+    GameMaster gm = getGameFor(playerNum);
+    gm.addPlayer(sc);
+    if (gm.isFull()) {
+      Thread gameMaster = new Thread(gm);
+      gameMaster.start();
+    }
   }
 }

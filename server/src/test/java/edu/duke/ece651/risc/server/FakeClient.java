@@ -18,9 +18,10 @@ public class FakeClient implements Runnable {
     try {
       Thread.sleep(50);
       SocketChannel sc = SocketChannel.open();
-      sc.connect(new InetSocketAddress("localhost", 6666));
-      /*
+      sc.connect(new InetSocketAddress("localhost", 7777));
       Socket s = sc.socket();
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(2);
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String name = (String) deserial.readObject();
       System.out.println(name);
@@ -28,10 +29,9 @@ public class FakeClient implements Runnable {
         deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
         //System.out.println(b.draw());
-        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+        serial = new ObjectOutputStream(s.getOutputStream());
         serial.writeObject(new ArrayList<Instruction>());
       }
-      */
     } catch (Exception e) {
       System.out.println(e);
     }

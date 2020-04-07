@@ -15,6 +15,7 @@ import java.util.Set;
 
 import shared.Board;
 import shared.Initializer;
+import shared.Player;
 import shared.Region;
 import shared.checkers.Checker;
 import shared.checkers.LoserChecker;
@@ -49,9 +50,7 @@ public class GameMaster implements Runnable {
     } catch (IOException e) {
       System.out.println(e);
     }
-    int cnt = 1;
     while (true) {
-      System.out.println("Round " + cnt + " Starts!");
       try{
         sendBoardToClients();
         for (SocketChannel sc :playerSockets) {
@@ -81,8 +80,7 @@ public class GameMaster implements Runnable {
       } catch (IOException e) {
         System.out.println(e);
       }
-      //autoIncrement();
-      cnt++;
+      autoIncrement();
     }
   }
 
@@ -157,7 +155,14 @@ public class GameMaster implements Runnable {
     for (Region r : board.getAllRegions()) {
       r.autoIncrement();
     }
-    //for player:
-    //  autoIncrement() resource
+    for (String player : board.getAllOwners()) {
+      Player p = board.getPlayer(player);
+      int resource = 0;
+      for (Region r : board.getAllRegions(player)) {
+        resource += r.getResourceProduction();
+      }
+      p.increaseFood(resource);
+      p.increaseTech(resource);
+    }
   }
 }
