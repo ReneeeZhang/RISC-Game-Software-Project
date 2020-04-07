@@ -74,11 +74,10 @@ public class ClientGUI extends Application {
 //
 //    window.setScene(gameScene(roomBox()));
 
-    Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+    //Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
 
-
-    Scene scene = new Scene(root, 900, 600);
-    window.setScene(scene);
+    //Scene scene = new Scene(root, 900, 600);
+    window.setScene(loginScene());
 
     window.show();
   }
@@ -266,7 +265,12 @@ public class ClientGUI extends Application {
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, moveIns)) {
               insList.add(moveIns);
+              Popup.showInfo("instruction added!");
           }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
+              
               
         }
         // Attack
@@ -275,24 +279,52 @@ public class ClientGUI extends Application {
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, attackIns)) {
             insList.add(attackIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
           }
         }
         // Upgrade unit
         else if (insChoice.getValue().equals("Upgrade Units")) {
           UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
-          client.isValidInst(currentRoom, upUnitIns);
+          if(client.isValidInst(currentRoom, upUnitIns)) {
+            insList.add(upUnitIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
         }
         // Upgrade technology
         else if (insChoice.getValue().equals("Upgrade Units")) {
           TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()));
-          client.isValidInst(currentRoom, upTechIns);
+          if(client.isValidInst(currentRoom, upTechIns)) {
+            insList.add(upTechIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
         }
 
         
     });
 
+    // commit instructions
+    doneButton.setOnAction(e -> {
+      try {
+        client.sendViaChannel(currentRoom, insList);
+      //System.out.println("send :" + numChoice.getValue());
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+     
+    });
+
+        
     // All instruction related display
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
@@ -309,6 +341,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
+                           
   public Scene winScene() {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
@@ -343,6 +376,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
+                           
   public Scene loseScene() {
     HBox roomChange = roomBox();
     VBox loseOption = new VBox();
