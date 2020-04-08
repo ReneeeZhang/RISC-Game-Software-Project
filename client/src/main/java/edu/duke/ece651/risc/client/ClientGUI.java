@@ -1,6 +1,7 @@
 package edu.duke.ece651.risc.client;
 
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 import shared.*;
@@ -8,6 +9,7 @@ import shared.instructions.*;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.print.PrintColor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -71,15 +73,13 @@ public class ClientGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
-//
-//    window.setScene(gameScene(roomBox()));
 
-    Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-
-
-    Scene scene = new Scene(root, 900, 600);
-    window.setScene(scene);
-
+//    HBox roomChange = roomBox();
+//    BorderPane borderPane = new BorderPane();
+//    borderPane.setTop(roomChange);
+//    borderPane.setCenter(mapScene(new GameBoard()));
+//    window.setScene(new Scene(borderPane, 900, 600));
+    window.setScene(loginScene());
     window.show();
   }
 
@@ -159,7 +159,6 @@ public class ClientGUI extends Application {
   public Scene numPlayersScene() {
 
     // display
-
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
     numChoice.getItems().addAll(2, 3, 4, 5);
@@ -211,8 +210,12 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene gameScene(int currentRoom) {
+  public Scene gameScene(int currentRoom) throws IOException {
+    
     Board board = client.getBoard(currentRoom);
+    client.setBoard(currentRoom, board);
+
+    String pname = playerNames.get(currentRoom);
     
     // check win/lose
     if (client.hasWon(currentRoom)) {
@@ -222,8 +225,14 @@ public class ClientGUI extends Application {
       window.setScene(loseScene());
     }
    
-    
+    VBox rooms = new VBox();
     HBox roomChange = roomBox();
+    Label roomLabel = new Label("Name: " + pname + "\n"
+                                + "You are in Room: " + (currentRoom+1) + "\n"
+                                + "Level: " + board.getPlayer(pname).getCurrLevel() + "\n"
+                                + "Food resource: " + board.getPlayer(pname).getFoodAmount() + "\n"
+                                + "Technology resource: " + board.getPlayer(pname).getTechAmount());
+    rooms.getChildren().addAll(roomChange, roomLabel);
     
     // Instruction selection
     VBox insChange = new VBox();
@@ -235,13 +244,13 @@ public class ClientGUI extends Application {
     // Instruction specs
     Label srcLabel = new Label("Source:");
     ChoiceBox<String> srcChoice = new ChoiceBox<>();
-    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+    for (String regionName: board.getRegionNames(pname)) {
       srcChoice.getItems().add(regionName);
     }
     
     Label destLabel = new Label("Destination:");
     ChoiceBox<String> destChoice = new ChoiceBox<>();
-    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+    for (String regionName: board.getAllRegionNames()) {
       destChoice.getItems().add(regionName);
     }
     
@@ -261,54 +270,154 @@ public class ClientGUI extends Application {
     // button actions
     actionButton.setOnAction(e -> {
         // Move
-        if (insChoice.getValue().equals("Move")) {
+        if (insChoice.getValue().equals("Move") && levelText.getText() != null && numText.getText() != null) {
           Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, moveIns)) {
               insList.add(moveIns);
+              Popup.showInfo("instruction added!");
           }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
+              
               
         }
         // Attack
-        else if (insChoice.getValue().equals("Attack")) {
+        else if (insChoice.getValue().equals("Attack") && levelText.getText() != null && numText.getText() != null) {
           Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, attackIns)) {
             insList.add(attackIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
           }
         }
         // Upgrade unit
-        else if (insChoice.getValue().equals("Upgrade Units")) {
-          UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
+        else if (insChoice.getValue().equals("Upgrade Units") && levelText.getText() != null
+                 && newLevelText.getText() != null && numText.getText() != null) {
+          UnitUpgrade upUnitIns = new UnitUpgrade(pname, srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
-          client.isValidInst(currentRoom, upUnitIns);
+          if(client.isValidInst(currentRoom, upUnitIns)) {
+            insList.add(upUnitIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
         }
         // Upgrade technology
-        else if (insChoice.getValue().equals("Upgrade Units")) {
-          TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
-                                                  Integer.parseInt(newLevelText.getText()));
-          client.isValidInst(currentRoom, upTechIns);
+        else if (insChoice.getValue().equals("Upgrade Technology") && levelText.getText() != null
+                 && newLevelText.getText() != null) {
+      
+          TechUpgrade upTechIns = new TechUpgrade(pname, board.getPlayer(pname).getCurrLevel(), board.getPlayer(pname).getCurrLevel()+1);
+          if(client.isValidInst(currentRoom, upTechIns)) {
+            insList.add(upTechIns);
+            Popup.showInfo("instruction added!");
+          }
+          else {
+            Popup.showInfo("invalid instruction!");
+          }
         }
-
-        
+        // Not filled completely
+        else {
+          Popup.showInfo("You need to fill all required info!");
+        } 
     });
 
-    // All instruction related display
+
+    BorderPane borderPane = new BorderPane();
+
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
                                 levelLabel, levelText, newLevelLabel, newLevelText,
                                 num, numText, actionButton, doneButton);
+    
+    // commit instructions
+    doneButton.setOnAction(e -> {
+      try {
+        client.sendViaChannel(currentRoom, insList);
+      //System.out.println("send :" + numChoice.getValue());
+        Board newBoard = (GameBoard) client.receiveViaChannel(currentRoom);
+        client.setBoard(currentRoom, newBoard);
+        Popup.showInfo("Instructrion submitted.");
+        insList.clear();
+
+        //Board newBoard = client.getBoard(currentRoom);
+        client.setBoard(currentRoom, newBoard);
+
+        roomLabel.setText("Name: " + pname + "\n"
+                              + "You are in Room: " + (currentRoom+1) + "\n"
+                              + "Level: " + newBoard.getPlayer(pname).getCurrLevel() + "\n"
+                              + "Food resource: " + newBoard.getPlayer(pname).getFoodAmount() + "\n"
+                              + "Technology resource: " + newBoard.getPlayer(pname).getTechAmount());
+
+        borderPane.setTop(rooms);
+        borderPane.setRight(allIns);
+        borderPane.setCenter(mapScene(newBoard));
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      } catch (ClassNotFoundException ex1){
+        ex1.printStackTrace();
+      }
+               
+     
+    });
+
+    // // Refresh
+    
+    // Button refresh = new Button("Refresh");
+
+    // // All instruction related display
+    // VBox allIns = new VBox();
+    // allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
+    //                             levelLabel, levelText, newLevelLabel, newLevelText,
+    //                             num, numText, actionButton, doneButton);
+
+    // // refresh action
+    // refresh.setOnAction(e -> {
+    //     try {
+    //       Board newBoard = client.getBoard(currentRoom);
+    //       client.setBoard(currentRoom, newBoard);
+
+    //       roomLabel.setText("Name: " + pname + "\n"
+    //                             + "You are in Room: " + (currentRoom+1) + "\n"
+    //                             + "Level: " + newBoard.getPlayer(pname).getCurrLevel() + "\n"
+    //                             + "Food resource: " + newBoard.getPlayer(pname).getFoodAmount() + "\n"
+    //                             + "Technology resource: " + newBoard.getPlayer(pname).getTechAmount());
+
+    //       borderPane.setTop(rooms);
+    //       borderPane.setRight(allIns);
+    //       borderPane.setCenter(mapScene(newBoard));
+    //     }
+    //     catch (IOException ex) {
+    //       ex.printStackTrace();
+    //     }
+    //   });
+        
 
     // Overall layout
-    BorderPane borderPane = new BorderPane();
-    borderPane.setTop(roomChange);
+    borderPane.setTop(rooms);
     borderPane.setRight(allIns);
-
+    borderPane.setCenter(mapScene(board));
     Scene scene = new Scene(borderPane, 800, 600);
 
     return scene;
   }
 
+  public Node mapScene(Board board) throws IOException {
+    URL resource = getClass().getResource("/fxml/twoPlayerMap.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    Parent load = fxmlLoader.load();
+    TwoPlayerMapController controller = fxmlLoader.getController();
+    controller.setColor(board);
+
+    return load;
+  }
+                           
   public Scene winScene() {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
@@ -343,6 +452,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
+                           
   public Scene loseScene() {
     HBox roomChange = roomBox();
     VBox loseOption = new VBox();
@@ -413,17 +523,44 @@ public class ClientGUI extends Application {
     Button button4 = new Button("Start new game");
 
     // action
-    button1.setOnAction(e -> window.setScene(gameScene(0)));
-    button1.setOnAction(e -> window.setScene(gameScene(1)));
-    button1.setOnAction(e -> window.setScene(gameScene(2)));
+    button1.setOnAction(e -> {
+      try {
+        window.setScene(gameScene(0));
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    button2.setOnAction(e -> {
+      try {
+        if (activeGames > 1) {
+          window.setScene(gameScene(1));
+        }
+        else {
+          Popup.showInfo("You need start a new game to access this room");
+        }
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
+    button3.setOnAction(e -> {
+      try {
+        if (activeGames > 2) {
+          window.setScene(gameScene(2));
+        }
+        else {
+          Popup.showInfo("You need start a new game to access this room");
+        }
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    });
     
     button4.setOnAction(e -> {
         if (activeGames < 3) {
           // start new game
           try {
-            window.setScene(numPlayersScene());
-            activeGames+=1;
             client.joinGame();
+            window.setScene(numPlayersScene());
           }
           catch (IOException ex) {
             ex.printStackTrace();
@@ -433,25 +570,16 @@ public class ClientGUI extends Application {
           Popup.showInfo("You can have 3 games at most!");
         }
       });
-
-    // button usability
-    if (activeGames == 1) {
-      button2.setDisable(true);
-      button3.setDisable(true);
-    }
-    else if (activeGames == 2) {
-      button3.setDisable(true);
-    }
     
     
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
 
-  public static void switchToMain() throws IOException {
-    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
-    Scene scene = new Scene(root, 900, 600);
-    window.setScene(scene);
-  }
+//  public static void switchToMain() throws IOException {
+//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
+//    Scene scene = new Scene(root, 900, 600);
+//    window.setScene(scene);
+//  }
   
 }

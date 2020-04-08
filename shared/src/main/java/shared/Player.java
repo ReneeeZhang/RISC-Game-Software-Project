@@ -12,9 +12,8 @@ public class Player implements Upgradable, Serializable {
 
   public Player(String name) {
     this.name = name;
-    // TODO: how many when init
-    this.food = new Food(0);
-    this.tech = new Technology(0);
+    this.food = new Food(50);
+    this.tech = new Technology(50);
     this.techLevel = 1;
   }
 

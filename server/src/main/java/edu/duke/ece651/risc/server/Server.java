@@ -26,7 +26,7 @@ public class Server {
  
   public static void main(String[] args) {
     try {
-      Scanner config = new Scanner(new File("/src/resources/config.txt"));
+      Scanner config = new Scanner(new File("src/main/resources/config.txt"));
       AuthServer auth = new AuthServer(config.nextInt());
       Thread authServer = new Thread(auth);
       authServer.start();
