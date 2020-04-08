@@ -159,7 +159,6 @@ public class ClientGUI extends Application {
   public Scene numPlayersScene() {
 
     // display
-
     Label numPlayers = new Label("Select number of players in this game:");
     ChoiceBox<Integer> numChoice = new ChoiceBox<>();
     numChoice.getItems().addAll(2, 3, 4, 5);
@@ -328,6 +327,14 @@ public class ClientGUI extends Application {
         } 
     });
 
+
+    BorderPane borderPane = new BorderPane();
+
+    VBox allIns = new VBox();
+    allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
+                                levelLabel, levelText, newLevelLabel, newLevelText,
+                                num, numText, actionButton, doneButton);
+    
     // commit instructions
     doneButton.setOnAction(e -> {
       try {
@@ -335,6 +342,21 @@ public class ClientGUI extends Application {
       //System.out.println("send :" + numChoice.getValue());
         Board newBoard = (GameBoard) client.receiveViaChannel(currentRoom);
         client.setBoard(currentRoom, newBoard);
+        Popup.showInfo("Instructrion submitted.");
+        insList.clear();
+
+        //Board newBoard = client.getBoard(currentRoom);
+        client.setBoard(currentRoom, newBoard);
+
+        roomLabel.setText("Name: " + pname + "\n"
+                              + "You are in Room: " + (currentRoom+1) + "\n"
+                              + "Level: " + newBoard.getPlayer(pname).getCurrLevel() + "\n"
+                              + "Food resource: " + newBoard.getPlayer(pname).getFoodAmount() + "\n"
+                              + "Technology resource: " + newBoard.getPlayer(pname).getTechAmount());
+
+        borderPane.setTop(rooms);
+        borderPane.setRight(allIns);
+        borderPane.setCenter(mapScene(newBoard));
       } catch (IOException ex) {
         ex.printStackTrace();
       } catch (ClassNotFoundException ex1){
@@ -344,25 +366,37 @@ public class ClientGUI extends Application {
      
     });
 
-    // Refresh
-    BorderPane borderPane = new BorderPane();
-    Button refresh = new Button("Refresh");
-    refresh.setOnAction(e -> {
-        try {
-          Board newBoard = client.getBoard(currentRoom);
-          client.setBoard(currentRoom, newBoard);
-          borderPane.setCenter(mapScene(newBoard));
-        }
-        catch (IOException ex) {
-          ex.printStackTrace();
-        }
-      });
+    // // Refresh
+    
+    // Button refresh = new Button("Refresh");
+
+    // // All instruction related display
+    // VBox allIns = new VBox();
+    // allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
+    //                             levelLabel, levelText, newLevelLabel, newLevelText,
+    //                             num, numText, actionButton, doneButton);
+
+    // // refresh action
+    // refresh.setOnAction(e -> {
+    //     try {
+    //       Board newBoard = client.getBoard(currentRoom);
+    //       client.setBoard(currentRoom, newBoard);
+
+    //       roomLabel.setText("Name: " + pname + "\n"
+    //                             + "You are in Room: " + (currentRoom+1) + "\n"
+    //                             + "Level: " + newBoard.getPlayer(pname).getCurrLevel() + "\n"
+    //                             + "Food resource: " + newBoard.getPlayer(pname).getFoodAmount() + "\n"
+    //                             + "Technology resource: " + newBoard.getPlayer(pname).getTechAmount());
+
+    //       borderPane.setTop(rooms);
+    //       borderPane.setRight(allIns);
+    //       borderPane.setCenter(mapScene(newBoard));
+    //     }
+    //     catch (IOException ex) {
+    //       ex.printStackTrace();
+    //     }
+    //   });
         
-    // All instruction related display
-    VBox allIns = new VBox();
-    allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
-                                levelLabel, levelText, newLevelLabel, newLevelText,
-                                num, numText, actionButton, doneButton, refresh);
 
     // Overall layout
     borderPane.setTop(rooms);
