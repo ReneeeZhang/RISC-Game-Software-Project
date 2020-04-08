@@ -19,9 +19,11 @@ public class Move extends R2RInstruction implements Serializable {
   @Override
   public boolean isValid(Board b) {
     Region source = b.getRegion(src);
-    AccessibleChecker checker = new AccessibleChecker(b, source, b.getRegion(dest));
-    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit);
-    return checker.isValid() && uChecker.isValid();
+    Region destination = b.getRegion(dest);
+    AccessibleChecker aChecker = new AccessibleChecker(b, source, destination);
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit, aChecker);
+    FoodResourceChecker fChecker = new FoodResourceChecker(b, source, destination, numUnit, uChecker);
+    return fChecker.isValid();
   }
 
   @Override
