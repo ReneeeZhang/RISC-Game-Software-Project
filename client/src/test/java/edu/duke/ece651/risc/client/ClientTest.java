@@ -1,8 +1,5 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOError;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +33,7 @@ public class ClientTest {
       client.sendViaChannel(0, 1);
       String a = (String) client.receiveViaChannel(0);
       Move m1 = new Move("Hudson", "Teer", 4, 1);
-      Move m2 = new Move("Hudson", "Teer", 0, 1);
+      Move m2 = new Move("Perkins", "Teer", 0, 1);
       client.isValidInst(0, m1);
       client.isValidInst(0, m2);
     } catch (IOException e) {
