@@ -84,6 +84,11 @@ public class GameMaster implements Runnable {
         System.out.println(e);
       }
       autoIncrement();
+      //debug
+      System.out.println(board.getPlayer("Player1").getFoodAmount());
+      System.out.println(board.getPlayer("Player1").getTechAmount());
+      System.out.println(board.getPlayer("Player2").getTechAmount());
+      System.out.println(board.getPlayer("Player2").getFoodAmount());
     }
   }
 
