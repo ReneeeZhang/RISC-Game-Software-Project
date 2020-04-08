@@ -46,6 +46,7 @@ public class ClientGUI extends Application {
   int activeGames;
   ArrayList<String> playerNames;
 
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -343,6 +344,7 @@ public class ClientGUI extends Application {
     refresh.setOnAction(e -> {
         try {
           Board newBoard = client.getBoard(currentRoom);
+          System.out.println("get new board" + newBoard.getRegion("Perkins").getNumBaseUnit());
           client.setBoard(currentRoom, newBoard);
           borderPane.setCenter(mapScene(newBoard));
         }

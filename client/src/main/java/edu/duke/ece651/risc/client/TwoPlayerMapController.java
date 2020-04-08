@@ -1,13 +1,16 @@
 package edu.duke.ece651.risc.client;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import shared.Board;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +29,7 @@ public class TwoPlayerMapController implements Initializable {
     private Circle Bostock;
     @FXML
     private Circle Teer;
-    private Board board;
+    public Board board;
     private static Map<String, Color> colors = new HashMap<>();
 
     static {
@@ -35,12 +38,14 @@ public class TwoPlayerMapController implements Initializable {
     }
     public void setColor(Board board) {
         this.board = board;
+        System.out.println(board.toString());
         Fitzpatrick.setFill(colors.get(board.getRegion("Fitzpatrick").getOwner()));
         Hudson.setFill(colors.get(board.getRegion("Hudson").getOwner()));
         Wilson.setFill(colors.get(board.getRegion("Wilson").getOwner()));
         Perkins.setFill(colors.get(board.getRegion("Perkins").getOwner()));
         Bostock.setFill(colors.get(board.getRegion("Bostock").getOwner()));
         Teer.setFill(colors.get(board.getRegion("Teer").getOwner()));
+
     }
     @FXML
     public void showInfo(MouseEvent event) {
