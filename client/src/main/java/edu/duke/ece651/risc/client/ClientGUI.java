@@ -46,6 +46,7 @@ public class ClientGUI extends Application {
   int activeGames;
   ArrayList<String> playerNames;
 
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -370,6 +371,20 @@ public class ClientGUI extends Application {
                
      
     });
+
+    // Refresh
+    Button refresh = new Button("Refresh");
+    refresh.setOnAction(e -> {
+        try {
+          Board newBoard = client.getBoard(currentRoom);
+          client.setBoard(currentRoom, newBoard);
+          borderPane.setCenter(mapScene(newBoard));
+        }
+        catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      });
+
         
 
     // Overall layout
