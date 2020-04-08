@@ -1,20 +1,15 @@
 package shared.checkers;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import shared.Board;
 import shared.Player;
 import shared.Region;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class FoodResourceCheckerTest {
-
     @Test
     public void isValid() {
         Region r1 = mock(Region.class);
@@ -33,11 +28,11 @@ public class FoodResourceCheckerTest {
         when(boardMock.getPlayer("A")).thenReturn(player);
         when(boardMock.getDistance("r1", "r2")).thenReturn(9);
 
-        FoodResourceChecker foodResourceChecker = new FoodResourceChecker(boardMock, r1, r2);
+        FoodResourceChecker foodResourceChecker = new FoodResourceChecker(boardMock, r1, r2, 1);
         Assertions.assertTrue(foodResourceChecker.isValid());
 
         when(boardMock.getDistance("r1", "r2")).thenReturn(11);
-        foodResourceChecker = new FoodResourceChecker(boardMock, r1, r2);
+        foodResourceChecker = new FoodResourceChecker(boardMock, r1, r2, 1);
         Assertions.assertFalse(foodResourceChecker.isValid());
     }
 }
