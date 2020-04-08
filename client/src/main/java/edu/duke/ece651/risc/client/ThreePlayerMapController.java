@@ -1,10 +1,8 @@
 package edu.duke.ece651.risc.client;
 
-import edu.princeton.cs.algs4.In;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
