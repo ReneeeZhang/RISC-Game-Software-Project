@@ -45,6 +45,7 @@ public class ClientGUI extends Application {
   Client client;
   int activeGames;
   ArrayList<String> playerNames;
+  ArrayList<Integer> playerNumbers;
 
 
   public static void main(String[] args) {
@@ -68,6 +69,7 @@ public class ClientGUI extends Application {
     List<String> configs = readConfig();
     client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
     playerNames = new ArrayList<>();
+    playerNumbers = new ArrayList<>();
   }
 
   @Override
@@ -185,6 +187,7 @@ public class ClientGUI extends Application {
         pName = (String) client.receiveViaChannel(activeGames);
         System.out.println("receive player name: " + pName);
         playerNames.add(pName);
+        playerNumbers.add(numChoice.getValue());
         // init game
         board = (GameBoard) client.receiveViaChannel(activeGames);
         System.out.println("receive board: ");
@@ -362,7 +365,7 @@ public class ClientGUI extends Application {
 
         borderPane.setTop(rooms);
         borderPane.setRight(allIns);
-        borderPane.setCenter(mapScene(newBoard));
+        borderPane.setCenter(mapScene(newBoard, playerNumbers.get(currentRoom)));
       } catch (IOException ex) {
         ex.printStackTrace();
       } catch (ClassNotFoundException ex1){
@@ -372,37 +375,36 @@ public class ClientGUI extends Application {
      
     });
 
-    // Refresh
-    Button refresh = new Button("Refresh");
-    refresh.setOnAction(e -> {
-        try {
-          Board newBoard = client.getBoard(currentRoom);
-          client.setBoard(currentRoom, newBoard);
-          borderPane.setCenter(mapScene(newBoard));
-        }
-        catch (IOException ex) {
-          ex.printStackTrace();
-        }
-      });
-
         
 
     // Overall layout
     borderPane.setTop(rooms);
     borderPane.setRight(allIns);
-    borderPane.setCenter(mapScene(board));
+    borderPane.setCenter(mapScene(board, playerNumbers.get(currentRoom)));
     Scene scene = new Scene(borderPane, 800, 600);
 
     return scene;
   }
 
-  public Node mapScene(Board board) throws IOException {
-    URL resource = getClass().getResource("/fxml/twoPlayerMap.fxml");
-    FXMLLoader fxmlLoader = new FXMLLoader();
-    fxmlLoader.setLocation(resource);
-    Parent load = fxmlLoader.load();
-    TwoPlayerMapController controller = fxmlLoader.getController();
-    controller.setColor(board);
+  public Node mapScene(Board board, int playerNumber) throws IOException {
+    URL resource;
+    Parent load = null;
+    if (playerNumber == 2) {
+      resource = getClass().getResource("/fxml/twoPlayerMap.fxml");
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(resource);
+      load = fxmlLoader.load();
+      TwoPlayerMapController controller = fxmlLoader.getController();
+      controller.setColor(board);
+    }
+    else if(playerNumber == 3) {
+      resource = getClass().getResource("/fxml/threePlayerMap.fxml");
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(resource);
+      load = fxmlLoader.load();
+      ThreePlayerMapController controller = fxmlLoader.getController();
+      controller.setColor(board);
+    }  
 
     return load;
   }
@@ -432,6 +434,7 @@ public class ClientGUI extends Application {
     button1.setOnAction(e -> {
       try {
           window.setScene(watchScene(currentRoom));
+          client.sendViaChannel(currentRoom, "yes");
       }
       catch(Exception ex) {
         ex.printStackTrace();
@@ -476,7 +479,7 @@ public class ClientGUI extends Application {
             client.setBoard(currentRoom, newBoard);
             if (!client.isGameOver(currentRoom)) {
             
-            borderPane.setCenter(mapScene(newBoard));
+              borderPane.setCenter(mapScene(newBoard, playerNumbers.get(currentRoom)));
           }
           else {
             Popup.showInfo("Game over");
