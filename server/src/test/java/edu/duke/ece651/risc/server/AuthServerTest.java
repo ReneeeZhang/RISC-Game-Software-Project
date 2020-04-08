@@ -12,6 +12,7 @@ public class AuthServerTest {
     try {
       AuthServer auth = new AuthServer(6666);
       auth.handleRequest();
+      auth.handleRequest();
     } catch (Exception e) {
       System.out.println(e);
     }

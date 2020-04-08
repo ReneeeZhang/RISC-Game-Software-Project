@@ -5,7 +5,7 @@ import shared.*;
 import shared.checkers.*;
 
 public class TechUpgrade extends UpgradeInstruction implements Serializable {
-  
+
   private static final long serialVersionUID = 923749347;
 
   public TechUpgrade(String pname, int oldL, int newL) {
@@ -17,7 +17,7 @@ public class TechUpgrade extends UpgradeInstruction implements Serializable {
     Player p = b.getPlayer(playerName);
     p.upgrade();
     p.decreaseTech(getCost(new UpgradeLookup()));
- } 
+  } 
 
   @Override
   public boolean isValid(Board b) {

@@ -23,6 +23,8 @@ import shared.checkers.WinnerChecker;
 import shared.instructions.Attack;
 import shared.instructions.Instruction;
 import shared.instructions.Move;
+import shared.instructions.TechUpgrade;
+import shared.instructions.UnitUpgrade;
 
 public class GameMaster implements Runnable {
   private int playerNum;
@@ -82,6 +84,11 @@ public class GameMaster implements Runnable {
         System.out.println(e);
       }
       autoIncrement();
+      //debug
+      System.out.println(board.getPlayer("Player1").getFoodAmount());
+      System.out.println(board.getPlayer("Player1").getTechAmount());
+      System.out.println(board.getPlayer("Player2").getTechAmount());
+      System.out.println(board.getPlayer("Player2").getFoodAmount());
     }
   }
 
@@ -135,7 +142,7 @@ public class GameMaster implements Runnable {
     // first move
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
-        if (instr instanceof Move) {
+        if (instr instanceof Move || instr instanceof TechUpgrade || instr instanceof UnitUpgrade) {
           instr.execute(board);
         }
       }

@@ -14,7 +14,7 @@ public class PlayerTest {
   @Test
   public void test_getFoodAmount() {
     Player p = new Player("a");
-    assertTrue(p.getFoodAmount() == 0);
+    assertTrue(p.getFoodAmount() == 50);
   }
 
   @Test
@@ -22,7 +22,7 @@ public class PlayerTest {
     Player p = new Player("a");
     p.increaseFood(4);
     p.decreaseFood(2);
-    assertTrue(p.getFoodAmount() == 2);
+    assertTrue(p.getFoodAmount() == 52);
   }
 
   @Test
