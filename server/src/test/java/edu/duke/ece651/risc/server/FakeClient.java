@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import shared.GameBoard;
 import shared.instructions.Attack;
@@ -14,9 +15,12 @@ import shared.instructions.Instruction;
 import shared.instructions.Move;
 
 public class FakeClient implements Runnable {
-  public FakeClient() {
-  }
+  private Scanner input;
   
+  public FakeClient(String s) {
+    this.input = new Scanner(s);
+  }
+
   public void run() {
     try {
       Thread.sleep(50);
@@ -32,8 +36,8 @@ public class FakeClient implements Runnable {
         deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
         serial = new ObjectOutputStream(s.getOutputStream());
-        Instruction move = new Move("Perkins", "Teer", 0, 2);
-        Instruction attack = new Attack("Teer", "Wilson", 0, 1);
+        Instruction move = new Move(input.next(), input.next(), input.nextInt(), input.nextInt());
+        Instruction attack = new Attack(input.next(), input.next(), input.nextInt(), input.nextInt());
         List<Instruction> ins = new ArrayList<Instruction>();
         ins.add(move);
         ins.add(attack);

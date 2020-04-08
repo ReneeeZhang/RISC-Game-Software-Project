@@ -44,10 +44,7 @@ public class MapScene {
         String[] regions = {"Fitzpatrick", "Perkins", "Bostock", "Hudson", "Wilson", "Teer"};
         if (twoPlayerMapCircle == null) {
             twoPlayerMapCircle = new HashMap<>();
-
-
             Circle Fiz = new Circle(250.0f, 122.0f, 10.0f, Color.BLUE);
-
         }
         return createMapView(image);
     }
