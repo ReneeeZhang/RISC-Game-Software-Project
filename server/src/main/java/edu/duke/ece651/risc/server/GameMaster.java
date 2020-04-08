@@ -76,6 +76,7 @@ public class GameMaster implements Runnable {
           }
         }
         Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClients();
+        System.out.println("Instruction received");
         executeAll(instrMap);
       } catch (IOException e) {
         System.out.println(e);

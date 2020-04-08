@@ -9,6 +9,7 @@ import shared.instructions.*;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.print.PrintColor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -211,7 +212,11 @@ public class ClientGUI extends Application {
   }
 
   public Scene gameScene(int currentRoom) throws IOException {
+    
     Board board = client.getBoard(currentRoom);
+    client.setBoard(currentRoom, board);
+
+    String pname = playerNames.get(currentRoom);
     
     // check win/lose
     if (client.hasWon(currentRoom)) {
@@ -223,7 +228,9 @@ public class ClientGUI extends Application {
    
     VBox rooms = new VBox();
     HBox roomChange = roomBox();
-    Label roomLabel = new Label("You are in Room: " + (currentRoom+1));
+    Label roomLabel = new Label(pname + " level: " + board.getPlayer(pname).getCurrLevel()
+                                + "\n"
+                                + "You are in Room: " + (currentRoom+1));
     rooms.getChildren().addAll(roomChange, roomLabel);
     
     // Instruction selection
@@ -292,7 +299,6 @@ public class ClientGUI extends Application {
                  && newLevelText.getText() != null && numText.getText() != null) {
           UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
-          System.out.println("UUUUUUUUUU unit");
           if(client.isValidInst(currentRoom, upUnitIns)) {
             insList.add(upUnitIns);
             Popup.showInfo("instruction added!");
@@ -304,9 +310,8 @@ public class ClientGUI extends Application {
         // Upgrade technology
         else if (insChoice.getValue().equals("Upgrade Technology") && levelText.getText() != null
                  && newLevelText.getText() != null) {
-          TechUpgrade upTechIns = new TechUpgrade(playerNames.get(currentRoom), Integer.parseInt(levelText.getText()),
-                                                  Integer.parseInt(newLevelText.getText()));
-          System.out.println("UUUUUUUUUU tech");
+      
+          TechUpgrade upTechIns = new TechUpgrade(pname, board.getPlayer(pname).getCurrLevel(), board.getPlayer(pname).getCurrLevel()+1);
           if(client.isValidInst(currentRoom, upTechIns)) {
             insList.add(upTechIns);
             Popup.showInfo("instruction added!");
@@ -332,15 +337,27 @@ public class ClientGUI extends Application {
      
     });
 
+    // Refresh
+    BorderPane borderPane = new BorderPane();
+    Button refresh = new Button("Refresh");
+    refresh.setOnAction(e -> {
+        try {
+          Board newBoard = client.getBoard(currentRoom);
+          client.setBoard(currentRoom, newBoard);
+          borderPane.setCenter(mapScene(newBoard));
+        }
+        catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      });
         
     // All instruction related display
     VBox allIns = new VBox();
     allIns.getChildren().addAll(insChange, srcLabel, srcChoice, destLabel, destChoice,
                                 levelLabel, levelText, newLevelLabel, newLevelText,
-                                num, numText, actionButton, doneButton);
+                                num, numText, actionButton, doneButton, refresh);
 
     // Overall layout
-    BorderPane borderPane = new BorderPane();
     borderPane.setTop(rooms);
     borderPane.setRight(allIns);
     borderPane.setCenter(mapScene(board));
