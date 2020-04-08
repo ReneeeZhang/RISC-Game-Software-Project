@@ -12,7 +12,7 @@ public class TechUpgradeTest {
     
     Player p = new Player("Drew");
     p.increaseTech(100);
-    assertEquals(100, p.getTechAmount());
+    assertEquals(150, p.getTechAmount());
     
     TechUpgrade t = new TechUpgrade("Drew", 1, 2);
     assertEquals(1, t.getOldLevel());

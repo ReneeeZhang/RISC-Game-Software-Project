@@ -228,9 +228,11 @@ public class ClientGUI extends Application {
    
     VBox rooms = new VBox();
     HBox roomChange = roomBox();
-    Label roomLabel = new Label(pname + " level: " + board.getPlayer(pname).getCurrLevel()
-                                + "\n"
-                                + "You are in Room: " + (currentRoom+1));
+    Label roomLabel = new Label("Name: " + pname + "\n"
+                                + "You are in Room: " + (currentRoom+1) + "\n"
+                                + "Level: " + board.getPlayer(pname).getCurrLevel() + "\n"
+                                + "Food resource: " + board.getPlayer(pname).getFoodAmount() + "\n"
+                                + "Technology resource: " + board.getPlayer(pname).getTechAmount());
     rooms.getChildren().addAll(roomChange, roomLabel);
     
     // Instruction selection
@@ -243,7 +245,7 @@ public class ClientGUI extends Application {
     // Instruction specs
     Label srcLabel = new Label("Source:");
     ChoiceBox<String> srcChoice = new ChoiceBox<>();
-    for (String regionName: board.getRegionNames(playerNames.get(currentRoom))) {
+    for (String regionName: board.getRegionNames(pname)) {
       srcChoice.getItems().add(regionName);
     }
     
@@ -297,7 +299,7 @@ public class ClientGUI extends Application {
         // Upgrade unit
         else if (insChoice.getValue().equals("Upgrade Units") && levelText.getText() != null
                  && newLevelText.getText() != null && numText.getText() != null) {
-          UnitUpgrade upUnitIns = new UnitUpgrade(playerNames.get(currentRoom), srcChoice.getValue(), Integer.parseInt(levelText.getText()),
+          UnitUpgrade upUnitIns = new UnitUpgrade(pname, srcChoice.getValue(), Integer.parseInt(levelText.getText()),
                                                   Integer.parseInt(newLevelText.getText()),Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, upUnitIns)) {
             insList.add(upUnitIns);
@@ -331,9 +333,14 @@ public class ClientGUI extends Application {
       try {
         client.sendViaChannel(currentRoom, insList);
       //System.out.println("send :" + numChoice.getValue());
+        Board newBoard = (GameBoard) client.receiveViaChannel(currentRoom);
+        client.setBoard(currentRoom, newBoard);
       } catch (IOException ex) {
         ex.printStackTrace();
+      } catch (ClassNotFoundException ex1){
+        ex1.printStackTrace();
       }
+               
      
     });
 
