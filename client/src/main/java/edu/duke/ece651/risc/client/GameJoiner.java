@@ -27,7 +27,7 @@ public class GameJoiner extends Connector {
   public void setName(String name) {
     this.name = name;
   }
-
+  
   public Board getBoard() {
     return board;
   }
@@ -37,8 +37,13 @@ public class GameJoiner extends Connector {
   }
 
   public boolean isValidInst(Instruction inst) {
-    return inst.isValid(board);
+    if (inst.isValid(board)) {
+      inst.execute(board);
+      return true;
+    }
+    return false;
   }
+  
   public boolean hasWon() {
     Checker winnerChecker = new WinnerChecker(board, name);
     if (winnerChecker.isValid()) {

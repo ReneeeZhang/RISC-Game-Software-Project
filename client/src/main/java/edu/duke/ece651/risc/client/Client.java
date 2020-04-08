@@ -11,7 +11,6 @@ public class Client extends Connector {
   private int ccPort;
   private List<GameJoiner> matches;
 
-  
   public Client(String hostname, int authenticationPort, int ccPort) throws IOException {
     super(hostname, authenticationPort);
     this.hostname = hostname;
@@ -33,6 +32,14 @@ public class Client extends Connector {
     return matches.get(matchIdx).receive();
   }
 
+  /*
+    public Board receiveBoardViaChannel(int matchIdx) throws IOException, ClassNotFoundException {
+    Board board = (Board) matches.get(matchIdx).receive();
+    setBoard(matchIdx, board);
+    return board;
+  }
+  */
+  
   public void initMatch(int matchIdx, String name, Board board) {
     matches.get(matchIdx).init(name, board);
   }
