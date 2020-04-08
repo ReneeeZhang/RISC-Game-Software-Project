@@ -23,6 +23,8 @@ import shared.checkers.WinnerChecker;
 import shared.instructions.Attack;
 import shared.instructions.Instruction;
 import shared.instructions.Move;
+import shared.instructions.TechUpgrade;
+import shared.instructions.UnitUpgrade;
 
 public class GameMaster implements Runnable {
   private int playerNum;
@@ -134,7 +136,7 @@ public class GameMaster implements Runnable {
     // first move
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
-        if (instr instanceof Move) {
+        if (instr instanceof Move || instr instanceof TechUpgrade || instr instanceof UnitUpgrade) {
           instr.execute(board);
         }
       }
