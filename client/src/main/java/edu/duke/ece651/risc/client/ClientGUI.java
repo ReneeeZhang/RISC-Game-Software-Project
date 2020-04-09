@@ -492,7 +492,7 @@ public class ClientGUI extends Application {
         }
       });
 
-    winOption.getChildren().addAll(button, refresh);
+    winOption.getChildren().add(refresh);
     borderPane.setRight(winOption);
     
     
