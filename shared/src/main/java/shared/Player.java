@@ -31,8 +31,13 @@ public class Player implements Upgradable, Serializable {
     return tech.getAmount();
   }
 
+  @Override
   public int getCurrLevel() {
     return techLevel;
+  }
+
+  public String getAlly() {
+    return ally;
   }
 
   public void decreaseFood(int n) {
@@ -51,6 +56,14 @@ public class Player implements Upgradable, Serializable {
     tech.increase(n);
   }
 
+  public void allyWith(String thatPlayer) {
+    this.ally = thatPlayer;
+  }
+
+  public void breakAlly() {
+    this.ally = null;
+  }
+  
   @Override
   public void upgrade() {
     techLevel++;
