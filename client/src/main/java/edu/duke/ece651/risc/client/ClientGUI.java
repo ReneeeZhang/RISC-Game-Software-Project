@@ -42,10 +42,10 @@ import javafx.stage.Stage;
 public class ClientGUI extends Application {
 
   static Stage window;
-  Client client;
-  int activeGames;
-  ArrayList<String> playerNames;
-  ArrayList<Integer> playerNumbers;
+  static Client client;
+  static int activeGames;
+  static ArrayList<String> playerNames;
+  static ArrayList<Integer> playerNumbers;
 
 
   public static void main(String[] args) {
@@ -76,70 +76,76 @@ public class ClientGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
-
-//    HBox roomChange = roomBox();
-//    BorderPane borderPane = new BorderPane();
-//    borderPane.setTop(roomChange);
-//    borderPane.setCenter(mapScene(new GameBoard()));
-//    window.setScene(new Scene(borderPane, 900, 600));
     window.setScene(loginScene());
     window.show();
   }
 
 
   /** ========== scenes ========== */
-  public Scene loginScene() {
-    GridPane grid = new GridPane();
-    grid.setPadding(new Insets(20, 20, 20, 20));
-    grid.setHgap(10);
-    grid.setVgap(10);
-    Label user = new Label("User Name");
-    GridPane.setConstraints(user, 0, 0);
-    TextField userText = new TextField();
-    userText.setPromptText("user name");
-    GridPane.setConstraints(userText, 1, 0);
-
-    Label password = new Label("Password");
-    GridPane.setConstraints(password, 0, 1);
-    TextField pwdText = new TextField();
-    pwdText.setPromptText("password");
-    GridPane.setConstraints(pwdText, 1, 1);
-
-    Button login = new Button("Log in");
-    login.setOnAction(e -> {
-      String userName = userText.getText();
-      String pwd = pwdText.getText();
-      try {
-        client.send(userName + "&&" + pwd);
-        String loginValid = (String)client.receive();
-        if (loginValid.equals("yes")) {
-          window.setScene(startScene());
-        }
-        else {
-          Popup.showInfo("Incorrect username or password");
-          window.setScene(loginScene());
-        }
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      } catch (ClassNotFoundException ex1) {
-        ex1.printStackTrace();
-      } catch (Exception ex2) {
-        ex2.printStackTrace();
-      }
-      
-    });
+  public static Scene loginScene() {
+    URL  resource = ClientGUI.class.getResource("/fxml/login.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    Parent load = null;
+    try {
+      load = fxmlLoader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    LoginController controller = fxmlLoader.getController();
     
-    GridPane.setConstraints(login, 1, 2);
-    grid.getChildren().addAll(user, userText, password, pwdText, login);
+    
+    // GridPane grid = new GridPane();
+    // grid.setPadding(new Insets(20, 20, 20, 20));
+    // grid.setHgap(10);
+    // grid.setVgap(10);
+    // Label user = new Label("User Name");
+    // GridPane.setConstraints(user, 0, 0);
+    // TextField userText = new TextField();
+    // userText.setPromptText("user name");
+    // GridPane.setConstraints(userText, 1, 0);
 
-    BorderPane layout = new BorderPane();
-    layout.setCenter(grid);
-    return new Scene(layout, 800, 600);
+    // Label password = new Label("Password");
+    // GridPane.setConstraints(password, 0, 1);
+    // TextField pwdText = new TextField();
+    // pwdText.setPromptText("password");
+    // GridPane.setConstraints(pwdText, 1, 1);
+
+    // Button login = new Button("Log in");
+    // login.setOnAction(e -> {
+    //   String userName = userText.getText();
+    //   String pwd = pwdText.getText();
+    //   try {
+    //     client.send(userName + "&&" + pwd);
+    //     String loginValid = (String)client.receive();
+    //     if (loginValid.equals("yes")) {
+    //       window.setScene(startScene());
+    //     }
+    //     else {
+    //       Popup.showInfo("Incorrect username or password");
+    //       window.setScene(loginScene());
+    //     }
+    //   } catch (IOException ex) {
+    //     ex.printStackTrace();
+    //   } catch (ClassNotFoundException ex1) {
+    //     ex1.printStackTrace();
+    //   } catch (Exception ex2) {
+    //     ex2.printStackTrace();
+    //   }
+      
+    // });
+    
+    // GridPane.setConstraints(login, 1, 2);
+    // grid.getChildren().addAll(user, userText, password, pwdText, login);
+
+    // BorderPane layout = new BorderPane();
+    // layout.setCenter(grid);
+    return new Scene(load, 800, 600);
   }
 
 
 
-  public Scene startScene() {
+  public static Scene startScene() {
     Button b = new Button("Start a new game");
     b.setOnAction(e -> {
       
@@ -159,7 +165,7 @@ public class ClientGUI extends Application {
   
 
   
-  public Scene numPlayersScene() {
+  public static Scene numPlayersScene() {
 
     // display
     Label numPlayers = new Label("Select number of players in this game:");
@@ -214,7 +220,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene gameScene(int currentRoom) throws IOException {
+  public static Scene gameScene(int currentRoom) throws IOException {
     
     Board board = client.getBoard(currentRoom);
     client.setBoard(currentRoom, board);
@@ -386,11 +392,11 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Node mapScene(Board board, int playerNumber) throws IOException {
+  public static Node mapScene(Board board, int playerNumber) throws IOException {
     URL resource;
     Parent load = null;
     if (playerNumber == 2) {
-      resource = getClass().getResource("/fxml/twoPlayerMap.fxml");
+      resource = ClientGUI.class.getResource("/fxml/twoPlayerMap.fxml");
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(resource);
       load = fxmlLoader.load();
@@ -398,7 +404,7 @@ public class ClientGUI extends Application {
       controller.setColor(board);
     }
     else if(playerNumber == 3) {
-      resource = getClass().getResource("/fxml/threePlayerMap.fxml");
+      resource = ClientGUI.class.getResource("/fxml/threePlayerMap.fxml");
       FXMLLoader fxmlLoader = new FXMLLoader();
       fxmlLoader.setLocation(resource);
       load = fxmlLoader.load();
@@ -409,7 +415,7 @@ public class ClientGUI extends Application {
     return load;
   }
                            
-  public Scene winScene() {
+  public static Scene winScene() {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
     
@@ -426,7 +432,7 @@ public class ClientGUI extends Application {
   }
 
                            
-  public Scene loseScene(int currentRoom) {
+  public static Scene loseScene(int currentRoom) {
     HBox roomChange = roomBox();
     VBox loseOption = new VBox();
     Button button1 = new Button("Watch the game");
@@ -455,7 +461,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public Scene watchScene(int currentRoom) {
+  public static Scene watchScene(int currentRoom) {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
     Button button = new Button("Play again");
@@ -502,7 +508,7 @@ public class ClientGUI extends Application {
 
 
   /* ========== Elements in gameScene ========== */
-  public HBox roomBox() {
+  public static HBox roomBox() {
     // Rome switch
     HBox roomChange = new HBox();
     Button button1 = new Button("Room1");
@@ -563,6 +569,54 @@ public class ClientGUI extends Application {
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
+
+
+  /* ========== Scene setters ========== */
+  public static void setLoginScene() {
+    window.setScene(loginScene());
+  }
+
+  public static void setStartScene() {
+    window.setScene(startScene());
+  }
+  
+  public static void setNumPlayersScene() {
+    window.setScene(numPlayersScene());
+  }
+
+  /* ========== Send and receive ========== */
+  public static void sendStr(String str) {
+    try {
+      client.send(str);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static String receiveStr() {
+    String ans = new String();
+    try {
+      ans = (String) client.receive();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return ans;
+  }
+
+  public static void sendObj(int room, Object obj) {
+    try {
+      client.sendViaChannel(room, obj);
+    } catch(Exception ex) {
+        ex.printStackTrace();
+    }
+  }
+
+  public static String receiveStr(int room) {
+    String ans = new String();
+    return ans;
+  }
+
+  
 
 //  public static void switchToMain() throws IOException {
 //    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
