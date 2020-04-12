@@ -28,8 +28,9 @@ public class PlayerTest {
   @Test
   public void test_upgradeTo() {
     Player p = new Player("a");
-    p.upgradeTo(2);
-    assertTrue(p.getCurrLevel() == 1);
+    assertThrows(NoSuchMethodException.class, () -> {
+      p.upgradeTo(2);
+    });
   }
 
 }
