@@ -7,7 +7,7 @@ public class Player implements Upgradable, Serializable {
   private Food food;
   private Technology tech;
   private int techLevel;
-  private String ally;
+  private Player ally;
 
   private static final long serialVersionUID = 923749365;
 
@@ -36,7 +36,7 @@ public class Player implements Upgradable, Serializable {
     return techLevel;
   }
 
-  public String getAlly() {
+  public Player getAlly() {
     return ally;
   }
 
@@ -56,8 +56,8 @@ public class Player implements Upgradable, Serializable {
     tech.increase(n);
   }
 
-  public void allyWith(String thatPlayer) {
-    this.ally = thatPlayer;
+  public void allyWith(Player that) {
+    this.ally = that;
   }
 
   public void breakAlly() {
