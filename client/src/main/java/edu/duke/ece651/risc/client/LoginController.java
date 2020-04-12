@@ -17,20 +17,27 @@ public class LoginController {
     private TextField password;
     @FXML
     private Button login;
+
+    private ClientGUI gui;
+    public LoginController(ClientGUI g) {
+      this.gui = g;
+    }
+  
     @FXML
     public void doLogin() throws IOException {
         System.out.println(userName.getText() + "&&" + password.getText());
         String username = userName.getText();
         String pwd = password.getText();
         try {
-          ClientGUI.sendStr(userName + "&&" + pwd);
-          String loginValid = ClientGUI.receiveStr();
+          gui.sendStr(userName + "&&" + pwd);
+          String loginValid = gui.receiveStr();
+          System.out.println("received: " + loginValid);
           if (loginValid.equals("yes")) {
-            ClientGUI.setStartScene();
+            gui.setStartScene();
           }
           else {
             Popup.showInfo("Incorrect username or password");
-            ClientGUI.setLoginScene();
+            gui.setLoginScene();
           }
         } catch (Exception ex2) {
           ex2.printStackTrace();

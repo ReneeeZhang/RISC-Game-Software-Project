@@ -42,10 +42,10 @@ import javafx.stage.Stage;
 public class ClientGUI extends Application {
 
   static Stage window;
-  static Client client;
-  static int activeGames;
-  static ArrayList<String> playerNames;
-  static ArrayList<Integer> playerNumbers;
+  Client client;
+  int activeGames;
+  ArrayList<String> playerNames;
+  ArrayList<Integer> playerNumbers;
 
 
   public static void main(String[] args) {
@@ -82,17 +82,20 @@ public class ClientGUI extends Application {
 
 
   /** ========== scenes ========== */
-  public static Scene loginScene() {
+  public Scene loginScene() {
     URL  resource = ClientGUI.class.getResource("/fxml/login.fxml");
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(resource);
+    fxmlLoader.setControllerFactory(c -> {
+      return new LoginController(this);
+      });
     Parent load = null;
     try {
       load = fxmlLoader.load();
     } catch (IOException e) {
       e.printStackTrace();
     }
-    LoginController controller = fxmlLoader.getController();
+    //LoginController controller = fxmlLoader.getController();
     
     
     // GridPane grid = new GridPane();
@@ -145,7 +148,7 @@ public class ClientGUI extends Application {
 
 
 
-  public static Scene startScene() {
+  public Scene startScene() {
     Button b = new Button("Start a new game");
     b.setOnAction(e -> {
       
@@ -165,7 +168,7 @@ public class ClientGUI extends Application {
   
 
   
-  public static Scene numPlayersScene() {
+  public Scene numPlayersScene() {
 
     // display
     Label numPlayers = new Label("Select number of players in this game:");
@@ -220,7 +223,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public static Scene gameScene(int currentRoom) throws IOException {
+  public Scene gameScene(int currentRoom) throws IOException {
     
     Board board = client.getBoard(currentRoom);
     client.setBoard(currentRoom, board);
@@ -415,7 +418,7 @@ public class ClientGUI extends Application {
     return load;
   }
                            
-  public static Scene winScene() {
+  public Scene winScene() {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
     
@@ -432,7 +435,7 @@ public class ClientGUI extends Application {
   }
 
                            
-  public static Scene loseScene(int currentRoom) {
+  public Scene loseScene(int currentRoom) {
     HBox roomChange = roomBox();
     VBox loseOption = new VBox();
     Button button1 = new Button("Watch the game");
@@ -461,7 +464,7 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public static Scene watchScene(int currentRoom) {
+  public Scene watchScene(int currentRoom) {
     HBox roomChange = roomBox();
     VBox winOption = new VBox();
     Button button = new Button("Play again");
@@ -508,7 +511,7 @@ public class ClientGUI extends Application {
 
 
   /* ========== Elements in gameScene ========== */
-  public static HBox roomBox() {
+  public HBox roomBox() {
     // Rome switch
     HBox roomChange = new HBox();
     Button button1 = new Button("Room1");
@@ -572,20 +575,20 @@ public class ClientGUI extends Application {
 
 
   /* ========== Scene setters ========== */
-  public static void setLoginScene() {
+  public void setLoginScene() {
     window.setScene(loginScene());
   }
 
-  public static void setStartScene() {
+  public void setStartScene() {
     window.setScene(startScene());
   }
   
-  public static void setNumPlayersScene() {
+  public void setNumPlayersScene() {
     window.setScene(numPlayersScene());
   }
 
   /* ========== Send and receive ========== */
-  public static void sendStr(String str) {
+  public void sendStr(String str) {
     try {
       client.send(str);
     } catch (IOException e) {
@@ -593,7 +596,7 @@ public class ClientGUI extends Application {
     }
   }
 
-  public static String receiveStr() {
+  public String receiveStr() {
     String ans = new String();
     try {
       ans = (String) client.receive();
@@ -603,7 +606,7 @@ public class ClientGUI extends Application {
     return ans;
   }
 
-  public static void sendObj(int room, Object obj) {
+  public void sendObj(int room, Object obj) {
     try {
       client.sendViaChannel(room, obj);
     } catch(Exception ex) {
@@ -611,7 +614,7 @@ public class ClientGUI extends Application {
     }
   }
 
-  public static String receiveStr(int room) {
+  public String receiveStr(int room) {
     String ans = new String();
     return ans;
   }
