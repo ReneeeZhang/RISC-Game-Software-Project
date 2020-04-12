@@ -18,6 +18,16 @@ public class PlayerTest {
   }
 
   @Test
+  public void test_ally() {
+    Player p = new Player("p");
+    Player q = new Player("q");
+    p.allyWith(q);
+    assertTrue(p.getAlly().getName().equals("q"));
+    p.breakAlly();
+    assertTrue(p.getAlly() == null);
+  }
+  
+  @Test
   public void test_decreaseFood() {
     Player p = new Player("a");
     p.increaseFood(4);
