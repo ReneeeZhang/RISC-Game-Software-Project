@@ -11,14 +11,13 @@ import java.util.Random;
 import java.util.Set;
 
 public class GameBoard implements Board, Drawable, Serializable {
+  private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
-  // for serialization
-  private static final long serialVersionUID = 12367648;
-  
+
   public GameBoard() {
     this.regionMap = new HashMap<Region, List<Region>>();
     this.regionNameMap = new HashMap<String, Region>();

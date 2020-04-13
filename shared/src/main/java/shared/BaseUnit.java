@@ -3,7 +3,8 @@ package shared;
 import java.io.Serializable;
 
 public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<BaseUnit> {
-  int level;
+  private Player owner;
+  private int level;
   // for serialization
   private static final long serialVersionUID = 19407245;
 
@@ -11,6 +12,10 @@ public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<Base
     this.level = 0;
   }
 
+  public Player getOwner() {
+    return this.owner;
+  }
+  
   public void upgrade() {
     this.level++;
   }
