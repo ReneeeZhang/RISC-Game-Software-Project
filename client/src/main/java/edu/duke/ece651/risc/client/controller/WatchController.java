@@ -19,9 +19,9 @@ public class WatchController {
     this.gui = g;
   }
 
-  @FXML
-  public void refresh() {
+  // @FXML
+  // public void refresh() {
 
-  }
+  // }
 
 }

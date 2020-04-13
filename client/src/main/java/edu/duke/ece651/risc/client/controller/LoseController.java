@@ -19,9 +19,9 @@ public class LoseController {
     this.gui = g;
   }
 
-  @FXML
-  public void watchGame() {
+  // @FXML
+  // public void watchGame() {
 
-  }
+  // }
 
 }
