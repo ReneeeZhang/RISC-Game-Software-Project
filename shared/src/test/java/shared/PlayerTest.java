@@ -18,6 +18,16 @@ public class PlayerTest {
   }
 
   @Test
+  public void test_ally() {
+    Player p = new Player("p");
+    Player q = new Player("q");
+    p.allyWith(q);
+    assertTrue(p.getAlly().getName().equals("q"));
+    p.breakAlly();
+    assertTrue(p.getAlly() == null);
+  }
+  
+  @Test
   public void test_decreaseFood() {
     Player p = new Player("a");
     p.increaseFood(4);
@@ -28,8 +38,9 @@ public class PlayerTest {
   @Test
   public void test_upgradeTo() {
     Player p = new Player("a");
-    p.upgradeTo(2);
-    assertTrue(p.getCurrLevel() == 1);
+    assertThrows(NoSuchMethodException.class, () -> {
+      p.upgradeTo(2);
+    });
   }
 
 }
