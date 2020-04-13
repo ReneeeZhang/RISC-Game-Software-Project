@@ -135,7 +135,26 @@ public class GameBoard implements Board, Serializable {
     player.decreaseFood(num);
     srcRegion.dispatch(dst, level, num);
   }
-  
+
+  @Override
+  public void ally(String player1, String player2) {
+    Player p1 = getPlayer(player1);
+    Player p2 = getPlayer(player2);
+    p1.allyWith(p2);
+  }
+
+  @Override
+  public void resolveAlly() {
+    for (Player p : playerNameMap.values()) {
+      if (p.getAlly() != null) {
+        // if p.ally has no ally or not p
+        if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
+          p.breakAlly();
+        }
+      }
+    }
+  }
+
   @Override
   public void resolve() {
     for (String player : playerRegionMap.keySet()) {
