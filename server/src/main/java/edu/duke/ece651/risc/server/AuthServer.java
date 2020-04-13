@@ -56,4 +56,8 @@ public class AuthServer implements Runnable{
       serial.writeObject("no");
     }
   }
+
+  public void close() throws IOException {
+    serverSocketChannel.close();
+  }
 }
