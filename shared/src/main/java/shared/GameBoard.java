@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class GameBoard implements Board, Drawable, Serializable {
+public class GameBoard implements Board, Serializable {
   private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
@@ -194,24 +194,5 @@ public class GameBoard implements Board, Drawable, Serializable {
       }
       round++;
     }
-  }
-  
-  @Override
-  public String draw() {
-    String str = "";
-    for (String player : playerRegionMap.keySet()) {
-      str += player + ":\n----------\n";
-      for (Region r : playerRegionMap.get(player)) {
-        String name = r.getName();
-        str += " " + r.getNumBaseUnit() + " unit(s) in " + name;
-        str += "(next to : ";
-        for (Region neigh : regionMap.get(r)) {
-          str += neigh.getName() + ", ";
-        }
-        str = str.substring(0, str.length() - 2);
-        str += ")\n";
-      }
-    }
-    return str;
   }
 }
