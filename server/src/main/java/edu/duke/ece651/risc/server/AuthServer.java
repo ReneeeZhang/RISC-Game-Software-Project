@@ -23,17 +23,28 @@ public class AuthServer implements Runnable{
 
   public void run() {
     while (true) {
-      try {
-        handleRequest();
-      } catch (Exception e) {
-        System.out.println(e);
+      Socket s = acceptSocket();
+      while (s.isConnected()) {
+        try{
+          handleRequest(s);
+        } catch (Exception e) {
+          System.out.println(e);
+        }
       }
     }
   }
 
-  public void handleRequest() throws IOException, ClassNotFoundException {
-    SocketChannel sc = serverSocketChannel.accept();
-    Socket s = sc.socket();
+  public Socket acceptSocket() {
+    try{
+      SocketChannel sc = serverSocketChannel.accept();
+      return sc.socket();
+    } catch (IOException e) {
+      System.out.println(e);
+      return new Socket();
+    }
+  }
+
+  public void handleRequest(Socket s) throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     String login = (String) deserial.readObject();
     String user = login.substring(0, login.indexOf('&'));

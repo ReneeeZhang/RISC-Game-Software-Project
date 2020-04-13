@@ -14,6 +14,7 @@ public class GameBoard implements Board, Serializable {
   private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
+  //TODO: add list<region> in player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
