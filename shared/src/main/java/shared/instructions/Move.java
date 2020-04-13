@@ -1,12 +1,11 @@
 package shared.instructions;
 
-import java.io.Serializable;
 import shared.*;
 import shared.checkers.*;
 
-public class Move extends R2RInstruction implements Serializable {
+public class Move extends R2RInstruction {
   private static final long serialVersionUID = 923749345;
-  
+
   public Move(String s, String d, int l, int n) {
     super(s, d, l, n);
   }
@@ -33,9 +32,4 @@ public class Move extends R2RInstruction implements Serializable {
         .append(".\n");
     return sb.toString();
   }
-  
 }
-
-
-
-
