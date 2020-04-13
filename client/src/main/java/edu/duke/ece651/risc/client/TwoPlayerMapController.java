@@ -38,7 +38,6 @@ public class TwoPlayerMapController implements Initializable {
     }
     public void setColor(Board board) {
         this.board = board;
-        System.out.println(board.toString());
         Fitzpatrick.setFill(colors.get(board.getRegion("Fitzpatrick").getOwner()));
         Hudson.setFill(colors.get(board.getRegion("Hudson").getOwner()));
         Wilson.setFill(colors.get(board.getRegion("Wilson").getOwner()));
