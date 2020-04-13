@@ -19,14 +19,14 @@ public class GameController {
     this.gui = g;
   }
 
-  @FXML
-  public void addAction() {
+  // @FXML
+  // public void addAction() {
 
-  }
+  // }
 
-  @FXML
-  public void commitAction() {
+  // @FXML
+  // public void commitAction() {
 
-  }
+  // }
   
 }
