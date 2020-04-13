@@ -1,6 +1,7 @@
 package shared.instructions;
 
 import shared.Board;
+import shared.checkers.Checker;
 import shared.checkers.AllyChecker;
 
 public class Ally extends P2PInstruction {
