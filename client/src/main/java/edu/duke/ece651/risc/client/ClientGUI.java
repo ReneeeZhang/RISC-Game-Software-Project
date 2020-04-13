@@ -576,7 +576,7 @@ public class ClientGUI extends Application {
   
 
 //  public static void switchToMain() throws IOException {
-//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/main.fxml"));
+//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/game.fxml"));
 //    Scene scene = new Scene(root, 900, 600);
 //    window.setScene(scene);
 //  }
