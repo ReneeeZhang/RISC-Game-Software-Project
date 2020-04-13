@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515" prefWidth="715" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <VBox prefHeight="280.0" prefWidth="365.0">
+            <children>
+                <Label prefHeight="23.0" prefWidth="111.0" text="     You Lose">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="111.0" text="Watch Game" />
+            </children>
+        </VBox>
+    </center>
+    <left>
+        <Region prefHeight="315.0" prefWidth="313.0" BorderPane.alignment="CENTER" />
+    </left>
+    <top>
+        <Region prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </top>
+</BorderPane>

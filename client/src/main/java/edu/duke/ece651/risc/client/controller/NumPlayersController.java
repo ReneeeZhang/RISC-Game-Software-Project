@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 public class NumPlayersController {
 
+
   private ClientGUI gui;
   
   public NumPlayersController(ClientGUI g) {
@@ -23,5 +24,6 @@ public class NumPlayersController {
   public void selectNum() {
 
   }
+
 
 }

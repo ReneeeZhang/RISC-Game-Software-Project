@@ -7,7 +7,7 @@
 
 <Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.risc.client.TwoPlayerMapController">
    <children>
-      <ImageView fitHeight="372.0" fitWidth="622.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="map" fitHeight="515.0" fitWidth="715" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Map_2_players.jpg" />
          </image>
