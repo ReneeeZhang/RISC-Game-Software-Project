@@ -1,4 +1,6 @@
-package edu.duke.ece651.risc.client;
+package edu.duke.ece651.risc.client.controller;
+
+import edu.duke.ece651.risc.client.*;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +31,7 @@ public class LoginController {
         String username = userName.getText();
         String pwd = password.getText();
         try {
-          gui.sendStr(userName + "&&" + pwd);
+          gui.sendStr(username + "&&" + pwd);
           String loginValid = gui.receiveStr();
           System.out.println("received: " + loginValid);
           if (loginValid.equals("yes")) {

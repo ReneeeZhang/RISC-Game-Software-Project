@@ -1,5 +1,6 @@
 package edu.duke.ece651.risc.client;
 
+import edu.duke.ece651.risc.client.controller.*;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,54 +96,7 @@ public class ClientGUI extends Application {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    //LoginController controller = fxmlLoader.getController();
     
-    
-    // GridPane grid = new GridPane();
-    // grid.setPadding(new Insets(20, 20, 20, 20));
-    // grid.setHgap(10);
-    // grid.setVgap(10);
-    // Label user = new Label("User Name");
-    // GridPane.setConstraints(user, 0, 0);
-    // TextField userText = new TextField();
-    // userText.setPromptText("user name");
-    // GridPane.setConstraints(userText, 1, 0);
-
-    // Label password = new Label("Password");
-    // GridPane.setConstraints(password, 0, 1);
-    // TextField pwdText = new TextField();
-    // pwdText.setPromptText("password");
-    // GridPane.setConstraints(pwdText, 1, 1);
-
-    // Button login = new Button("Log in");
-    // login.setOnAction(e -> {
-    //   String userName = userText.getText();
-    //   String pwd = pwdText.getText();
-    //   try {
-    //     client.send(userName + "&&" + pwd);
-    //     String loginValid = (String)client.receive();
-    //     if (loginValid.equals("yes")) {
-    //       window.setScene(startScene());
-    //     }
-    //     else {
-    //       Popup.showInfo("Incorrect username or password");
-    //       window.setScene(loginScene());
-    //     }
-    //   } catch (IOException ex) {
-    //     ex.printStackTrace();
-    //   } catch (ClassNotFoundException ex1) {
-    //     ex1.printStackTrace();
-    //   } catch (Exception ex2) {
-    //     ex2.printStackTrace();
-    //   }
-      
-    // });
-    
-    // GridPane.setConstraints(login, 1, 2);
-    // grid.getChildren().addAll(user, userText, password, pwdText, login);
-
-    // BorderPane layout = new BorderPane();
-    // layout.setCenter(grid);
     return new Scene(load, 800, 600);
   }
 
