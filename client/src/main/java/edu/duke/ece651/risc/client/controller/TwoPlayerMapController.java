@@ -1,5 +1,6 @@
-package edu.duke.ece651.risc.client;
+package edu.duke.ece651.risc.client.controller;
 
+import edu.duke.ece651.risc.client.Popup;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

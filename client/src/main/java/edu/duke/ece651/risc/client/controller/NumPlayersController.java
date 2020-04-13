@@ -13,11 +13,17 @@ import java.util.ResourceBundle;
 
 public class NumPlayersController {
 
-    private ClientGUI gui;
 
-    // @FXML
-    // public void watchGame() {
+  private ClientGUI gui;
+  
+  public NumPlayersController(ClientGUI g) {
+    this.gui = g;
+  }
 
-    // }
+  @FXML
+  public void selectNum() {
+
+  }
+
 
 }
