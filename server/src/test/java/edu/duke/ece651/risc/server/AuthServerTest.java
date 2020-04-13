@@ -1,5 +1,7 @@
 package edu.duke.ece651.risc.server;
 
+import java.net.Socket;
+
 import org.junit.jupiter.api.Test;
 
 public class AuthServerTest {
@@ -11,8 +13,10 @@ public class AuthServerTest {
     fake2.start();
     try {
       AuthServer auth = new AuthServer(6666);
-      auth.handleRequest();
-      auth.handleRequest();
+      for (int i = 0; i < 2; i++) {
+        Socket s = auth.acceptSocket();
+        auth.handleRequest(s);
+      }
     } catch (Exception e) {
       System.out.println(e);
     }
