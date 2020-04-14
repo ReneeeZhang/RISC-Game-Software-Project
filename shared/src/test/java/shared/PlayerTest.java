@@ -43,4 +43,13 @@ public class PlayerTest {
     });
   }
 
+  @Test
+  public void test_equals() {
+    Player p = new Player("a");
+    Player q = new Player("b");
+    Object o = new Object();
+    assertTrue(p.equals(p));
+    assertFalse(p.equals(q));
+    assertFalse(p.equals(o));
+  }
 }

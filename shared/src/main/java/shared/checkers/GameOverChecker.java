@@ -1,6 +1,7 @@
 package shared.checkers;
 
 import shared.Board;
+import shared.Player;
 import shared.Region;
 
 public class GameOverChecker implements Checker {
@@ -20,7 +21,7 @@ public class GameOverChecker implements Checker {
     @Override
     public boolean isValid() {
         //TODO, type of owner
-        String owner = null;
+        Player owner = null;
         for (Region region : board.getAllRegions()) {
             if (owner == null) {
                 owner = region.getOwner();
