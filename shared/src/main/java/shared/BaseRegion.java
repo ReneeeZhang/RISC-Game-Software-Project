@@ -39,7 +39,7 @@ public class BaseRegion implements Region, Serializable {
     this.resourceProduction = size + rand.nextInt(5);
     this.majorCamp = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      majorCamp.add(new BaseUnit());
+      majorCamp.add(new BaseUnit(owner));
     }
     this.borderCamps = new HashMap<>();
   }
@@ -101,6 +101,23 @@ public class BaseRegion implements Region, Serializable {
     return toSend;
   }
 
+  public List<BaseUnit> sentUnit(Player whoOwns, int level, int num) {
+    List<BaseUnit> toSend = new ArrayList<>();
+    for (BaseUnit bu : majorCamp) {
+      if (num == 0) {
+        break;
+      }
+      if (whoOwns.equals(bu.getOwner()) && level == bu.getCurrLevel()) {
+        toSend.add(bu);
+        --num;
+      }
+    }
+    for (BaseUnit bu : toSend) {
+      majorCamp.remove(bu);
+    }
+    return toSend;
+  }
+  
   public void receiveUnit(List<BaseUnit> toReceive) {
     for (BaseUnit unit : toReceive) {
       majorCamp.add(unit);

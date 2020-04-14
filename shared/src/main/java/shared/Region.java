@@ -17,6 +17,8 @@ public interface Region {
 
   public List<BaseUnit> sendUnit(int level, int num);
 
+  public List<BaseUnit> sendUnit(Player whoOwns, int level, int num);
+  
   public void receiveUnit(List<BaseUnit> toReceive);
 
   public void removeUnit(int num);
