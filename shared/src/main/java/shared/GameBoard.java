@@ -86,10 +86,10 @@ public class GameBoard implements Board, Drawable, Serializable {
     Region srcRegion = getRegion(src);
     Region dstRegion = getRegion(dst);
     List<Region> stack = new ArrayList<Region>();
-    String owner = getRegion(src).getOwner();
+    Player owner = getRegion(src).getOwner();
     Set<Region> visited = new HashSet<Region>();
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
-    for (Region r : playerRegionMap.get(owner)) {
+    for (Region r : playerRegionMap.get(owner.getName())) {
       if(r.getName().equals(src)){
         dist.put(r, 0);
       } else {
@@ -121,7 +121,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   public void move(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    Player player = playerNameMap.get(srcRegion.getOwner());
+    Player player = srcRegion.getOwner();
     // costs total size of regions * number of units moving
     player.decreaseFood(num*getDistance(src, dst));
     dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
@@ -131,7 +131,7 @@ public class GameBoard implements Board, Drawable, Serializable {
   public void attack(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     // costs 1 food per unit attacking
-    Player player = playerNameMap.get(srcRegion.getOwner());
+    Player player = srcRegion.getOwner();
     player.decreaseFood(num);
     srcRegion.dispatch(dst, level, num);
   }
@@ -148,10 +148,11 @@ public class GameBoard implements Board, Drawable, Serializable {
     // update player-region map
     playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : getAllRegions()) {
-      if (!playerRegionMap.containsKey(r.getOwner())) {
-        playerRegionMap.put(r.getOwner(), new ArrayList<Region>());
+      if (!playerRegionMap.containsKey(r.getOwner().getName())) {
+        //TODO: might be deleted
+        playerRegionMap.put(r.getOwner().getName(), new ArrayList<Region>());
       }
-      playerRegionMap.get(r.getOwner()).add(r);
+      playerRegionMap.get(r.getOwner().getName()).add(r);
     }
   }
 
