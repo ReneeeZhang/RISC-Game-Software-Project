@@ -18,8 +18,8 @@ public class BaseRegionTest {
     List<BaseUnit> units1 = new ArrayList<>();
     Map<String, List<BaseUnit>> bc1 = new HashMap<>();
     bc1.put("Teer", new ArrayList<>());
-    units1.add(new BaseUnit());
     Player player1 = new Player("player1");
+    units1.add(new BaseUnit(player1));
     Player player2 = new Player("player2");
     br1 = new BaseRegion("Hudson", player1, 11);
     br2 = new BaseRegion("Teer", player2, 12);
