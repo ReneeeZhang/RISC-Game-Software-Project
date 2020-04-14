@@ -26,9 +26,10 @@ public class UpgradeCheckerTest {
         //player
         Player player = mock(Player.class);
         when(player.getTechAmount()).thenReturn(100);
+        when(player.getName()).thenReturn("A");
         //region
         BaseRegion r1 = mock(BaseRegion.class);
-        when(r1.getOwner()).thenReturn("A");
+        when(r1.getOwner()).thenReturn(player);
         when(r1.numUnitWithLevel(4)).thenReturn(3);
         //board
         Board board = mock(Board.class);

@@ -19,9 +19,9 @@ public class MoveTest {
     Region r2 = mock(Region.class);
     Region r3 = mock(Region.class);
     //owner
-    when(r1.getOwner()).thenReturn("A");
-    when(r2.getOwner()).thenReturn("A");
-    when(r3.getOwner()).thenReturn("B");
+    when(r1.getOwner()).thenReturn(new Player("A"));
+    when(r2.getOwner()).thenReturn(new Player("A"));
+    when(r3.getOwner()).thenReturn(new Player("B"));
     //name
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
