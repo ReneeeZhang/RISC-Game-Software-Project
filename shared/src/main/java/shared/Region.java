@@ -33,6 +33,8 @@ public interface Region {
 
   public void dispatch(String adjDest, int level, int num);
 
+  public void dispatch(String adjDest, Player whoOwns, int level, int num);
+  
   public List<BaseUnit> getMajorCamp();
   
   public List<BaseUnit> getBorderCamp(String dest);

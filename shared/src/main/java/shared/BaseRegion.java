@@ -84,30 +84,23 @@ public class BaseRegion implements Region, Serializable {
     return toSend;
   }
 
+  /**
+   * Send unit(s) which belong to this Region owner with level and num  
+   */
   public List<BaseUnit> sendUnit(int level, int num) {
-    List<BaseUnit> toSend = new ArrayList<>();
-    for (BaseUnit bu : majorCamp) {
-      if (num == 0) {
-        break;
-      }
-      if (bu.getCurrLevel() == level) {
-        toSend.add(bu);
-        --num;
-      }
-    }
-    for (BaseUnit bu : toSend) {
-      majorCamp.remove(bu);
-    }
-    return toSend;
+    return sendUnit(owner, level, num);
   }
 
-  public List<BaseUnit> sentUnit(Player whoOwns, int level, int num) {
+  /**
+   * Send unit(s) which belong to whoOwns with level and num
+   */
+  public List<BaseUnit> sendUnit(Player whoOwns, int level, int num) {
     List<BaseUnit> toSend = new ArrayList<>();
     for (BaseUnit bu : majorCamp) {
       if (num == 0) {
         break;
       }
-      if (whoOwns.equals(bu.getOwner()) && level == bu.getCurrLevel()) {
+      if (bu.getOwner().equals(whoOwns) && bu.getCurrLevel() == level) {
         toSend.add(bu);
         --num;
       }
@@ -147,21 +140,25 @@ public class BaseRegion implements Region, Serializable {
   }
 
   public void dispatch(String adjDest, int level, int num) {
-    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
+    dispatch(adjDest, owner, level, num);
+  }
+
+  public void dispatch(String adjDest, Player whoOwns, int level, int num) {
+   List<BaseUnit> borderCamp = borderCamps.get(adjDest);
     for (BaseUnit bu : majorCamp) {
       if (num == 0) {
         break;
       }
-      if (bu.getCurrLevel() == level) {
+      if (bu.getOwner().equals(whoOwns) && bu.getCurrLevel() == level) {
         borderCamp.add(bu);
         --num;
       }
     }
     for (BaseUnit bu : borderCamp) {
        majorCamp.remove(bu);
-    }
+    } 
   }
-
+  
   public List<BaseUnit> getMajorCamp() {
     List<BaseUnit> camp = majorCamp;
     majorCamp = new ArrayList<>();
@@ -179,7 +176,7 @@ public class BaseRegion implements Region, Serializable {
   }
   
   public void autoIncrement(){
-    majorCamp.add(new BaseUnit());
+    majorCamp.add(new BaseUnit(owner));
   }
 
 
