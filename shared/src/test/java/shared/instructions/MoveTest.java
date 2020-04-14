@@ -6,15 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
-
 
 public class MoveTest {
   @Test
-  public void mock_() {
+  public void test_Move() {
     Region r1 = mock(Region.class);
     Region r2 = mock(Region.class);
     Region r3 = mock(Region.class);
@@ -46,7 +42,6 @@ public class MoveTest {
     when(boardMock.getPlayer("A")).thenReturn(playerMock);
     
     Move m1 = new Move("r1", "r2", 0, 1);
-    assertEquals(1, m1.getNumUnit());
     assertTrue(m1.isValid(boardMock));
     m1.execute(boardMock);
 
@@ -55,8 +50,5 @@ public class MoveTest {
     Move m2 = new Move("r1", "r3", 0, 1);
     assertFalse(m2.isValid(boardMock));
     m2.execute(boardMock);
-    
-    assertEquals("r1", m2.getSrc());
-    assertEquals("r3", m2.getDest());
   }
 }

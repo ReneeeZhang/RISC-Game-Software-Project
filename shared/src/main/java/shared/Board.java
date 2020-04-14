@@ -25,6 +25,10 @@ public interface Board {
   public void move(String src, String dst, int level, int num);
 
   public void attack(String src, String dst, int level, int num);
+
+  public void ally(String player1, String player2);
   
   public void resolve();
+
+  public void resolveAlly();
 }

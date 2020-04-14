@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class GameBoard implements Board, Drawable, Serializable {
+public class GameBoard implements Board, Serializable {
+  private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
+  //TODO: add list<region> in player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
-  // for serialization
-  private static final long serialVersionUID = 12367648;
-  
+
   public GameBoard() {
     this.regionMap = new HashMap<Region, List<Region>>();
     this.regionNameMap = new HashMap<String, Region>();
@@ -135,7 +135,26 @@ public class GameBoard implements Board, Drawable, Serializable {
     player.decreaseFood(num);
     srcRegion.dispatch(dst, level, num);
   }
-  
+
+  @Override
+  public void ally(String player1, String player2) {
+    Player p1 = getPlayer(player1);
+    Player p2 = getPlayer(player2);
+    p1.allyWith(p2);
+  }
+
+  @Override
+  public void resolveAlly() {
+    for (Player p : playerNameMap.values()) {
+      if (p.getAlly() != null) {
+        // if p.ally has no ally or not p
+        if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
+          p.breakAlly();
+        }
+      }
+    }
+  }
+
   @Override
   public void resolve() {
     for (String player : playerRegionMap.keySet()) {
@@ -196,24 +215,5 @@ public class GameBoard implements Board, Drawable, Serializable {
       }
       round++;
     }
-  }
-  
-  @Override
-  public String draw() {
-    String str = "";
-    for (String player : playerRegionMap.keySet()) {
-      str += player + ":\n----------\n";
-      for (Region r : playerRegionMap.get(player)) {
-        String name = r.getName();
-        str += " " + r.getNumBaseUnit() + " unit(s) in " + name;
-        str += "(next to : ";
-        for (Region neigh : regionMap.get(r)) {
-          str += neigh.getName() + ", ";
-        }
-        str = str.substring(0, str.length() - 2);
-        str += ")\n";
-      }
-    }
-    return str;
   }
 }
