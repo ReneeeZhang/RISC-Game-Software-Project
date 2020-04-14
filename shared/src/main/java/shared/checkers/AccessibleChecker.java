@@ -33,7 +33,11 @@ public class AccessibleChecker implements Checker {
      * helper function -- check if two regions belong to same owner
      */
     private boolean isSameGroup(Region r1, Region r2) {
-        return r1.getOwner().equals(r2.getOwner()) ||
+      if (r1.getOwner().getAlly() == null) {
+        return r1.getOwner().equals(r2.getOwner());
+      }
+      
+      return r1.getOwner().equals(r2.getOwner()) ||
           r1.getOwner().getAlly().equals(r2.getOwner());
     }
 
