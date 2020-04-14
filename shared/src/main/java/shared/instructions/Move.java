@@ -6,12 +6,13 @@ import shared.checkers.*;
 public class Move extends R2RInstruction {
   private static final long serialVersionUID = 923749345;
 
-  public Move(String s, String d, int l, int n) {
-    super(s, d, l, n);
+  public Move(String p, String s, String d, int l, int n) {
+    super(p, s, d, l, n);
   }
 
   @Override
   public void execute(Board b) {
+    //TODO: add player as arg
     b.move(src, dest, level, numUnit);
   }
 
