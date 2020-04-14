@@ -73,4 +73,18 @@ public class Player implements Upgradable, Serializable {
   public void upgradeTo(int n) throws NoSuchMethodException{
     throw new NoSuchMethodException("Technology can only be upgraded once a level.");
   }
+
+  @Override
+  public boolean equals(Object that) {
+    if (this == that) {
+      return true;
+    }
+
+    if (!(that instanceof Player)) {
+      return false;
+    }
+
+    Player thatPlayer = (Player) that;
+    return this.name.equals(thatPlayer.getName());
+  }
 }

@@ -1,8 +1,6 @@
 package shared.instructions;
 
 import java.io.Serializable;
-import shared.*;
-import shared.checkers.*;
 
 abstract public class UpgradeInstruction implements Instruction, Serializable{
   protected String playerName;

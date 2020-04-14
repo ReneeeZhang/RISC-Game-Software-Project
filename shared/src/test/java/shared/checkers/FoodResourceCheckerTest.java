@@ -15,8 +15,8 @@ public class FoodResourceCheckerTest {
         Region r1 = mock(Region.class);
         Region r2 = mock(Region.class);
         //owner
-        when(r1.getOwner()).thenReturn("A");
-        when(r2.getOwner()).thenReturn("A");
+        when(r1.getOwner()).thenReturn(new Player("A"));
+        when(r2.getOwner()).thenReturn(new Player("A"));
         //name
         when(r1.getName()).thenReturn("r1");
         when(r2.getName()).thenReturn("r2");

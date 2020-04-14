@@ -32,7 +32,7 @@ public class AccessibleChecker implements Checker {
     /**
      * helper function -- check if two regions belong to same owner
      */
-    private boolean isSameOwner(Region r1, Region r2) {
+    private boolean isSameGroup(Region r1, Region r2) {
         return r1.getOwner().equals(r2.getOwner());
     }
 
@@ -47,14 +47,14 @@ public class AccessibleChecker implements Checker {
         if (neighbor.contains(dest)) return true;
 
         for (Region region : neighbor) {
-            if (visited.contains(region) || !isSameOwner(region, r)) continue;
+            if (visited.contains(region) || !isSameGroup(region, r)) continue;
             if (isAccessible(region)) return true;
         }
         return false;
     }
     @Override
     public boolean isValid() {
-        if (!isSameOwner(source, dest)) {
+        if (!isSameGroup(source, dest)) {
             System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
             return false;
         }

@@ -10,15 +10,15 @@ import java.util.Random;
 public class BaseRegion implements Region, Serializable {
   private static final long serialVersionUID = 989463821;
   private String name;
-  private String owner;
-  private String color;
+  private Player owner;
   private int size;
   private int resourceProduction;
   private List<BaseUnit> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
   private static final int minUnitLevel = 0;
   private static final int maxUnitLevel = 6;
-  
+
+  /*
   public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp, Map<String, List<BaseUnit>> borderCamps) {
     this.name = name;
     this.owner = owner;
@@ -29,11 +29,11 @@ public class BaseRegion implements Region, Serializable {
     this.majorCamp = majorCamp;
     this.borderCamps = borderCamps;
   }
+  */
 
-  public BaseRegion(String name, String owner, int size) {
+  public BaseRegion(String name, Player owner, int size) {
     this.name = name;
     this.owner = owner;
-    this.color = "";
     this.size = size;
     Random rand = new Random();
     this.resourceProduction = size + rand.nextInt(5);
@@ -48,12 +48,8 @@ public class BaseRegion implements Region, Serializable {
     return this.name;
   }
 
-  public String getOwner() {
+  public Player getOwner() {
     return this.owner;
-  }
-
-  public String getColor() {
-    return this.color;
   }
 
   public int getSize() {
@@ -122,7 +118,7 @@ public class BaseRegion implements Region, Serializable {
     majorCamp.remove(majorCamp.size() - 1);
   }
   
-  public void setOwner(String owner) {
+  public void setOwner(Player owner) {
     this.owner = owner;
   }
 
