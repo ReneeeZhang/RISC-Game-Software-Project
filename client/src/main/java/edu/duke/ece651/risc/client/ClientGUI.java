@@ -573,12 +573,18 @@ public class ClientGUI extends Application {
     return ans;
   }
 
-  
+  public Scene game(Board board) throws IOException {
 
-//  public static void switchToMain() throws IOException {
-//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/game.fxml"));
-//    Scene scene = new Scene(root, 900, 600);
-//    window.setScene(scene);
-//  }
+    Group map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
+
+    URL resource = getClass().getResource("/fxml/game.fxml");
+    FXMLLoader gameLoader = new FXMLLoader();
+    gameLoader.setLocation(resource);
+    BorderPane load = gameLoader.load();
+    GameController controller = gameLoader.getController();
+    controller.addMap(map).setMap(board);
+
+    return new Scene(load, 900, 600);
+  }
   
 }
