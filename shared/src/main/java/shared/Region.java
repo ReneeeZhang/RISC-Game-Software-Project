@@ -38,4 +38,6 @@ public interface Region {
   public void upgradeUnit(int oldLevel, int newLevel, int numUnit);
 
   public int numUnitWithLevel(int level);
+
+  public int numUnitWithLevel(Player whoOwns, int level);
 }

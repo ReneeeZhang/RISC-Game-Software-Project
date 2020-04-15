@@ -177,6 +177,18 @@ public class BaseRegion implements Region, Serializable {
 
   //TODO: add Player
   public int numUnitWithLevel(int level) {
-    return majorCamp.get(level).size();
+    return numUnitWithLevel(owner, level);
+    
+  }
+
+  public int numUnitWithLevel(Player whoOwns, int level) {
+    int num = 0;
+    List<BaseUnit> levelCamp = majorCamp.get(level);
+    for (BaseUnit bu : levelCamp) {
+      if (bu.getOwner().equals(whoOwns)) {
+        num++;
+      }
+    }
+    return num;
   }
 }

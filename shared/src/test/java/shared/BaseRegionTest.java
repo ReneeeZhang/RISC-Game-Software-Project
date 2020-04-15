@@ -42,13 +42,15 @@ public class BaseRegionTest {
   public void test_sendUnit() {
     List<BaseUnit> s = br1.sendUnit(0, 1);
     br1.receiveUnit(s);
-    Player aa = new Player("aa");
+    Player aa = new Player("player1");
     br1.setOwner(aa);
     br1.autoIncrement();
     br2.initOneBorderCamp("sdf");
     br2.getBorderCamp("sdf");
     br1.dispatch("Teer", 0, 1);
     assertTrue(br1.getBorderCamp("Teer").size() == 1);
+    System.out
+        .println("------ all units num:------" + br1.getAllUnitsAmount() + "------------" + br1.numUnitWithLevel(0));
     assertTrue(br1.numUnitWithLevel(0) != 0);
     assertTrue(br1.numUnitWithLevel(1) == 0);
   }
