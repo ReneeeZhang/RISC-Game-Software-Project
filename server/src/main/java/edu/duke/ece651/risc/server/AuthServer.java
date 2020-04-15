@@ -19,6 +19,9 @@ public class AuthServer implements Runnable{
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
     this.db = new HashMap<String, String>();
     this.db.put("user", "passw0rd");
+    for (int i = 0; i < 10; i++) {
+      this.db.put("player" + Integer.toString(i), "duke" + Integer.toString(i));
+    }
   }
 
   public void run() {
