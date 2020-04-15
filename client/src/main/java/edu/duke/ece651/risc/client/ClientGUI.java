@@ -103,21 +103,19 @@ public class ClientGUI extends Application {
 
 
   public Scene startScene() {
-    Button b = new Button("Start a new game");
-    b.setOnAction(e -> {
-      
-      try {
-        client.joinGame();
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
-      window.setScene(numPlayersScene());
+    URL  resource = ClientGUI.class.getResource("/fxml/start.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    fxmlLoader.setControllerFactory(c -> {
+      return new StartController(this);
       });
-    b.setAlignment(Pos.CENTER);
-    StackPane pane = new StackPane();
-    pane.getChildren().add(b);
-    Scene scene = new Scene(pane, 800, 600);
-    return scene;
+    Parent load = null;
+    try {
+      load = fxmlLoader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return new Scene(load, 800, 600);
   }
   
 
@@ -527,6 +525,10 @@ public class ClientGUI extends Application {
     return roomChange;
   }
 
+  /* ========== Getters  ========== */
+  public Client getClient() {
+    return client;
+  }
 
   /* ========== Scene setters ========== */
   public void setLoginScene() {
@@ -572,13 +574,5 @@ public class ClientGUI extends Application {
     String ans = new String();
     return ans;
   }
-
-  
-
-//  public static void switchToMain() throws IOException {
-//    Parent root = FXMLLoader.load(ClientGUI.class.getResource("/fxml/game.fxml"));
-//    Scene scene = new Scene(root, 900, 600);
-//    window.setScene(scene);
-//  }
   
 }

@@ -21,7 +21,12 @@ public class StartController {
 
   @FXML
   public void startGame() {
-    
+    try {
+        gui.getClient().joinGame();
+        gui.setNumPlayersScene();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
   }
 
 }
