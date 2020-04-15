@@ -44,11 +44,6 @@ public class LoginController {
         } catch (Exception ex2) {
           ex2.printStackTrace();
         }
-//        switchToMain();
     }
-//
-//    private void switchToMain() throws IOException {
-//        main.switchToMain();
-//    }
 
 }

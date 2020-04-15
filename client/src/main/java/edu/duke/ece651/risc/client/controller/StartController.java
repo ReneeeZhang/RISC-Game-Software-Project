@@ -19,9 +19,9 @@ public class StartController {
     this.gui = g;
   }
 
-  // @FXML
-  // public void startGame() {
-
-  // }
+  @FXML
+  public void startGame() {
+    
+  }
 
 }
