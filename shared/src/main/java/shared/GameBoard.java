@@ -14,7 +14,7 @@ public class GameBoard implements Board, Serializable {
   private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
-  //TODO: add list<region> in player object
+  // TODO: move list<region> into player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
@@ -116,7 +116,8 @@ public class GameBoard implements Board, Serializable {
     }
     return dist.get(dstRegion);
   }
-  
+
+  // TODO: add owner
   @Override
   public void move(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
@@ -127,6 +128,7 @@ public class GameBoard implements Board, Serializable {
     dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
   }
 
+  // TODO: add owner
   @Override
   public void attack(String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
