@@ -179,7 +179,7 @@ public class GameBoard implements Board, Serializable {
 
   private void fight(Region src, Region dst) {
     List<BaseUnit> attackUnits = src.getBorderCamp(dst.getName());
-    List<BaseUnit> defenseUnits = dst.getMajorCamp();
+    List<BaseUnit> defenseUnits = dst.getDefenseTroop();
     Collections.sort(attackUnits);
     Collections.sort(defenseUnits);
     fight(attackUnits, defenseUnits);

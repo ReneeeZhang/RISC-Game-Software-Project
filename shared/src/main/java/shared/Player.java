@@ -80,7 +80,7 @@ public class Player implements Upgradable, Serializable {
       return true;
     }
 
-    if (!(that instanceof Player)) {
+    if (that == null || !(that instanceof Player)) {
       return false;
     }
 
