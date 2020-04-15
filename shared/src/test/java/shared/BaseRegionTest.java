@@ -32,7 +32,7 @@ public class BaseRegionTest {
     assertTrue(name1.equals("Hudson"));
     Player owner1 = br1.getOwner();
     assertTrue(owner1.getName().equals("player1"));
-    int num1 = br1.getNumBaseUnit();
+    int num1 = br1.getAllUnitsAmount();
     System.out.println("num1=------" + num1);
     assertTrue(num1 == 5);
     int resource = br1.getResourceProduction();
@@ -40,18 +40,14 @@ public class BaseRegionTest {
 
   @Test
   public void test_sendUnit() {
-    List<BaseUnit> s = br1.sendUnit(1);
+    List<BaseUnit> s = br1.sendUnit(0, 1);
     br1.receiveUnit(s);
     Player aa = new Player("aa");
     br1.setOwner(aa);
     br1.autoIncrement();
-    br1.autoIncrement();
-    br1.removeUnit();
-    br1.autoIncrement();
-    br1.removeUnit(1);
     br2.initOneBorderCamp("sdf");
     br2.getBorderCamp("sdf");
-    br1.dispatch("Teer", 1);
+    br1.dispatch("Teer", 0, 1);
     assertTrue(br1.getBorderCamp("Teer").size() == 1);
     assertTrue(br1.numUnitWithLevel(0) != 0);
     assertTrue(br1.numUnitWithLevel(1) == 0);
@@ -64,7 +60,7 @@ public class BaseRegionTest {
 
   @Test
   public void test_getMajorCamp() {
-    Collections.sort(br1.getMajorCamp());
+    Collections.sort(br1.getDefenseTroop());
   }
 
   @Test
