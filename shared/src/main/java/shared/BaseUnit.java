@@ -8,8 +8,9 @@ public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<Base
   // for serialization
   private static final long serialVersionUID = 19407245;
 
-  public BaseUnit() {
+  public BaseUnit(Player owner) {
     this.level = 0;
+    this.owner = owner;
   }
 
   public Player getOwner() {

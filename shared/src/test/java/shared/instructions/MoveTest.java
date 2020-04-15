@@ -23,9 +23,9 @@ public class MoveTest {
     when(r2.getName()).thenReturn("r2");
     when(r3.getName()).thenReturn("r3");
     //unit
-    when(r1.getNumBaseUnit()).thenReturn(1);
-    when(r2.getNumBaseUnit()).thenReturn(1);
-    when(r3.getNumBaseUnit()).thenReturn(1);
+    when(r1.getAllUnitsAmount()).thenReturn(1);
+    when(r2.getAllUnitsAmount()).thenReturn(1);
+    when(r3.getAllUnitsAmount()).thenReturn(1);
 
     when(r1.numUnitWithLevel(0)).thenReturn(1);
 
