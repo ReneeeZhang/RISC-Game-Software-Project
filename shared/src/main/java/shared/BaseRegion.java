@@ -13,23 +13,21 @@ public class BaseRegion implements Region, Serializable {
   private Player owner;
   private int size;
   private int resourceProduction;
-  private List<BaseUnit> majorCamp; // For moving and defensing
+  private Map<Integer, List<BaseUnit>> majorCamp; // For moving and defensing
   private Map<String, List<BaseUnit>> borderCamps;
-  private static final int minUnitLevel = 0;
-  private static final int maxUnitLevel = 6;
+  private static final int MIN_UNIT_LEVEL = 0;
+  private static final int MAX_UNIT_LEVEL = 6;
 
-  /*
-  public BaseRegion(String name, String owner, String color, int size, List<BaseUnit> majorCamp, Map<String, List<BaseUnit>> borderCamps) {
-    this.name = name;
-    this.owner = owner;
-    this.color = color;
-    this.size = size;
-    Random rand = new Random();
-    this.resourceProduction = size + rand.nextInt(5);
-    this.majorCamp = majorCamp;
-    this.borderCamps = borderCamps;
+  private void buildMajorCamp() {
+    this.majorCamp = new HashMap<>();
+    for (int i = MIN_UNIT_LEVEL; i <= MAX_UNIT_LEVEL; i++) {
+      List<BaseUnit> levelCamp = new ArrayList<>();
+      this.majorCamp.put(i, levelCamp);
+    }
+    for (int i = 0; i < 5; i++) {
+      majorCamp.get(MIN_UNIT_LEVEL).add(new BaseUnit(owner));
+    }
   }
-  */
 
   public BaseRegion(String name, Player owner, int size) {
     this.name = name;
@@ -37,10 +35,7 @@ public class BaseRegion implements Region, Serializable {
     this.size = size;
     Random rand = new Random();
     this.resourceProduction = size + rand.nextInt(5);
-    this.majorCamp = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      majorCamp.add(new BaseUnit(owner));
-    }
+    buildMajorCamp();
     this.borderCamps = new HashMap<>();
   }
 
@@ -59,31 +54,26 @@ public class BaseRegion implements Region, Serializable {
   public int getResourceProduction() {
     return this.resourceProduction;
   }
-  
+
   public String getInfo() {
     StringBuilder sb = new StringBuilder();
     sb.append(name).append("\nOwned by: ").append(owner).append("\nSize: ").append(size);
     sb.append("\nResource Production: ").append(resourceProduction);
     sb.append("\nUnits Info:\n");
-    for (int i = minUnitLevel; i < maxUnitLevel; i++) {
+    for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
       sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
     }
     return sb.toString();
   }
-  
-  public int getNumBaseUnit() {
-    // TODO: Better way is to iterate the list of units and count all base units
-    return majorCamp.size();
-  }
 
-  public List<BaseUnit> sendUnit(int num) {
-    List<BaseUnit> toSend = new ArrayList<>();
-    for (int i = 0; i < num; i++) {
-      toSend.add(majorCamp.remove(majorCamp.size() - 1));
+  public int getAllUnitsAmount() {
+    int amount = 0;
+    for (int level : majorCamp.keySet()) {
+      amount += majorCamp.get(level).size();
     }
-    return toSend;
+    return amount;
   }
-
+  
   /**
    * Send unit(s) which belong to this Region owner with level and num  
    */
@@ -96,7 +86,8 @@ public class BaseRegion implements Region, Serializable {
    */
   public List<BaseUnit> sendUnit(Player whoOwns, int level, int num) {
     List<BaseUnit> toSend = new ArrayList<>();
-    for (BaseUnit bu : majorCamp) {
+    List<BaseUnit> levelCamp = majorCamp.get(level);
+    for (BaseUnit bu : levelCamp) {
       if (num == 0) {
         break;
       }
@@ -106,46 +97,30 @@ public class BaseRegion implements Region, Serializable {
       }
     }
     for (BaseUnit bu : toSend) {
-      majorCamp.remove(bu);
+      levelCamp.remove(bu);
     }
     return toSend;
   }
-  
+
   public void receiveUnit(List<BaseUnit> toReceive) {
     for (BaseUnit unit : toReceive) {
-      majorCamp.add(unit);
+      int level = unit.getCurrLevel();
+      majorCamp.get(level).add(unit);
     }
   }
 
-  // TODO: change method name -> loseDefenser 
-  public void removeUnit(int num) {
-    for (int i = 0; i < num; i++) {
-      majorCamp.remove(majorCamp.size() - 1);
-    }
-  }
-
-  public void removeUnit() {
-    majorCamp.remove(majorCamp.size() - 1);
-  }
-  
   public void setOwner(Player owner) {
     this.owner = owner;
   }
-
-  public void dispatch(String adjDest, int num) {
-    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
-    for (int i = 0; i < num; i++) {
-      borderCamp.add(majorCamp.remove(majorCamp.size() - 1));
-    }
-  }
-
+  
   public void dispatch(String adjDest, int level, int num) {
     dispatch(adjDest, owner, level, num);
   }
 
   public void dispatch(String adjDest, Player whoOwns, int level, int num) {
-   List<BaseUnit> borderCamp = borderCamps.get(adjDest);
-    for (BaseUnit bu : majorCamp) {
+    List<BaseUnit> borderCamp = borderCamps.get(adjDest);
+    List<BaseUnit> levelCamp = majorCamp.get(level);
+    for (BaseUnit bu : levelCamp) {
       if (num == 0) {
         break;
       }
@@ -155,16 +130,20 @@ public class BaseRegion implements Region, Serializable {
       }
     }
     for (BaseUnit bu : borderCamp) {
-       majorCamp.remove(bu);
-    } 
+      levelCamp.remove(bu);
+    }
   }
-  
-  public List<BaseUnit> getMajorCamp() {
-    List<BaseUnit> camp = majorCamp;
-    majorCamp = new ArrayList<>();
-    return camp;
+
+  public List<BaseUnit> getDefenseTroop() {
+    List<BaseUnit> troop = new ArrayList<>();
+    for (int i = MIN_UNIT_LEVEL; i <= MAX_UNIT_LEVEL; i++) {
+      troop.addAll(majorCamp.get(i));
+      // Clear this level camp
+      majorCamp.put(i, new ArrayList<>());
+    }
+    return troop;
   }
-  
+
   public List<BaseUnit> getBorderCamp(String dest) {
     List<BaseUnit> troop = borderCamps.get(dest);
     borderCamps.replace(dest, new ArrayList<>());
@@ -174,28 +153,30 @@ public class BaseRegion implements Region, Serializable {
   public void initOneBorderCamp(String neighbor) {
     borderCamps.put(neighbor, new ArrayList<>());
   }
-  
-  public void autoIncrement(){
-    majorCamp.add(new BaseUnit(owner));
-  }
 
+  public void autoIncrement() {
+    majorCamp.get(MIN_UNIT_LEVEL).add(new BaseUnit(owner));
+  }
 
   public void upgradeUnit(int oldLevel, int newLevel, int numUnit) {
-    for (BaseUnit u: majorCamp) {
-      if (u.getCurrLevel() == oldLevel && numUnit > 0) {
-        u.upgradeTo(newLevel);
-        numUnit--;
+    int count = numUnit;
+    List<BaseUnit> oldLevelCamp = majorCamp.get(oldLevel);
+    for (BaseUnit u : oldLevelCamp) {
+      if (count == 0) {
+        break;
       }
+      u.upgradeTo(newLevel);
+      majorCamp.get(newLevel).add(u);
+      --count;
+    }
+
+    for (int i = 0; i < numUnit; i++) {
+      oldLevelCamp.remove(0);
     }
   }
 
+  //TODO: add Player
   public int numUnitWithLevel(int level) {
-    int num = 0;
-    for (BaseUnit unit : majorCamp) {
-      if (unit.getCurrLevel() == level) {
-        num++;
-      }
-    }
-    return num;
+    return majorCamp.get(level).size();
   }
 }
