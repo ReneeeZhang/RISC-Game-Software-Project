@@ -101,7 +101,6 @@ public class ClientGUI extends Application {
   }
 
 
-
   public Scene startScene() {
     URL  resource = ClientGUI.class.getResource("/fxml/start.fxml");
     FXMLLoader fxmlLoader = new FXMLLoader();
@@ -117,65 +116,25 @@ public class ClientGUI extends Application {
     }
     return new Scene(load, 800, 600);
   }
-  
 
   
   public Scene numPlayersScene() {
-
-    // display
-    Label numPlayers = new Label("Select number of players in this game:");
-    ChoiceBox<Integer> numChoice = new ChoiceBox<>();
-    numChoice.getItems().addAll(2, 3, 4, 5);
-    Button button = new Button("Start");
-
-    // button action
-    button.setOnAction(e -> {
-      try {
-        client.sendViaChannel(activeGames, numChoice.getValue());
-        System.out.println("send :" + numChoice.getValue());
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      } catch (Exception ex1) {
-        ex1.printStackTrace();
-      }
-
-      try {
-        // Get player name and board
-        String pName = new String();
-        Board board = new GameBoard();
-        
-        // add name to list
-        pName = (String) client.receiveViaChannel(activeGames);
-        System.out.println("receive player name: " + pName);
-        playerNames.add(pName);
-        playerNumbers.add(numChoice.getValue());
-        // init game
-        board = (GameBoard) client.receiveViaChannel(activeGames);
-        System.out.println("receive board: ");
-
-        client.initMatch(activeGames, playerNames.get(activeGames), board);
-        System.out.println("game inited");
-        // increment active game count
-        window.setScene(gameScene(activeGames));
-        activeGames+=1;
-        System.out.println("Avtive games = " + activeGames);
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      } catch (ClassNotFoundException ex1) {
-        ex1.printStackTrace();
-      }
-    });
-
-    
-    VBox box = new VBox();
-    box.getChildren().addAll(numPlayers, numChoice, button);
-    StackPane stackPane = new StackPane();
-    stackPane.getChildren().addAll(box);
-    Scene scene = new Scene(stackPane, 800, 600);
-    return scene;
+    URL  resource = ClientGUI.class.getResource("/fxml/playerSet.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    fxmlLoader.setControllerFactory(c -> {
+      return new NumPlayersController(this);
+      });
+    Parent load = null;
+    try {
+      load = fxmlLoader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return new Scene(load, 800, 600);
   }
 
-  public Scene gameScene(int currentRoom) throws IOException {
+  public Scene gameScene(int currentRoom) {
     
     Board board = client.getBoard(currentRoom);
     client.setBoard(currentRoom, board);
@@ -347,9 +306,10 @@ public class ClientGUI extends Application {
     return scene;
   }
 
-  public static Node mapScene(Board board, int playerNumber) throws IOException {
+  public static Node mapScene(Board board, int playerNumber) {
     URL resource;
     Parent load = null;
+    try {
     if (playerNumber == 2) {
       resource = ClientGUI.class.getResource("/fxml/twoPlayerMap.fxml");
       FXMLLoader fxmlLoader = new FXMLLoader();
@@ -365,7 +325,10 @@ public class ClientGUI extends Application {
       load = fxmlLoader.load();
       ThreePlayerMapController controller = fxmlLoader.getController();
       controller.setColor(board);
-    }  
+    }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     return load;
   }
@@ -472,36 +435,23 @@ public class ClientGUI extends Application {
     Button button4 = new Button("Start new game");
 
     // action
-    button1.setOnAction(e -> {
-      try {
-        window.setScene(gameScene(0));
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
-    });
+    button1.setOnAction(e -> window.setScene(gameScene(0)));
     button2.setOnAction(e -> {
-      try {
         if (activeGames > 1) {
           window.setScene(gameScene(1));
         }
         else {
           Popup.showInfo("You need start a new game to access this room");
         }
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
     });
     button3.setOnAction(e -> {
-      try {
+
         if (activeGames > 2) {
           window.setScene(gameScene(2));
         }
         else {
           Popup.showInfo("You need start a new game to access this room");
         }
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      }
     });
     
     button4.setOnAction(e -> {
@@ -530,7 +480,19 @@ public class ClientGUI extends Application {
     return client;
   }
 
-  /* ========== Scene setters ========== */
+  public int getActiveGames() {
+    return activeGames;
+  }
+
+  public ArrayList<String> getPlayerNames() {
+    return playerNames;
+  }
+  
+  public ArrayList<Integer> getPlayerNumbers() {
+    return playerNumbers;
+  }
+    
+  /* ========== Setters ========== */
   public void setLoginScene() {
     window.setScene(loginScene());
   }
@@ -543,6 +505,23 @@ public class ClientGUI extends Application {
     window.setScene(numPlayersScene());
   }
 
+  public void setGameScene(int room) {
+    window.setScene(gameScene(room));
+  }
+
+  /* ========== Adders  ========== */
+  public void addActiveGame() {
+    activeGames++;
+  }
+
+  public void addPlayerName(String name) {
+    playerNames.add(name);
+  }
+
+  public void addPlayerNumber(int num) {
+    playerNumbers.add(num);
+  }
+  
   /* ========== Send and receive ========== */
   public void sendStr(String str) {
     try {
@@ -562,6 +541,18 @@ public class ClientGUI extends Application {
     return ans;
   }
 
+  // receive string with room
+  public String receiveStr(int room) {
+    String ans = new String();
+    try {
+      ans = (String) client.receiveViaChannel(room);
+    } catch(Exception ex) {
+        ex.printStackTrace();
+    }
+    return ans;
+  }
+
+  // send with room
   public void sendObj(int room, Object obj) {
     try {
       client.sendViaChannel(room, obj);
@@ -570,9 +561,16 @@ public class ClientGUI extends Application {
     }
   }
 
-  public String receiveStr(int room) {
-    String ans = new String();
+  // receive obj with room
+  public Object receiveObj(int room) {
+    Object ans = new Object();
+    try {
+      ans = client.receiveViaChannel(room);
+    } catch(Exception ex) {
+        ex.printStackTrace();
+    }
     return ans;
   }
+
   
 }
