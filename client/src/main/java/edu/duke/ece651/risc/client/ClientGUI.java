@@ -68,7 +68,7 @@ public class ClientGUI extends Application {
   public void init() throws Exception{
     activeGames = 0;
     List<String> configs = readConfig();
-    client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
+//    client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)));
     playerNames = new ArrayList<>();
     playerNumbers = new ArrayList<>();
   }
@@ -77,7 +77,8 @@ public class ClientGUI extends Application {
   public void start(Stage primaryStage) throws Exception {
     window = primaryStage;
     window.setTitle("RISC");
-    window.setScene(loginScene());
+//    window.setScene(loginScene());
+    window.setScene(numPlayersScene());
     window.show();
   }
 
