@@ -22,8 +22,8 @@
         </rowConstraints>
          <children>
             <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label prefHeight="17.0" prefWidth="87.0" text="玩家数" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: #87CEFA#87CEFA;" text="Start" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label prefHeight="17.0" prefWidth="87.0" text="Number of players:" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onAction="#selectNum" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: #87CEFA#87CEFA;" text="Start" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
