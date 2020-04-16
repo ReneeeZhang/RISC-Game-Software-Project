@@ -63,7 +63,7 @@ public class Player implements Upgradable, Serializable {
   public void breakAlly() {
     this.ally = null;
   }
-  
+
   @Override
   public void upgrade() {
     techLevel++;
