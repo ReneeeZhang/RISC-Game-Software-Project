@@ -3,14 +3,20 @@ package shared;
 import java.io.Serializable;
 
 public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<BaseUnit> {
-  int level;
+  private Player owner;
+  private int level;
   // for serialization
   private static final long serialVersionUID = 19407245;
 
-  public BaseUnit() {
+  public BaseUnit(Player owner) {
     this.level = 0;
+    this.owner = owner;
   }
 
+  public Player getOwner() {
+    return this.owner;
+  }
+  
   public void upgrade() {
     this.level++;
   }

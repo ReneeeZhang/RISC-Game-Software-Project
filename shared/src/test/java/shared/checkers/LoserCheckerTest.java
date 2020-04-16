@@ -4,6 +4,7 @@ package shared.checkers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import shared.Board;
+import shared.Player;
 import shared.Region;
 
 import java.util.Arrays;
@@ -19,9 +20,10 @@ public class LoserCheckerTest {
         Region r2 = mock(Region.class);
         Region r3 = mock(Region.class);
         //owner
-        when(r1.getOwner()).thenReturn("A");
-        when(r2.getOwner()).thenReturn("A");
-        when(r3.getOwner()).thenReturn("A");
+        Player A = new Player("A");
+        when(r1.getOwner()).thenReturn(A);
+        when(r2.getOwner()).thenReturn(A);
+        when(r3.getOwner()).thenReturn(A);
 
         List<Region> regions = Arrays.asList(r1, r2, r3);
         Board boardMock = mock(Board.class);
@@ -30,7 +32,7 @@ public class LoserCheckerTest {
         LoserChecker loserChecker = new LoserChecker(boardMock, "B");
         Assertions.assertTrue(loserChecker.isValid());
 
-        when(r3.getOwner()).thenReturn("B");
+        when(r3.getOwner()).thenReturn(new Player("B"));
         Assertions.assertFalse(loserChecker.isValid());
     }
 }
