@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Server {
   private ServerSocketChannel serverSocketChannel;
   private Map<Integer, GameMaster> games;
-
+  
   public Server(int port) throws IOException {
     this.serverSocketChannel = ServerSocketChannel.open();
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
@@ -23,13 +23,10 @@ public class Server {
       games.put(i, new GameMaster(i));
     }
   }
- 
+
   public static void main(String[] args) {
     try {
       Scanner config = new Scanner(new File("src/main/resources/config.txt"));
-      AuthServer auth = new AuthServer(config.nextInt());
-      Thread authServer = new Thread(auth);
-      authServer.start();
       Server server = new Server(config.nextInt());
       while (true) {
         server.handleRequest();

@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc.server;
+package edu.duke.ece651.risc.authServer;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
