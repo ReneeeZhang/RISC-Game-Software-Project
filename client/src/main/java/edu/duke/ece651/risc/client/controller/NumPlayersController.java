@@ -21,6 +21,8 @@ public class NumPlayersController {
   
   public NumPlayersController(ClientGUI g) {
     this.gui = g;
+    // this.numChoice = new ChoiceBox<>();
+    // this.numChoice.getItems().addAll(2, 3, 4, 5);
   }
 
   @FXML
