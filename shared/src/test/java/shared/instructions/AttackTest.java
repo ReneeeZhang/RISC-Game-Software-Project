@@ -45,13 +45,11 @@ public class AttackTest {
     //when(boardMock.attack("r1", "r3", 1));
     
 
-    Attack a1 = new Attack("p1", "r1", "r3", 0, 1);
+    Attack a1 = new Attack("r1", "r3", 0, 1);
     assertEquals(true, a1.isValid(boardMock));
     a1.execute(boardMock);
-    
-    Attack a2 = new Attack("p1", "r1", "r2", 0, 1);
-    assertEquals("p1", a2.getPlayer());
-    assertEquals(0, a2.getLevel());
+
+    Attack a2 = new Attack("r1", "r2", 0, 1);
     assertEquals(false, a2.isValid(boardMock));
     a2.execute(boardMock);
 

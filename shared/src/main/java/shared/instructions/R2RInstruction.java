@@ -3,7 +3,6 @@ package shared.instructions;
 import java.io.Serializable;
 
 abstract public class R2RInstruction implements Instruction, Serializable {
-  protected String player;
   protected String src;
   protected String dest;
   protected int level;
@@ -15,8 +14,7 @@ abstract public class R2RInstruction implements Instruction, Serializable {
   }
 
   // Constructor
-  public R2RInstruction(String p, String s, String d, int l, int n) {
-    this.player = p;
+  public R2RInstruction(String s, String d, int l, int n) {
     this.src = s;
     this.dest = d;
     this.level = l;
@@ -27,10 +25,6 @@ abstract public class R2RInstruction implements Instruction, Serializable {
   //public boolean isValid(Board b);
 
   // Getters
-  public String getPlayer() {
-    return player;
-  }
-  
   public String getSrc() {
     return src;
   }
