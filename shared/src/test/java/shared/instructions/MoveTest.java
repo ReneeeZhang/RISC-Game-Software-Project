@@ -41,13 +41,13 @@ public class MoveTest {
 
     when(boardMock.getPlayer("A")).thenReturn(playerMock);
     
-    Move m1 = new Move("r1", "r2", 0, 1);
+    Move m1 = new Move("A", "r1", "r2", 0, 1);
     assertTrue(m1.isValid(boardMock));
     m1.execute(boardMock);
 
     m1.toString();
 
-    Move m2 = new Move("r1", "r3", 0, 1);
+    Move m2 = new Move("A", "r1", "r3", 0, 1);
     assertFalse(m2.isValid(boardMock));
     m2.execute(boardMock);
   }

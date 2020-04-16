@@ -12,15 +12,14 @@ public class Move extends R2RInstruction {
 
   @Override
   public void execute(Board b) {
-    //TODO: add player as arg
-    b.move(src, dest, level, numUnit);
+    b.move(player, src, dest, level, numUnit);
   }
 
   @Override
   public boolean isValid(Board b) {
     Region source = b.getRegion(src);
     Region destination = b.getRegion(dest);
-    FoodResourceChecker fChecker = new FoodResourceChecker(b, source, destination, numUnit);
+    FoodResourceChecker fChecker = new FoodResourceChecker(b, player, src, dest, numUnit);
     AccessibleChecker aChecker = new AccessibleChecker(b, source, destination, fChecker);
     UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit, aChecker);
     return uChecker.isValid();

@@ -82,20 +82,23 @@ public class GameBoard implements Board, Serializable {
   }
 
   @Override
-  public int getDistance(String src, String dst) {
+  public int getDistance(String player, String src, String dst) {
     Region srcRegion = getRegion(src);
     Region dstRegion = getRegion(dst);
+    Player p = getPlayer(player);
     List<Region> stack = new ArrayList<Region>();
     Player owner = getRegion(src).getOwner();
     Set<Region> visited = new HashSet<Region>();
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
+    // region : shortest distance
     for (Region r : playerRegionMap.get(owner.getName())) {
-      if(r.getName().equals(src)){
+      if (r.getName().equals(src)) {
         dist.put(r, 0);
       } else {
         dist.put(r, 1000);
-      }      
+      }
     }
+    // DFS
     stack.add(srcRegion);
     while (stack.size() > 0) {
       Region curr = stack.remove(0);
@@ -103,6 +106,7 @@ public class GameBoard implements Board, Serializable {
       if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
         visited.add(curr);
         for (Region r : regionMap.get(curr)) {
+          // TODO: getAlly
           if (r.getOwner().equals(owner)) {
             stack.add(r);
             int cost = dist.get(curr) + curr.getSize();
@@ -117,25 +121,23 @@ public class GameBoard implements Board, Serializable {
     return dist.get(dstRegion);
   }
 
-  // TODO: add owner
   @Override
-  public void move(String src, String dst, int level, int num) {
+  public void move(String player, String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    Player player = srcRegion.getOwner();
+    Player p = getPlayer(player);
     // costs total size of regions * number of units moving
-    player.decreaseFood(num*getDistance(src, dst));
-    dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
+    p.decreaseFood(num * getDistance(player, src, dst));
+    dstRegion.receiveUnit(srcRegion.sendUnit(p, level, num));
   }
 
-  // TODO: add owner
   @Override
-  public void attack(String src, String dst, int level, int num) {
+  public void attack(String player, String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
+    Player p = getPlayer(player);
     // costs 1 food per unit attacking
-    Player player = srcRegion.getOwner();
-    player.decreaseFood(num);
-    srcRegion.dispatch(dst, level, num);
+    p.decreaseFood(num);
+    srcRegion.dispatch(dst, p, level, num);
   }
 
   @Override

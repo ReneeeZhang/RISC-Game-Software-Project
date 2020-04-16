@@ -14,8 +14,7 @@ public class Attack extends R2RInstruction {
 
   @Override
   public void execute(Board b) {
-    //TODO: add player as arg
-    b.attack(src, dest, level, numUnit);
+    b.attack(player, src, dest, level, numUnit);
   }
 
   @Override
