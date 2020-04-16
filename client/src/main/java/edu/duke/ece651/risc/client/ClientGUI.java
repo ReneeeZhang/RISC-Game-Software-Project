@@ -118,19 +118,13 @@ public class ClientGUI extends Application {
   }
 
   
-  public Scene numPlayersScene() {
+  public Scene numPlayersScene() throws IOException {
     URL  resource = ClientGUI.class.getResource("/fxml/playerSet.fxml");
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(resource);
-    fxmlLoader.setControllerFactory(c -> {
-      return new NumPlayersController(this);
-      });
-    Parent load = null;
-    try {
-      load = fxmlLoader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    fxmlLoader.setControllerFactory(c -> new NumPlayersController(this));
+    Parent load = fxmlLoader.load();
+
     return new Scene(load, 800, 600);
   }
 
@@ -487,7 +481,7 @@ public class ClientGUI extends Application {
     window.setScene(startScene());
   }
   
-  public void setNumPlayersScene() {
+  public void setNumPlayersScene() throws IOException {
     window.setScene(numPlayersScene());
   }
 
@@ -569,6 +563,24 @@ public class ClientGUI extends Application {
         ex.printStackTrace();
     }
     return ans;
+  }
+
+
+  public Scene game(Board board) throws IOException {
+
+    Group map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
+
+    URL resource = getClass().getResource("/fxml/game.fxml");
+    FXMLLoader gameLoader = new FXMLLoader();
+    gameLoader.setLocation(resource);
+    gameLoader.setControllerFactory(c -> new GameController(this));
+    BorderPane load = gameLoader.load();
+    GameController controller = gameLoader.getController();
+
+
+//    controller.addMap(map).setMap(board);
+    controller.addMap(map);
+    return new Scene(load, 900, 600);
   }
 
   
