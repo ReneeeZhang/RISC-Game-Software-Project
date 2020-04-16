@@ -6,20 +6,20 @@ import shared.checkers.*;
 public class Move extends R2RInstruction {
   private static final long serialVersionUID = 923749345;
 
-  public Move(String s, String d, int l, int n) {
-    super(s, d, l, n);
+  public Move(String p, String s, String d, int l, int n) {
+    super(p, s, d, l, n);
   }
 
   @Override
   public void execute(Board b) {
-    b.move(src, dest, level, numUnit);
+    b.move(player, src, dest, level, numUnit);
   }
 
   @Override
   public boolean isValid(Board b) {
     Region source = b.getRegion(src);
     Region destination = b.getRegion(dest);
-    FoodResourceChecker fChecker = new FoodResourceChecker(b, source, destination, numUnit);
+    FoodResourceChecker fChecker = new FoodResourceChecker(b, player, src, dest, numUnit);
     AccessibleChecker aChecker = new AccessibleChecker(b, source, destination, fChecker);
     UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit, aChecker);
     return uChecker.isValid();

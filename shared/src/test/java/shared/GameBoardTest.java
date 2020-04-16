@@ -18,10 +18,10 @@ public class GameBoardTest {
       board.getAllRegions();
       board.getNeighbor("Hudson");
       board.getRegion("Hudson");
-      int dist = board.getDistance("Hudson", "Wilson");
+      int dist = board.getDistance("Player1", "Hudson", "Wilson");
       System.out.println("Shortest distance between hudson and wilson: " + dist);
-      board.move("Hudson", "Fitzpatrick", 0, 1);
-      board.attack("Fitzpatrick", "Wilson", 0, 3);
+      board.move("Player1", "Hudson", "Fitzpatrick", 0, 1);
+      board.attack("Player1", "Fitzpatrick", "Wilson", 0, 3);
       board.resolve();
     } catch (IOException e) {
       System.out.println(e);
