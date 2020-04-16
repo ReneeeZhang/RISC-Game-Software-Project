@@ -19,21 +19,35 @@ public class AuthServer implements Runnable{
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
     this.db = new HashMap<String, String>();
     this.db.put("user", "passw0rd");
+    for (int i = 0; i < 10; i++) {
+      this.db.put("player" + Integer.toString(i), "duke" + Integer.toString(i));
+    }
   }
 
   public void run() {
     while (true) {
-      try {
-        handleRequest();
-      } catch (Exception e) {
-        System.out.println(e);
+      Socket s = acceptSocket();
+      while (s.isConnected()) {
+        try{
+          handleRequest(s);
+        } catch (Exception e) {
+          System.out.println(e);
+        }
       }
     }
   }
 
-  public void handleRequest() throws IOException, ClassNotFoundException {
-    SocketChannel sc = serverSocketChannel.accept();
-    Socket s = sc.socket();
+  public Socket acceptSocket() {
+    try{
+      SocketChannel sc = serverSocketChannel.accept();
+      return sc.socket();
+    } catch (IOException e) {
+      System.out.println(e);
+      return new Socket();
+    }
+  }
+
+  public void handleRequest(Socket s) throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     String login = (String) deserial.readObject();
     String user = login.substring(0, login.indexOf('&'));
@@ -44,5 +58,9 @@ public class AuthServer implements Runnable{
     } else {
       serial.writeObject("no");
     }
+  }
+
+  public void close() throws IOException {
+    serverSocketChannel.close();
   }
 }

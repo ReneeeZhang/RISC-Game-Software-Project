@@ -108,10 +108,6 @@
                   ((equal coveredct 2) dcoverage-covered-stm-color)
                   (t dcoverage-part-covered-branch-color))))
     (cons lnum color)))
-                  
-
-             
-                          
 
 (defun dcoverage-mark-curr-line (color)
   "Mark the current line in specified COLOR."
@@ -152,7 +148,6 @@
 
 (defvar dcoverage-current-coverage-data (make-hash-table :test 'equal))
 
-
 (defun dcoverage-merge-colors-in-list (lst)
   "Merge the line/color lists in LST, selecting the more 'severe' color when multiple apply."
   (let* ((sorted-list (sort (copy-sequence lst) (lambda (a b) (> (car a) (car b)))))
@@ -170,7 +165,6 @@
                           (t (cons item newlst))))))
     (seq-reduce maybe-insert sorted-list '())))
           
-
 (defun dcoverage-parse-file (fname)
   "Parse a clover.xml file (in FNAME) into a useable representation."
   (let* ((xml (elquery-read-file fname))
@@ -210,7 +204,6 @@
     (maphash (lambda (k v) (setq ans (funcall fn k v ans))) hash)
     ans))
 
-
 (defun dcoverage-build-coverage-row (fpath filedata otherrows)
   "Take the FPATH and FILEDATA from one file's results in dcoverage-parse-file and build a row for the summary, then conses it onto OTHERROWS."
   (let* ((fqname (plist-get filedata :fully-qualified-name))
@@ -225,7 +218,6 @@
          (covpct (if (equal alltot 0) 100 (/ (* 100 covtot) alltot))))
     (cons (list adjname covpct covstm allstm covbr allbr fpath)
           otherrows)))
-
 
 (defun dcoverage-print-table-entry (str pad width sep )
   "Print one table entry (STR) padded (with PAD) to WIDTH and followed by SEP."
@@ -256,13 +248,9 @@
        (setq widths (cdr widths)))))
   (insert "\n"))
   
-
 (defun dcoverage-map-nested (fn lst)
   "Map FN over a two deep nested LST."
   (mapcar (lambda (x) (mapcar fn x)) lst))
-
-
-        
 
 (defun dcoverage-result-class-named-pressed (btn)
   "Handle press of BTN."
@@ -431,5 +419,3 @@
 
 (provide 'dcoverage)
 ;;; dcoverage.el ends here
-
-
