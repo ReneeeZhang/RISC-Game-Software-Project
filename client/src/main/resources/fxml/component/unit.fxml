@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label prefHeight="17.0" prefWidth="69.0" text="region">
+            <VBox.margin>
+                <Insets bottom="5.0" left="10.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="region" prefHeight="27.0" prefWidth="146.0">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
+        <Label prefHeight="17.0" prefWidth="69.0" text="old level">
+            <VBox.margin>
+                <Insets bottom="5.0" left="10.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="old_level" prefHeight="27.0" prefWidth="146.0">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
+        <Label prefHeight="17.0" prefWidth="69.0" text="new level">
+            <VBox.margin>
+                <Insets bottom="5.0" left="10.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="new_level" prefHeight="27.0" prefWidth="146.0">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
+        <Label prefHeight="17.0" prefWidth="69.0" text="unit quantity">
+            <VBox.margin>
+                <Insets bottom="5.0" left="10.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="unit_quantity" prefHeight="27.0" prefWidth="146.0">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
+    </children>
+</VBox>

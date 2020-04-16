@@ -14,7 +14,7 @@
 
 <BorderPane fx:id="mainView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.risc.client.controller.GameController">
    <right>
-      <VBox prefHeight="563.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="right" prefHeight="563.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <children>
             <Circle fx:id="color" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE">
                <VBox.margin>
