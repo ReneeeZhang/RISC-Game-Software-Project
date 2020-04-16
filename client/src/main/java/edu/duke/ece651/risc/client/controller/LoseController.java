@@ -14,22 +14,14 @@ import java.util.ResourceBundle;
 public class LoseController {
 
   private ClientGUI gui;
-  private int currentRoom;
   
-  public LoseController(ClientGUI g, int room) {
+  public LoseController(ClientGUI g) {
     this.gui = g;
-    currentRoom = room;
   }
 
   @FXML
   public void watchGame() {
-    try {
-        gui.setWatchScene(currentRoom);
-        gui.sendStr(currentRoom, "yes");
-    } catch(Exception ex) {
-        ex.printStackTrace();
-    }
-     
+
   }
 
 }
