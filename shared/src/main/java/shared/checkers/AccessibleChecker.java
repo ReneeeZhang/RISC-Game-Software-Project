@@ -55,8 +55,8 @@ public class AccessibleChecker implements Checker {
       for (Region region : neighbor) {
         if (visited.contains(region) || !isSameGroup(region, r))
           continue;
-        if (isAccessible(region))
-          return true;
+        //if (isAccessible(region))
+        return isAccessible(region);
       }
       return false;
     }
