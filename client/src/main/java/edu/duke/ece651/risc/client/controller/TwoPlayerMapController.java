@@ -1,5 +1,6 @@
-package edu.duke.ece651.risc.client;
+package edu.duke.ece651.risc.client.controller;
 
+import edu.duke.ece651.risc.client.Popup;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,7 +39,6 @@ public class TwoPlayerMapController implements Initializable {
     }
     public void setColor(Board board) {
         this.board = board;
-        System.out.println(board.toString());
         Fitzpatrick.setFill(colors.get(board.getRegion("Fitzpatrick").getOwner()));
         Hudson.setFill(colors.get(board.getRegion("Hudson").getOwner()));
         Wilson.setFill(colors.get(board.getRegion("Wilson").getOwner()));

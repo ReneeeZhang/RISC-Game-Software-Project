@@ -1,14 +1,14 @@
 package shared.instructions;
 
-import java.io.Serializable;
-import shared.*;
-import shared.checkers.*;
+import shared.Board;
+import shared.Player;
+import shared.Region;
+import shared.UpgradeLookup;
+import shared.checkers.UnitUpgradeChecker;
 
-
-public class UnitUpgrade extends UpgradeInstruction implements Serializable {
+public class UnitUpgrade extends UpgradeInstruction {
   private String src;
   private int numUnit;
-  
   private static final long serialVersionUID = 923749348;
 
   public UnitUpgrade(String pname, String s, int oldL, int newL, int num) {
@@ -40,7 +40,7 @@ public class UnitUpgrade extends UpgradeInstruction implements Serializable {
     return table.getCostUnit(oldLevel, newLevel);
   }
 
-    public int getNumUnit() {
-        return numUnit;
-    }
+  public int getNumUnit() {
+    return numUnit;
+  }
 }

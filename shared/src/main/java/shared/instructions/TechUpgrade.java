@@ -1,11 +1,9 @@
 package shared.instructions;
 
-import java.io.Serializable;
 import shared.*;
 import shared.checkers.*;
 
-public class TechUpgrade extends UpgradeInstruction implements Serializable {
-
+public class TechUpgrade extends UpgradeInstruction {
   private static final long serialVersionUID = 923749347;
 
   public TechUpgrade(String pname, int oldL, int newL) {

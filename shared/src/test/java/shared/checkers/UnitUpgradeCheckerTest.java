@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import shared.BaseRegion;
 import shared.Board;
 import shared.Player;
-import shared.Region;
 import shared.instructions.UnitUpgrade;
 
 import static org.mockito.Mockito.*;
@@ -25,7 +24,7 @@ public class UnitUpgradeCheckerTest {
         when(player.getTechAmount()).thenReturn(100);
         //region
         BaseRegion r1 = mock(BaseRegion.class);
-        when(r1.getOwner()).thenReturn("A");
+        when(r1.getOwner()).thenReturn(new Player("A"));
         when(r1.numUnitWithLevel(4)).thenReturn(3);
         //board
         Board board = mock(Board.class);

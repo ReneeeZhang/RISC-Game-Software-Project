@@ -4,6 +4,7 @@ package shared.checkers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import shared.Board;
+import shared.Player;
 import shared.Region;
 
 import java.util.Arrays;
@@ -20,9 +21,10 @@ public class GameOverCheckerTest {
         Region r2 = mock(Region.class);
         Region r3 = mock(Region.class);
         //owner
-        when(r1.getOwner()).thenReturn("A");
-        when(r2.getOwner()).thenReturn("A");
-        when(r3.getOwner()).thenReturn("A");
+        Player A = new Player("A");
+        when(r1.getOwner()).thenReturn(A);
+        when(r2.getOwner()).thenReturn(A);
+        when(r3.getOwner()).thenReturn(A);
 
         //over
         List<Region> regions = Arrays.asList(r1, r2, r3);
@@ -40,10 +42,8 @@ public class GameOverCheckerTest {
         Assertions.assertFalse(gameOverChecker.isValid());
 
         //not
-        when(r3.getOwner()).thenReturn("B");
+        when(r3.getOwner()).thenReturn(new Player("B"));
         gameOverChecker = new GameOverChecker(boardMock);
         Assertions.assertFalse(gameOverChecker.isValid());
-
-
     }
 }
