@@ -40,6 +40,8 @@ public class GameController implements Initializable{
   @FXML
   private TabPane games;
   @FXML
+  private Tab newGame;
+  @FXML
   private ChoiceBox<String> actionChoice;
   @FXML
   private VBox right;
@@ -62,14 +64,9 @@ public class GameController implements Initializable{
     colorMapper.put("Player4", Color.RED);
     colorMapper.put("Player5", Color.ORANGE);
   }
-  public void setMap(Board board) {
+  public GameController addBoard(Board board) {
     this.board = board;
-    List<Region> allRegions = board.getAllRegions();
-    for (Region region : allRegions) {
-      String owner = region.getOwner().getName();
-      Circle circle = (Circle)group.lookup("#" + owner);
-      circle.setFill(colorMapper.get(color));
-    }
+    return this;
   }
 
   public GameController addMap(Group group) {
@@ -78,21 +75,7 @@ public class GameController implements Initializable{
     return this;
   }
 
-
-  public void createUnitUpgrade() {
-//    URL resource = getClass().getResource("/fxml/component/unitUpgrade.fxml");
-//    try {
-//      action = FXMLLoader.load(resource);
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    right.getChildren().set(3, action);
-//    mainView.setRight(right);
-//    Stage window = (Stage)mainView.getScene().getWindow();
-//    window.setScene(new Scene(mainView));
-  }
-  @FXML
-  public void chooseAction(String a) {
+  private void chooseAction(String a) {
     a = a.split(" ")[0];
     URL resource = getClass().getResource(String.format("/fxml/component/%s.fxml", a));
     try {
@@ -109,10 +92,24 @@ public class GameController implements Initializable{
   public void doDone() {
     System.out.println("Done");
   }
-
-
+  private void initMap() {
+    List<Region> allRegions = board.getAllRegions();
+    for (Region region : allRegions) {
+      String owner = region.getOwner().getName();
+      Circle circle = (Circle)group.lookup("#" + owner);
+      circle.setFill(colorMapper.get(color));
+    }
+  }
+  @FXML
+  void createNewGame() {
+    int size = games.getTabs().size();
+    games.getTabs().add(size - 1, new Tab("Game " + size));
+    games.getSelectionModel().select(size - 1);
+  }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    //TODO, uncomment
+//    initMap();
     actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
     actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
