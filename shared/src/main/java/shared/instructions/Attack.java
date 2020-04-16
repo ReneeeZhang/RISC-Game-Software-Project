@@ -7,8 +7,8 @@ import shared.checkers.*;
 public class Attack extends R2RInstruction implements Serializable{
   private static final long serialVersionUID = 923749346;
   
-  public Attack(String s, String d, int l, int n) {
-    super(s, d, l, n);
+  public Attack(String p, String s, String d, int l, int n) {
+    super(p, s, d, l, n);
   }
 
   @Override

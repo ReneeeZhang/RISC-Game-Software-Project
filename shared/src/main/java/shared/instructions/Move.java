@@ -7,8 +7,8 @@ import shared.checkers.*;
 public class Move extends R2RInstruction implements Serializable {
   private static final long serialVersionUID = 923749345;
   
-  public Move(String s, String d, int l, int n) {
-    super(s, d, l, n);
+  public Move(String p, String s, String d, int l, int n) {
+    super(p, s, d, l, n);
   }
 
   @Override
