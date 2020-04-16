@@ -195,7 +195,7 @@ public class ClientGUI extends Application {
     actionButton.setOnAction(e -> {
         // Move
         if (insChoice.getValue().equals("Move") && levelText.getText() != null && numText.getText() != null) {
-          Move moveIns = new Move(srcChoice.getValue(), destChoice.getValue(),
+          Move moveIns = new Move(playerNames.get(currentRoom), srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, moveIns)) {
               insList.add(moveIns);
@@ -209,7 +209,7 @@ public class ClientGUI extends Application {
         }
         // Attack
         else if (insChoice.getValue().equals("Attack") && levelText.getText() != null && numText.getText() != null) {
-          Attack attackIns = new Attack(srcChoice.getValue(), destChoice.getValue(),
+          Attack attackIns = new Attack(playerNames.get(currentRoom), srcChoice.getValue(), destChoice.getValue(),
                                   Integer.parseInt(levelText.getText()), Integer.parseInt(numText.getText()));
           if(client.isValidInst(currentRoom, attackIns)) {
             insList.add(attackIns);
