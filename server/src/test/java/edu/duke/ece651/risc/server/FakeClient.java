@@ -36,11 +36,11 @@ public class FakeClient implements Runnable {
         deserial = new ObjectInputStream(s.getInputStream());
         GameBoard b = (GameBoard) deserial.readObject();
         serial = new ObjectOutputStream(s.getOutputStream());
-        Instruction move = new Move(input.next(), input.next(), input.nextInt(), input.nextInt());
-        Instruction attack = new Attack(input.next(), input.next(), input.nextInt(), input.nextInt());
+        //Instruction move = new Move(input.next(), input.next(), input.nextInt(), input.nextInt());
+        //Instruction attack = new Attack(input.next(), input.next(), input.nextInt(), input.nextInt());
         List<Instruction> ins = new ArrayList<Instruction>();
-        ins.add(move);
-        ins.add(attack);
+        //ins.add(move);
+        //ins.add(attack);
         serial.writeObject(ins);
       }
     } catch (Exception e) {

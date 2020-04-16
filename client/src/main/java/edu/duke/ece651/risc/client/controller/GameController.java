@@ -67,8 +67,7 @@ public class GameController implements Initializable{
   public void setMap(Board board) {
     List<Region> allRegions = board.getAllRegions();
     for (Region region : allRegions) {
-      String owner = region.getOwner();
-      String color = region.getColor();
+      String owner = region.getOwner().getName();
       Circle circle = (Circle)group.lookup("#" + owner);
       circle.setFill(colorMapper.get(color));
     }
