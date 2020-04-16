@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class GameBoard implements Board, Drawable, Serializable {
+public class GameBoard implements Board, Serializable {
+  private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
+  // TODO: move list<region> into player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
-  // for serialization
-  private static final long serialVersionUID = 12367648;
-  
+
   public GameBoard() {
     this.regionMap = new HashMap<Region, List<Region>>();
     this.regionNameMap = new HashMap<String, Region>();
@@ -82,20 +82,23 @@ public class GameBoard implements Board, Drawable, Serializable {
   }
 
   @Override
-  public int getDistance(String src, String dst) {
+  public int getDistance(String player, String src, String dst) {
     Region srcRegion = getRegion(src);
     Region dstRegion = getRegion(dst);
+    Player p = getPlayer(player);
     List<Region> stack = new ArrayList<Region>();
-    String owner = getRegion(src).getOwner();
+    Player owner = getRegion(src).getOwner();
     Set<Region> visited = new HashSet<Region>();
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
-    for (Region r : playerRegionMap.get(owner)) {
-      if(r.getName().equals(src)){
+    // region : shortest distance
+    for (Region r : playerRegionMap.get(owner.getName())) {
+      if (r.getName().equals(src)) {
         dist.put(r, 0);
       } else {
         dist.put(r, 1000);
-      }      
+      }
     }
+    // DFS
     stack.add(srcRegion);
     while (stack.size() > 0) {
       Region curr = stack.remove(0);
@@ -103,6 +106,7 @@ public class GameBoard implements Board, Drawable, Serializable {
       if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
         visited.add(curr);
         for (Region r : regionMap.get(curr)) {
+          // TODO: getAlly
           if (r.getOwner().equals(owner)) {
             stack.add(r);
             int cost = dist.get(curr) + curr.getSize();
@@ -116,26 +120,45 @@ public class GameBoard implements Board, Drawable, Serializable {
     }
     return dist.get(dstRegion);
   }
-  
+
   @Override
-  public void move(String src, String dst, int level, int num) {
+  public void move(String player, String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
     Region dstRegion = regionNameMap.get(dst);
-    Player player = playerNameMap.get(srcRegion.getOwner());
+    Player p = getPlayer(player);
     // costs total size of regions * number of units moving
-    player.decreaseFood(num*getDistance(src, dst));
-    dstRegion.receiveUnit(srcRegion.sendUnit(level, num));
+    p.decreaseFood(num * getDistance(player, src, dst));
+    dstRegion.receiveUnit(srcRegion.sendUnit(p, level, num));
   }
 
   @Override
-  public void attack(String src, String dst, int level, int num) {
+  public void attack(String player, String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
+    Player p = getPlayer(player);
     // costs 1 food per unit attacking
-    Player player = playerNameMap.get(srcRegion.getOwner());
-    player.decreaseFood(num);
-    srcRegion.dispatch(dst, level, num);
+    p.decreaseFood(num);
+    srcRegion.dispatch(dst, p, level, num);
   }
-  
+
+  @Override
+  public void ally(String player1, String player2) {
+    Player p1 = getPlayer(player1);
+    Player p2 = getPlayer(player2);
+    p1.allyWith(p2);
+  }
+
+  @Override
+  public void resolveAlly() {
+    for (Player p : playerNameMap.values()) {
+      if (p.getAlly() != null) {
+        // if p.ally has no ally or not p
+        if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
+          p.breakAlly();
+        }
+      }
+    }
+  }
+
   @Override
   public void resolve() {
     for (String player : playerRegionMap.keySet()) {
@@ -148,16 +171,17 @@ public class GameBoard implements Board, Drawable, Serializable {
     // update player-region map
     playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : getAllRegions()) {
-      if (!playerRegionMap.containsKey(r.getOwner())) {
-        playerRegionMap.put(r.getOwner(), new ArrayList<Region>());
+      if (!playerRegionMap.containsKey(r.getOwner().getName())) {
+        //TODO: might be deleted
+        playerRegionMap.put(r.getOwner().getName(), new ArrayList<Region>());
       }
-      playerRegionMap.get(r.getOwner()).add(r);
+      playerRegionMap.get(r.getOwner().getName()).add(r);
     }
   }
 
   private void fight(Region src, Region dst) {
     List<BaseUnit> attackUnits = src.getBorderCamp(dst.getName());
-    List<BaseUnit> defenseUnits = dst.getMajorCamp();
+    List<BaseUnit> defenseUnits = dst.getDefenseTroop();
     Collections.sort(attackUnits);
     Collections.sort(defenseUnits);
     fight(attackUnits, defenseUnits);
@@ -195,24 +219,5 @@ public class GameBoard implements Board, Drawable, Serializable {
       }
       round++;
     }
-  }
-  
-  @Override
-  public String draw() {
-    String str = "";
-    for (String player : playerRegionMap.keySet()) {
-      str += player + ":\n----------\n";
-      for (Region r : playerRegionMap.get(player)) {
-        String name = r.getName();
-        str += " " + r.getNumBaseUnit() + " unit(s) in " + name;
-        str += "(next to : ";
-        for (Region neigh : regionMap.get(r)) {
-          str += neigh.getName() + ", ";
-        }
-        str = str.substring(0, str.length() - 2);
-        str += ")\n";
-      }
-    }
-    return str;
   }
 }

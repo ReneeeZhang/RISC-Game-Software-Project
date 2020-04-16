@@ -1,6 +1,10 @@
 package edu.duke.ece651.risc.client.controller;
 
+import com.sun.javafx.collections.ObservableListWrapper;
 import edu.duke.ece651.risc.client.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableListBase;
 import shared.*;
 
 import javafx.fxml.FXML;
@@ -11,16 +15,21 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class NumPlayersController {
+public class NumPlayersController implements Initializable{
+  ObservableList<Integer> list;
 
   @FXML
   private ChoiceBox<Integer> numChoice;
+
   private ClientGUI gui;
   
   public NumPlayersController(ClientGUI g) {
     this.gui = g;
+    // this.numChoice = new ChoiceBox<>();
+    // this.numChoice.getItems().addAll(2, 3, 4, 5);
   }
 
   @FXML
@@ -54,4 +63,10 @@ public class NumPlayersController {
         System.out.println("Avtive games = " + gui.getActiveGames());  
   }
 
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    list = FXCollections.observableList(Arrays.asList(2,3,4,5));
+    numChoice.setItems(list);
+    numChoice.setValue(2);
+  }
 }

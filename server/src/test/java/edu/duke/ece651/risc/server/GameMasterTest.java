@@ -19,8 +19,8 @@ public class GameMasterTest {
     assertTrue(!gm.isFull());
     Map<SocketChannel, List<Instruction>> map = new HashMap<SocketChannel, List<Instruction>>();
     List<Instruction> ins = new ArrayList<Instruction>();
-    Instruction move = new Move("Hudson", "Wilson", 0, 5);
-    Instruction attack = new Attack("Bostock", "Wilson", 0, 3);
+    Instruction move = new Move("Player1", "Hudson", "Wilson", 0, 5);
+    Instruction attack = new Attack("Player2", "Bostock", "Wilson", 0, 3);
     Instruction techUpgrade = new TechUpgrade("Player1", 1, 2);
     Instruction unitUpgrade = new UnitUpgrade("Player1", "Fitzpatrick", 0, 2, 1);
     ins.add(move);

@@ -20,7 +20,7 @@
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </Label>
-                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="111.0" text="Watch Game" />
+                <Button mnemonicParsing="false" onAction="#watchGame" prefHeight="37.0" prefWidth="111.0" text="Watch Game" />
             </children>
         </VBox>
     </center>

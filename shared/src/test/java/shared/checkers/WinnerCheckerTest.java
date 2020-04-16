@@ -1,16 +1,18 @@
 package shared.checkers;
 
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import shared.Board;
-import shared.Region;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import shared.Board;
+import shared.Player;
+import shared.Region;
 
 public class WinnerCheckerTest {
 
@@ -20,9 +22,10 @@ public class WinnerCheckerTest {
         Region r2 = mock(Region.class);
         Region r3 = mock(Region.class);
         //owner
-        when(r1.getOwner()).thenReturn("A");
-        when(r2.getOwner()).thenReturn("A");
-        when(r3.getOwner()).thenReturn("A");
+        Player A = new Player("A");
+        when(r1.getOwner()).thenReturn(A);
+        when(r2.getOwner()).thenReturn(A);
+        when(r3.getOwner()).thenReturn(A);
         //name
         when(r1.getName()).thenReturn("r1");
         when(r2.getName()).thenReturn("r2");
@@ -35,7 +38,7 @@ public class WinnerCheckerTest {
         WinnerChecker winnerChecker = new WinnerChecker(boardMock, "A");
         Assertions.assertTrue(winnerChecker.isValid());
 
-        when(r3.getOwner()).thenReturn("B");
+        when(r3.getOwner()).thenReturn(new Player("B"));
         Assertions.assertFalse(winnerChecker.isValid());
     }
 }

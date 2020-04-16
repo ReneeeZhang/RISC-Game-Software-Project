@@ -1,15 +1,17 @@
 package shared.checkers;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import shared.Board;
-import shared.Region;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import shared.Board;
+import shared.Player;
+import shared.Region;
 
 public class AccessibleCheckerTest {
 
@@ -19,9 +21,9 @@ public class AccessibleCheckerTest {
         Region r2 = mock(Region.class);
         Region r3 = mock(Region.class);
         //owner
-        when(r1.getOwner()).thenReturn("A");
-        when(r2.getOwner()).thenReturn("A");
-        when(r3.getOwner()).thenReturn("A");
+        when(r1.getOwner()).thenReturn(new Player("A"));
+        when(r2.getOwner()).thenReturn(new Player("A"));
+        when(r3.getOwner()).thenReturn(new Player("A"));
         //name
         when(r1.getName()).thenReturn("r1");
         when(r2.getName()).thenReturn("r2");
@@ -59,7 +61,7 @@ public class AccessibleCheckerTest {
         //r4 belongs to "B"
         Region r4 = mock(Region.class);
         when(r4.getName()).thenReturn("r4");
-        when(r4.getOwner()).thenReturn("B");
+        when(r4.getOwner()).thenReturn(new Player("B"));
         //r1 -> r2, r1 -> r3, r1 -> r4
         List<Region> regions4 = Arrays.asList(r2, r3, r4);
         Board boardMock3 = mock(Board.class);

@@ -17,7 +17,7 @@ public class UnitUpgradeTest {
 
     Board b = mock(Board.class);
     when(b.getPlayer("Drew")).thenReturn(p);
-    Region r = new BaseRegion("Hudson", "Drew", 10);
+    Region r = new BaseRegion("Hudson", p, 10);
     when(b.getRegion("Hudson")).thenReturn(r);
 
     assertEquals("Hudson", u.getSrc());

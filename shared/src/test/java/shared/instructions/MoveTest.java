@@ -6,30 +6,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
-
 
 public class MoveTest {
   @Test
-  public void mock_() {
+  public void test_Move() {
     Region r1 = mock(Region.class);
     Region r2 = mock(Region.class);
     Region r3 = mock(Region.class);
     //owner
-    when(r1.getOwner()).thenReturn("A");
-    when(r2.getOwner()).thenReturn("A");
-    when(r3.getOwner()).thenReturn("B");
+    when(r1.getOwner()).thenReturn(new Player("A"));
+    when(r2.getOwner()).thenReturn(new Player("A"));
+    when(r3.getOwner()).thenReturn(new Player("B"));
     //name
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
     when(r3.getName()).thenReturn("r3");
     //unit
-    when(r1.getNumBaseUnit()).thenReturn(1);
-    when(r2.getNumBaseUnit()).thenReturn(1);
-    when(r3.getNumBaseUnit()).thenReturn(1);
+    when(r1.getAllUnitsAmount()).thenReturn(1);
+    when(r2.getAllUnitsAmount()).thenReturn(1);
+    when(r3.getAllUnitsAmount()).thenReturn(1);
 
     when(r1.numUnitWithLevel(0)).thenReturn(1);
 
@@ -45,18 +41,14 @@ public class MoveTest {
 
     when(boardMock.getPlayer("A")).thenReturn(playerMock);
     
-    Move m1 = new Move("r1", "r2", 0, 1);
-    assertEquals(1, m1.getNumUnit());
+    Move m1 = new Move("A", "r1", "r2", 0, 1);
     assertTrue(m1.isValid(boardMock));
     m1.execute(boardMock);
 
     m1.toString();
 
-    Move m2 = new Move("r1", "r3", 0, 1);
+    Move m2 = new Move("A", "r1", "r3", 0, 1);
     assertFalse(m2.isValid(boardMock));
     m2.execute(boardMock);
-    
-    assertEquals("r1", m2.getSrc());
-    assertEquals("r3", m2.getDest());
   }
 }
