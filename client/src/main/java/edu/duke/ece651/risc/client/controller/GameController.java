@@ -3,13 +3,12 @@ package edu.duke.ece651.risc.client.controller;
 import edu.duke.ece651.risc.client.*;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import shared.Board;
@@ -22,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class GameController {
+public class GameController implements Initializable{
 
   private ClientGUI gui;
-  
+
   public GameController(ClientGUI g) {
     this.gui = g;
   }
@@ -44,6 +43,11 @@ public class GameController {
   private BorderPane mainView;
   @FXML
   private TabPane games;
+  @FXML
+  private ChoiceBox<String> actionChoice;
+  @FXML
+  private VBox action;
+  private VBox actionPane;
   @FXML
   private Group group;
   @FXML
@@ -69,9 +73,7 @@ public class GameController {
       circle.setFill(colorMapper.get(color));
     }
   }
-  /**
-   * Add
-   */
+
   public GameController addMap(Group group) {
     this.group = group;
     mainView.setCenter(group);
@@ -94,4 +96,16 @@ public class GameController {
     System.out.println("Done");
   }
 
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    actionChoice.getItems().addAll("MOVE", "ATTACK", "UPGRADE");
+
+    URL resource = getClass().getResource("/fxml/component/move.fxml");
+    try {
+      actionPane = FXMLLoader.load(resource);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
