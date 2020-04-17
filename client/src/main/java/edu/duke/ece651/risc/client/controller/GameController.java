@@ -4,6 +4,8 @@ import edu.duke.ece651.risc.client.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -56,6 +58,8 @@ public class GameController implements Initializable{
   private Label info;
 
   Board board;
+  boolean init = true;
+  int currentRoom;
   private static Map<String, Color> colorMapper = new HashMap<>();
 
   static {
@@ -72,7 +76,16 @@ public class GameController implements Initializable{
 
   public GameController addMap(Group group) {
     this.group = group;
+    initMap();
     mainView.setCenter(group);
+    return this;
+  }
+
+  public GameController setCurrentRoom(int room) {
+    this.currentRoom = room;
+    System.out.println("set current room " + currentRoom);
+    games.getSelectionModel().select(currentRoom - 1);
+    init = false;
     return this;
   }
 
@@ -89,6 +102,7 @@ public class GameController implements Initializable{
     Stage window = (Stage)mainView.getScene().getWindow();
     window.setScene(new Scene(mainView));
   }
+
   @FXML
   public void doDone() {
     System.out.println("Done");
@@ -98,23 +112,41 @@ public class GameController implements Initializable{
     List<Region> allRegions = board.getAllRegions();
     for (Region region : allRegions) {
       String owner = region.getOwner().getName();
-      Circle circle = (Circle)group.lookup("#" + owner);
-      circle.setFill(colorMapper.get(color));
+      Circle circle = (Circle)group.lookup("#" + region.getName());
+      circle.setFill(colorMapper.get(owner));
     }
   }
 
   @FXML
   void createNewGame() throws IOException {
-    int size = games.getTabs().size();
-    games.getTabs().add(size - 1, new Tab("Game " + size));
-    games.getSelectionModel().select(size - 1);
-//    mainView.setCenter((Node)gui.numPlayersScene());
-    mainView.getScene().getWindow();
+    System.out.println("start game " + currentRoom + 1);
+    gui.getClient().joinGame();
+    gui.setNumPlayersScene();
   }
+
+  private void generateTabs(int activeRoom) {
+    int size = games.getTabs().size();
+    while (size - 1 < activeRoom) {
+      Tab tab = new Tab("Game " + size);
+      tab.setId(String.valueOf(size));
+      System.out.println("create tab with id " + size);
+      tab.setOnSelectionChanged(event -> {
+        if (init) return;
+        if (tab.isSelected()) {
+          String id = tab.getId();
+          System.out.println("switch to room " + id);
+          gui.setGameScene(Integer.parseInt(id));
+        }
+      });
+      games.getTabs().add(size - 1, tab);
+      size++;
+    }
+  }
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    //TODO, uncomment
-//    initMap();
+    System.out.println("initialize");
+    generateTabs(gui.getActiveGames());
     actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
     actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
@@ -127,5 +159,6 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
+
   }
 }
