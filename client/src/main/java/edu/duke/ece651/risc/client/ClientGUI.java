@@ -567,7 +567,7 @@ public class ClientGUI extends Application {
   }
 
 
-  public Scene game(Board board) throws IOException {
+  public Scene game(int currentRoom) throws IOException {
 
     Group map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
 
@@ -577,7 +577,7 @@ public class ClientGUI extends Application {
     gameLoader.setControllerFactory(c -> new GameController(this));
     BorderPane load = gameLoader.load();
     GameController controller = gameLoader.getController();
-    controller.addMap(map).addBoard(board);
+    controller.addMap(map).addBoard(client.getBoard(currentRoom));
     return new Scene(load);
   }
 
