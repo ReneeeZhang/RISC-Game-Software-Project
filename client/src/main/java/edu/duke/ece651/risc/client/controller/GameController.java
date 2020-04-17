@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -92,6 +93,7 @@ public class GameController implements Initializable{
   public void doDone() {
     System.out.println("Done");
   }
+
   private void initMap() {
     List<Region> allRegions = board.getAllRegions();
     for (Region region : allRegions) {
@@ -100,11 +102,14 @@ public class GameController implements Initializable{
       circle.setFill(colorMapper.get(color));
     }
   }
+
   @FXML
-  void createNewGame() {
+  void createNewGame() throws IOException {
     int size = games.getTabs().size();
     games.getTabs().add(size - 1, new Tab("Game " + size));
     games.getSelectionModel().select(size - 1);
+//    mainView.setCenter((Node)gui.numPlayersScene());
+    mainView.getScene().getWindow();
   }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -122,6 +127,5 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
-
   }
 }
