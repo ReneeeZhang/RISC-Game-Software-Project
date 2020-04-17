@@ -39,12 +39,12 @@ public class TwoPlayerMapController implements Initializable {
     }
     public void setColor(Board board) {
         this.board = board;
-        Fitzpatrick.setFill(colors.get(board.getRegion("Fitzpatrick").getOwner()));
-        Hudson.setFill(colors.get(board.getRegion("Hudson").getOwner()));
-        Wilson.setFill(colors.get(board.getRegion("Wilson").getOwner()));
-        Perkins.setFill(colors.get(board.getRegion("Perkins").getOwner()));
-        Bostock.setFill(colors.get(board.getRegion("Bostock").getOwner()));
-        Teer.setFill(colors.get(board.getRegion("Teer").getOwner()));
+        Fitzpatrick.setFill(colors.get(board.getRegion("Fitzpatrick").getOwner().getName()));
+        Hudson.setFill(colors.get(board.getRegion("Hudson").getOwner().getName()));
+        Wilson.setFill(colors.get(board.getRegion("Wilson").getOwner().getName()));
+        Perkins.setFill(colors.get(board.getRegion("Perkins").getOwner().getName()));
+        Bostock.setFill(colors.get(board.getRegion("Bostock").getOwner().getName()));
+        Teer.setFill(colors.get(board.getRegion("Teer").getOwner().getName()));
 
     }
     @FXML
