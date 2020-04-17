@@ -259,6 +259,7 @@ public class ClientGUI extends Application {
         client.sendViaChannel(currentRoom, insList);
       //System.out.println("send :" + numChoice.getValue());
         Board newBoard = (GameBoard) client.receiveViaChannel(currentRoom);
+        System.out.println(newBoard.toString());
         client.setBoard(currentRoom, newBoard);
         Popup.showInfo("Instructrion submitted.");
         insList.clear();
