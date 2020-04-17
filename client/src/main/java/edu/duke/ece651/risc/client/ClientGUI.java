@@ -114,7 +114,7 @@ public class ClientGUI extends Application {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return new Scene(load, 800, 600);
+    return new Scene(load);
   }
 
   
@@ -125,7 +125,7 @@ public class ClientGUI extends Application {
     fxmlLoader.setControllerFactory(c -> new NumPlayersController(this));
     Parent load = fxmlLoader.load();
 
-    return new Scene(load, 800, 600);
+    return new Scene(load);
   }
 
   public Scene gameScene(int currentRoom) {
@@ -199,7 +199,7 @@ public class ClientGUI extends Application {
             Popup.showInfo("invalid instruction!");
           }
               
-              
+
         }
         // Attack
         else if (insChoice.getValue().equals("Attack") && levelText.getText() != null && numText.getText() != null) {
@@ -451,7 +451,6 @@ public class ClientGUI extends Application {
         }
       });
     
-    
     roomChange.getChildren().addAll(button1, button2, button3, button4);
     return roomChange;
   }
@@ -486,8 +485,9 @@ public class ClientGUI extends Application {
     window.setScene(numPlayersScene());
   }
 
-  public void setGameScene(int room) {
-    window.setScene(gameScene(room));
+  public void setGameScene(int room)  {
+//    window.setScene(gameScene(room));
+    window.setScene(game(room));
   }
 
   public void setWatchScene(int room) {
@@ -566,18 +566,25 @@ public class ClientGUI extends Application {
     return ans;
   }
 
-
-  public Scene game(int currentRoom) throws IOException {
-
-    Group map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
-
+  public Scene game(int currentRoom) {
+    Group map = null;
+    try {
+      map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     URL resource = getClass().getResource("/fxml/game.fxml");
     FXMLLoader gameLoader = new FXMLLoader();
     gameLoader.setLocation(resource);
     gameLoader.setControllerFactory(c -> new GameController(this));
-    BorderPane load = gameLoader.load();
+    BorderPane load = null;
+    try {
+      load = gameLoader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     GameController controller = gameLoader.getController();
-    controller.addMap(map).addBoard(client.getBoard(currentRoom));
+    controller.setCurrentRoom(currentRoom).addBoard(client.getBoard(currentRoom - 1)).addMap(map);
     return new Scene(load);
   }
 

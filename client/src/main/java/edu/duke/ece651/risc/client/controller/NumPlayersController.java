@@ -58,8 +58,8 @@ public class NumPlayersController implements Initializable{
         gui.getClient().initMatch(gui.getActiveGames(), gui.getPlayerNames().get(gui.getActiveGames()), board);
         System.out.println("game inited");
         // increment active game count
-        gui.setGameScene(gui.getActiveGames());
         gui.addActiveGame();
+        gui.setGameScene(gui.getActiveGames());
         System.out.println("Avtive games = " + gui.getActiveGames());  
   }
 

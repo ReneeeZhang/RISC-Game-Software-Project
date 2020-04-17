@@ -54,7 +54,7 @@
    <top>
       <TabPane fx:id="games" prefHeight="37.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Game 1" />
+<!--          <Tab fx:id = "1" text="Game 1" />-->
             <Tab fx:id="newGame" onSelectionChanged="#createNewGame" text="New Game">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
