@@ -2,11 +2,11 @@ package shared.instructions;
 
 import java.io.Serializable;
 
-abstract public class UpgradeInstruction implements Instruction, Serializable{
+abstract public class UpgradeInstruction implements Instruction, Serializable {
+  private static final long serialVersionUID = 435352124;
   protected String playerName;
   protected int oldLevel;
   protected int newLevel;
-  private static final long serialVersionUID = 435352124;
 
   // Default constructor
   public UpgradeInstruction() {

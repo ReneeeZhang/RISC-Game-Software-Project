@@ -32,10 +32,10 @@ public class ClientTest {
 
       client.sendViaChannel(0, 1);
       String a = (String) client.receiveViaChannel(0);
-      Move m1 = new Move("Hudson", "Teer", 4, 1);
-      Move m2 = new Move("Perkins", "Teer", 0, 1);
+      Move m1 = new Move("p1", "Hudson", "Teer", 4, 1);
+      Move m2 = new Move("p2", "Perkins", "Teer", 0, 1);
       client.isValidInst(0, m1);
-      client.isValidInst(0, m2);
+      //client.isValidInst(0, m2);
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException ex) {

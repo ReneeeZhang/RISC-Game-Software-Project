@@ -1,5 +1,7 @@
 package shared.checkers;
 
+import java.util.Objects;
+
 import shared.Board;
 import shared.Player;
 
