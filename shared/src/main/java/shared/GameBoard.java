@@ -220,4 +220,18 @@ public class GameBoard implements Board, Serializable {
       round++;
     }
   }
+
+  @Override
+  public String toString() {
+    String str = "";
+    for (String player: playerRegionMap.keySet()) {
+      str += player + " food: " + getPlayer(player).getFoodAmount() + ":\n-----------\n";
+      for (Region r: playerRegionMap.get(player)) {
+        String name = r.getName();
+        str += " " + name + ":" + r.getAllUnitsAmount();
+      }
+      str += "\n";
+    }
+    return str;
+  }
 }

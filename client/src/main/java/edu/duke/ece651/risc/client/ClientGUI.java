@@ -259,6 +259,7 @@ public class ClientGUI extends Application {
         client.sendViaChannel(currentRoom, insList);
       //System.out.println("send :" + numChoice.getValue());
         Board newBoard = (GameBoard) client.receiveViaChannel(currentRoom);
+        System.out.println(newBoard.toString());
         client.setBoard(currentRoom, newBoard);
         Popup.showInfo("Instructrion submitted.");
         insList.clear();
@@ -566,7 +567,7 @@ public class ClientGUI extends Application {
   }
 
 
-  public Scene game(Board board) throws IOException {
+  public Scene game(int currentRoom) throws IOException {
 
     Group map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
 
@@ -576,7 +577,7 @@ public class ClientGUI extends Application {
     gameLoader.setControllerFactory(c -> new GameController(this));
     BorderPane load = gameLoader.load();
     GameController controller = gameLoader.getController();
-    controller.addMap(map).addBoard(board);
+    controller.addMap(map).addBoard(client.getBoard(currentRoom));
     return new Scene(load);
   }
 
