@@ -110,7 +110,7 @@ public class GameController implements Initializable{
   @FXML
   public void doAdd() {
     String pname = gui.getCurrentName(currentRoom);
-
+    System.out.println("pname is doing add");
     // Move
     if (actionChoice.getValue().equals("Move")) {
       VBox entry = (VBox) right.getChildren().get(3);
@@ -121,6 +121,7 @@ public class GameController implements Initializable{
       
       Move moveIns = new Move(pname, src.getText(), dest.getText(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
+                                  System.out.println(src.getText() + Integer.parseInt(level.getText()));
           if(gui.getClient().isValidInst(currentRoom, moveIns)) {
               insList.add(moveIns);
               Popup.showInfo("Instruction added!");

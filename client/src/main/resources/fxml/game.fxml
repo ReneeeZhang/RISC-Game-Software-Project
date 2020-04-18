@@ -37,7 +37,7 @@
                   <Insets bottom="10.0" left="10.0" />
                </VBox.margin>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#doDone" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #87CEFA#87CEFA#87CEFA#87CEFA;" text="Add" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#doAdd" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #87CEFA#87CEFA#87CEFA#87CEFA;" text="Add" textFill="WHITE">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" />
                </VBox.margin>
