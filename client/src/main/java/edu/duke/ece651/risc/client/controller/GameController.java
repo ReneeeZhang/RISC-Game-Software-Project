@@ -104,15 +104,16 @@ public class GameController implements Initializable{
     right.getChildren().set(3, action);
     mainView.setRight(right);
     Stage window = (Stage)mainView.getScene().getWindow();
-    window.setScene(new Scene(mainView));
+    window.setScene(mainView.getScene());
   }
 
   @FXML
   public void doAdd() {
-    String pname = gui.getCurrentName(currentRoom);
+    int room = currentRoom - 1;
+    String pname = gui.getCurrentName(room);
     System.out.println("pname is doing add");
     // Move
-    if (actionChoice.getValue().equals("Move")) {
+    if (actionChoice.getValue().equals("move")) {
       VBox entry = (VBox) right.getChildren().get(3);
       TextField src = (TextField) entry.getChildren().get(1);
       TextField dest = (TextField) entry.getChildren().get(3);
@@ -122,7 +123,7 @@ public class GameController implements Initializable{
       Move moveIns = new Move(pname, src.getText(), dest.getText(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
                                   System.out.println(src.getText() + Integer.parseInt(level.getText()));
-          if(gui.getClient().isValidInst(currentRoom, moveIns)) {
+          if(gui.getClient().isValidInst(room, moveIns)) {
               insList.add(moveIns);
               Popup.showInfo("Instruction added!");
           }
@@ -133,7 +134,7 @@ public class GameController implements Initializable{
 
         }
       // Attack
-        else if (actionChoice.getValue().equals("Attack")) {
+        else if (actionChoice.getValue().equals("attack")) {
           VBox entry = (VBox) right.getChildren().get(3);
           TextField src = (TextField) entry.getChildren().get(1);
           TextField dest = (TextField) entry.getChildren().get(3);
@@ -142,7 +143,7 @@ public class GameController implements Initializable{
       
           Attack attackIns = new Attack(pname, src.getText(), dest.getText(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
-          if(gui.getClient().isValidInst(currentRoom, attackIns)) {
+          if(gui.getClient().isValidInst(room, attackIns)) {
             insList.add(attackIns);
             Popup.showInfo("Instruction added!");
           }
@@ -151,7 +152,7 @@ public class GameController implements Initializable{
           }
         }
       // Upgrade unit
-        else if (actionChoice.getValue().equals("Unit upgrade")) {
+        else if (actionChoice.getValue().equals("unit upgrade")) {
           VBox entry = (VBox) right.getChildren().get(3);
           TextField region = (TextField) entry.getChildren().get(1);
           TextField oldlevel = (TextField) entry.getChildren().get(3);
@@ -160,7 +161,7 @@ public class GameController implements Initializable{
           
           UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getText(), Integer.parseInt(oldlevel.getText()),
                                                   Integer.parseInt(newlevel.getText()),Integer.parseInt(num.getText()));
-          if(gui.getClient().isValidInst(currentRoom, upUnitIns)) {
+          if(gui.getClient().isValidInst(room, upUnitIns)) {
             insList.add(upUnitIns);
             Popup.showInfo("Instruction added!");
           }
@@ -169,10 +170,10 @@ public class GameController implements Initializable{
           }
         }
       // Upgrade technology
-        else if (actionChoice.getValue().equals("Tech upgrade")) {
+        else if (actionChoice.getValue().equals("tech upgrade")) {
       
           TechUpgrade upTechIns = new TechUpgrade(pname, board.getPlayer(pname).getCurrLevel(), board.getPlayer(pname).getCurrLevel()+1);
-          if(gui.getClient().isValidInst(currentRoom, upTechIns)) {
+          if(gui.getClient().isValidInst(room, upTechIns)) {
             insList.add(upTechIns);
             Popup.showInfo("Instruction added!");
           }
@@ -185,21 +186,22 @@ public class GameController implements Initializable{
   @FXML
   public void doDone() {
     // send instructions, set board
-    gui.sendObj(currentRoom, insList);
+    int room = currentRoom - 1;
+    gui.sendObj(room, insList);
     //System.out.println("send :" + numChoice.getValue());
     
-        Board newBoard = (GameBoard) gui.receiveObj(currentRoom);
+        Board newBoard = (GameBoard) gui.receiveObj(room);
         System.out.println(newBoard.toString());
-        gui.getClient().setBoard(currentRoom, newBoard);
+        gui.getClient().setBoard(room, newBoard);
         Popup.showInfo("Instructrion submitted.");
         insList.clear();
 
         // check win/lose
-        if (gui.getClient().hasWon(currentRoom)) {
+        if (gui.getClient().hasWon(room)) {
           gui.setWinScene();
         }
-        else if (gui.getClient().hasLost(currentRoom)) {
-          gui.setLoseScene(currentRoom);
+        else if (gui.getClient().hasLost(room)) {
+          gui.setLoseScene(room);
         }
 
         // roomLabel.setText("Name: " + pname + "\n"
@@ -225,7 +227,7 @@ public class GameController implements Initializable{
 
   @FXML
   void createNewGame() throws IOException {
-    System.out.println("start game " + currentRoom + 1);
+    System.out.println("start game " + (currentRoom + 1));
     gui.getClient().joinGame();
     gui.setNumPlayersScene();
   }
@@ -253,8 +255,8 @@ public class GameController implements Initializable{
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("Move", "Attack", "Unit upgrade", "Tech upgrade");
-    actionChoice.setValue("Move");
+    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
+    actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
     });
