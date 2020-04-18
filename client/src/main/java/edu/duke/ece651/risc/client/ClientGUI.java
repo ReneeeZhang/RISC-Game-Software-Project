@@ -471,6 +471,14 @@ public class ClientGUI extends Application {
   public ArrayList<Integer> getPlayerNumbers() {
     return playerNumbers;
   }
+
+  public String getCurrentName(int room) {
+    return playerNames.get(room);
+  }
+
+  public int getCurrentNumPlayers(int room) {
+    return playerNumbers.get(room);
+  }
     
   /* ========== Setters ========== */
   public void setLoginScene() {
@@ -492,6 +500,14 @@ public class ClientGUI extends Application {
 
   public void setWatchScene(int room) {
     window.setScene(watchScene(room));
+  }
+
+  public void setWinScene() {
+    window.setScene(winScene());
+  }
+
+  public void setLoseScene(int room) {
+    window.setScene(loseScene(room));
   }
 
   /* ========== Adders  ========== */
