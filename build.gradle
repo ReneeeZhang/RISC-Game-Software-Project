@@ -98,10 +98,20 @@ project (':client'){
 
 tasks.register("run-server"){
     dependsOn project('server').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the Game Server'
+}
+
+tasks.register("run-authServer"){
     dependsOn project('authServer').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the Authentication Server'
+}
+
+tasks.register("run-chatServer"){
     dependsOn project('chatServer').getTasksByName('run', false)
     group = 'Run Client/Server'
-    description = 'Run three Servers'
+    description = 'Run the Chat Server'
 }
 
 tasks.register("run-client"){

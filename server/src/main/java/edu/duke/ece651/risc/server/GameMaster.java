@@ -20,11 +20,7 @@ import shared.Region;
 import shared.checkers.Checker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
-import shared.instructions.Attack;
 import shared.instructions.Instruction;
-import shared.instructions.Move;
-import shared.instructions.TechUpgrade;
-import shared.instructions.UnitUpgrade;
 
 public class GameMaster implements Runnable {
   private int playerNum;
@@ -47,7 +43,7 @@ public class GameMaster implements Runnable {
   }
 
   public void run() {
-    try{
+    try {
       sendNameToClients();
     } catch (IOException e) {
       System.out.println(e);
@@ -66,13 +62,11 @@ public class GameMaster implements Runnable {
           if (loseCheck.isValid() && !loser.contains(player)) {
             System.out.println(player + "loses the game");
             if (recvYesFromClient(sc)) {
-              System.out.println("yes");
               loser.add(player);
               Socket s = sc.socket();
               ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
               serial.writeObject(this.board);
             } else {
-              System.out.println("no");
               playerSockets.remove(sc);
             }
           }
@@ -103,20 +97,28 @@ public class GameMaster implements Runnable {
   public void sendNameToClients() throws IOException {
     Iterator<String> namesIter = board.getAllOwners().iterator();
     for (SocketChannel sc : playerSockets) {
-      String name = namesIter.next();
-      socketPlayerMap.put(sc, name);
-      Socket s = sc.socket();
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      serial.writeObject(name);
+      if (sc.isConnected()) {
+        String name = namesIter.next();
+        socketPlayerMap.put(sc, name);
+        Socket s = sc.socket();
+        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+        serial.writeObject(name);
+      } else {
+        playerSockets.remove(sc);
+      }
     }
   }
   
   public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      sc.configureBlocking(true);
-      Socket s = sc.socket();
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      serial.writeObject(this.board);
+      if (sc.isConnected()) {
+        sc.configureBlocking(true);
+        Socket s = sc.socket();
+        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+        serial.writeObject(this.board);
+      } else {
+        playerSockets.remove(sc);
+      }
     }
   }
 
@@ -139,24 +141,14 @@ public class GameMaster implements Runnable {
   }
 
   public void executeAll(Map<SocketChannel, List<Instruction>> instrMap) {
-    // first move
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
-        if (instr instanceof Move || instr instanceof TechUpgrade || instr instanceof UnitUpgrade) {
-          instr.execute(board);
-        }
+        instr.execute(board);
       }
     }
-    // then attack
-    for (SocketChannel playerSocket : instrMap.keySet()) {
-      for (Instruction instr : instrMap.get(playerSocket)) {
-        if (instr instanceof Attack) {
-          instr.execute(board);
-        }
-      }
-    }
-    // then resolve
     board.resolve();
+    // TODO: figure out when to execute ally instructions
+    board.resolveAlly();
   }
 
   public void autoIncrement() {

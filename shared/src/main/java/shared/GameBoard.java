@@ -202,11 +202,11 @@ public class GameBoard implements Board, Serializable {
       int randB = rand.nextInt(20);
       BaseUnit unitA;
       BaseUnit unitB;
-      // A15 vs D0
+      // Highest attack bonus vs lowest defense bonus
       if (round % 2 == 0) {
         unitA = attack.get(attack.size() - 1);
         unitB = defense.get(0);
-      } else { // A0 vs D8
+      } else { // Lowest defense bonus vs highest attack bonus
         unitA = attack.get(0);
         unitB = defense.get(defense.size() - 1);
       }

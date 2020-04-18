@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class AuthServer{
   private ServerSocketChannel serverSocketChannel;
   private Map<String, String> db;
-  
+
   public AuthServer(int port) throws IOException {
     this.serverSocketChannel = ServerSocketChannel.open();
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
@@ -28,14 +28,14 @@ public class AuthServer{
       Scanner config = new Scanner(new File("src/main/resources/config.txt"));
       AuthServer server = new AuthServer(config.nextInt());
       while (true) {
-        server.run();
+        server.handleRequest();
       }
     } catch (Exception e) {
       System.out.println(e);
     }
   }
 
-  public void run() throws IOException {
+  public void handleRequest() throws IOException {
     SocketChannel sc = serverSocketChannel.accept();
     Thread t = new Thread(new Handler(sc.socket(), db));
     t.start();

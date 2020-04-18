@@ -18,14 +18,14 @@ public class Handler implements Runnable {
   public void run() {
     while (true) {
       try {
-        handleRequest(s);
+        handleRequest();
       } catch (Exception e) {
         System.out.println(e);
       }
     }
   }
 
-  public void handleRequest(Socket s) throws IOException, ClassNotFoundException {
+  public void handleRequest() throws IOException, ClassNotFoundException {
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     String login = (String) deserial.readObject();
     String user = login.substring(0, login.indexOf('&'));
@@ -33,6 +33,9 @@ public class Handler implements Runnable {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
     if (password.equals(db.get(user))) {
       serial.writeObject("yes");
+      // TODO: after a successful login, close the socket and return
+      s.close();
+      return;
     } else {
       serial.writeObject("no");
     }

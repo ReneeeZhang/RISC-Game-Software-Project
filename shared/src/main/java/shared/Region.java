@@ -11,7 +11,7 @@ public interface Region {
 
   public int getResourceProduction();
 
-  public String getInfo();
+  public String getInfo(String player);
   
   public List<BaseUnit> sendUnit(int level, int num);
 
