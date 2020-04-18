@@ -109,6 +109,7 @@ public class GameController implements Initializable{
 
   @FXML
   public void doAdd() {
+
     String pname = gui.getCurrentName(currentRoom);
 
     // Move
