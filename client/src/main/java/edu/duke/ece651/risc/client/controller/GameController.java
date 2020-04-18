@@ -113,10 +113,11 @@ public class GameController implements Initializable{
 
     // Move
     if (actionChoice.getValue().equals("Move")) {
-      TextField src = (TextField) right.getChildren().get(1);
-      TextField dest = (TextField) right.getChildren().get(3);
-      TextField level = (TextField) right.getChildren().get(5);
-      TextField num = (TextField) right.getChildren().get(7);
+      VBox entry = (VBox) right.getChildren().get(3);
+      TextField src = (TextField) entry.getChildren().get(1);
+      TextField dest = (TextField) entry.getChildren().get(3);
+      TextField level = (TextField) entry.getChildren().get(5);
+      TextField num = (TextField) entry.getChildren().get(7);
       
       Move moveIns = new Move(pname, src.getText(), dest.getText(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
@@ -132,10 +133,11 @@ public class GameController implements Initializable{
         }
       // Attack
         else if (actionChoice.getValue().equals("Attack")) {
-          TextField src = (TextField) right.getChildren().get(1);
-          TextField dest = (TextField) right.getChildren().get(3);
-          TextField level = (TextField) right.getChildren().get(5);
-          TextField num = (TextField) right.getChildren().get(7);
+          VBox entry = (VBox) right.getChildren().get(3);
+          TextField src = (TextField) entry.getChildren().get(1);
+          TextField dest = (TextField) entry.getChildren().get(3);
+          TextField level = (TextField) entry.getChildren().get(5);
+          TextField num = (TextField) entry.getChildren().get(7);
       
           Attack attackIns = new Attack(pname, src.getText(), dest.getText(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
@@ -149,10 +151,11 @@ public class GameController implements Initializable{
         }
       // Upgrade unit
         else if (actionChoice.getValue().equals("Unit upgrade")) {
-          TextField region = (TextField) right.getChildren().get(1);
-          TextField oldlevel = (TextField) right.getChildren().get(3);
-          TextField newlevel = (TextField) right.getChildren().get(5);
-          TextField num = (TextField) right.getChildren().get(7);
+          VBox entry = (VBox) right.getChildren().get(3);
+          TextField region = (TextField) entry.getChildren().get(1);
+          TextField oldlevel = (TextField) entry.getChildren().get(3);
+          TextField newlevel = (TextField) entry.getChildren().get(5);
+          TextField num = (TextField) entry.getChildren().get(7);
           
           UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getText(), Integer.parseInt(oldlevel.getText()),
                                                   Integer.parseInt(newlevel.getText()),Integer.parseInt(num.getText()));
