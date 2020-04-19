@@ -127,34 +127,6 @@ public class ClientGUI extends Application {
 
     return new Scene(load);
   }
-  
-
-  public static Node mapScene(Board board, int playerNumber) {
-    URL resource;
-    Parent load = null;
-    try {
-    if (playerNumber == 2) {
-      resource = ClientGUI.class.getResource("/fxml/twoPlayerMap.fxml");
-      FXMLLoader fxmlLoader = new FXMLLoader();
-      fxmlLoader.setLocation(resource);
-      load = fxmlLoader.load();
-      TwoPlayerMapController controller = fxmlLoader.getController();
-      controller.setColor(board);
-    }
-    else if(playerNumber == 3) {
-      resource = ClientGUI.class.getResource("/fxml/threePlayerMap.fxml");
-      FXMLLoader fxmlLoader = new FXMLLoader();
-      fxmlLoader.setLocation(resource);
-      load = fxmlLoader.load();
-      ThreePlayerMapController controller = fxmlLoader.getController();
-      controller.setColor(board);
-    }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return load;
-  }
                            
   public Scene winScene() {
     URL  resource = ClientGUI.class.getResource("/fxml/win.fxml");
@@ -167,12 +139,12 @@ public class ClientGUI extends Application {
       e.printStackTrace();
     }
     
-    return new Scene(load, 800, 600);
+    return new Scene(load);
   }
 
                            
   public Scene loseScene(int currentRoom) {
-    URL  resource = ClientGUI.class.getResource("/fxml/lose.fxml");
+    URL resource = ClientGUI.class.getResource("/fxml/lose.fxml");
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(resource);
     fxmlLoader.setControllerFactory(c -> {
@@ -185,7 +157,7 @@ public class ClientGUI extends Application {
       e.printStackTrace();
     }
     
-    return new Scene(load, 800, 600);
+    return new Scene(load);
   }
 
   public Scene watchScene(int currentRoom) {
