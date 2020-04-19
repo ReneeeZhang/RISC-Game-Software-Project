@@ -148,6 +148,14 @@ public class GameBoard implements Board, Serializable {
   }
 
   @Override
+  public void supportFood(String supportor, String supportee, int amount) {
+    Player _supportor = getPlayer(supportor);
+    Player _supportee = getPlayer(supportee);
+    _supportor.decreaseFood(amount);
+    _supportee.increaseFood(amount);
+  }
+  
+  @Override
   public void resolveAlly() {
     for (Player p : playerNameMap.values()) {
       if (p.getAlly() != null) {
