@@ -337,6 +337,7 @@ public class ClientGUI extends Application {
     Group map = null;
     int currentNumPlayers = getCurrentNumPlayers(currentRoom - 1);
     try {
+      System.out.println(String.format("/fxml/%dPlayerMap.fxml", currentNumPlayers));
       map = FXMLLoader.load(getClass().getResource(String.format("/fxml/%dPlayerMap.fxml", currentNumPlayers)));
     } catch (IOException e) {
       e.printStackTrace();
