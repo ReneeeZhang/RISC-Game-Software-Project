@@ -1,6 +1,7 @@
 package edu.duke.ece651.risc.client.controller;
 
 import edu.duke.ece651.risc.client.*;
+import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import shared.*;
 import shared.instructions.*;
@@ -275,4 +276,5 @@ public class GameController implements Initializable{
     right.getChildren().set(3, action);
 
   }
+
 }
