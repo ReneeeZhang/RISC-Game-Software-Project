@@ -208,9 +208,11 @@ public class GameController implements Initializable{
 
         // check win/lose
         if (gui.getClient().hasWon(room)) {
+          System.out.println("you win!");
           gui.setWinScene();
         }
         else if (gui.getClient().hasLost(room)) {
+          System.out.println("you lost!");
           gui.setLoseScene(room);
         }
      gui.setGameScene(currentRoom);
