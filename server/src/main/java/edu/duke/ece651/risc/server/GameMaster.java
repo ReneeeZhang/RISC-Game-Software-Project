@@ -77,7 +77,7 @@ public class GameMaster implements Runnable {
         autoIncrement();
       } catch (IOException e) {
         System.out.println("GameMaster raised an exception");
-        e.printStackTrace();
+        return;
       }
     }
   }
