@@ -15,7 +15,6 @@ public class AuthServerTest {
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 }

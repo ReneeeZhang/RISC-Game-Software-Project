@@ -31,7 +31,6 @@ public class AuthServer{
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 

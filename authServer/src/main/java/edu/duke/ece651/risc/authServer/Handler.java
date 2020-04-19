@@ -23,7 +23,7 @@ public class Handler implements Runnable {
           return;
         }
       } catch (Exception e) {
-        System.out.println(e);
+        return;
       }
     }
   }
