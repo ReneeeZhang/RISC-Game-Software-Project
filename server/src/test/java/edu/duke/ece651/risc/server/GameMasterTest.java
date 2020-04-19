@@ -30,7 +30,6 @@ public class GameMasterTest {
     try{
       map.put(SocketChannel.open(), ins);
     } catch (Exception e) {
-      System.out.println(e);
     }
     gm.executeAll(map);
     gm.autoIncrement();
