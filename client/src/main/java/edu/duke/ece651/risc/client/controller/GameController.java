@@ -30,11 +30,7 @@ import shared.Region;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GameController implements Initializable{
 
@@ -86,6 +82,7 @@ public class GameController implements Initializable{
             board.getPlayer(currentName).getFoodAmount(),
             board.getPlayer(currentName).getTechAmount());
     this.info.setText(s);
+    chooseAction("move");
     return this;
   }
 
@@ -113,11 +110,14 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
+    setSrcChoice(gui.getCurrentName(currentRoom-1));
+    setDestChoice(gui.getCurrentName(currentRoom - 1));
+  }
+
+  private void refreshPage() {
     mainView.setRight(right);
     Stage window = (Stage)mainView.getScene().getWindow();
     window.setScene(mainView.getScene());
-    setSrcChoice(gui.getCurrentName(currentRoom-1));
-    setDestChoice(gui.getCurrentName(currentRoom-1));
   }
 
   @FXML
@@ -263,23 +263,7 @@ public class GameController implements Initializable{
     }
   }
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
-    System.out.println("initialize");
-    generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
-    actionChoice.setValue("move");
-    actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-      chooseAction(actionChoice.getItems().get((int)newValue));
-    });
-    URL resource = getClass().getResource("/fxml/component/move.fxml");
-    try {
-      action = FXMLLoader.load(resource);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    right.getChildren().set(3, action);
-  }
+
 
   public void setSrcChoice(String pname) {
     VBox entry = (VBox) right.getChildren().get(3);
@@ -292,23 +276,30 @@ public class GameController implements Initializable{
 
   public void setDestChoice(String pname) {
     VBox entry = (VBox) right.getChildren().get(3);
+    // if (actionChoice.getValue().equals("unit upgrade")) {
+    //   return;
+    // }
     ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
-    if (actionChoice.getValue().equals("move") ||
-        actionChoice.getValue().equals("unit upgrade")) {
-      destChoice.getItems().clear();
-      for (String regionName: board.getRegionNames(pname)) {
-       destChoice.getItems().add(regionName);
-      }
-    }
-    else if(actionChoice.getValue().equals("attack")) {
-      destChoice.getItems().clear();
+    // if (actionChoice.getValue().equals("attack")) {
+      
+    //   destChoice.getItems().clear();
+    //   for (String regionName: board.getAllRegionNames()) {
+    //     if (board.getRegion(regionName).getOwner().getName() != pname &&
+    //         adj(board.getRegion(regionName), pname)) {
+    //         destChoice.getItems().add(regionName);
+    //     }
+    //   }
+    // }
+    // else if(actionChoice.getValue().equals("move")) {
+    //   destChoice.getItems().clear();
+    //   for (String regionName: board.getRegionNames(pname)) {
+    //    destChoice.getItems().add(regionName);
+    //   }
+    // }
+    destChoice.getItems().clear();
       for (String regionName: board.getAllRegionNames()) {
-        if (board.getRegion(regionName).getOwner().getName() != pname &&
-            adj(board.getRegion(regionName), pname)) {
-            destChoice.getItems().add(regionName);
-        }
+          destChoice.getItems().add(regionName);
       }
-    }
   }
 
   // check if adjacent to a player's region
@@ -320,5 +311,27 @@ public class GameController implements Initializable{
       }
     }
     return false;
+  }
+
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    System.out.println("initialize");
+    generateTabs(gui.getActiveGames());
+    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
+    actionChoice.setValue("move");
+    actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+      chooseAction(actionChoice.getItems().get((int)newValue));
+      refreshPage();
+    });
+//    URL resource = getClass().getResource("/fxml/component/move.fxml");
+//    try {
+//      action = FXMLLoader.load(resource);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//    right.getChildren().set(3, action);
+
+//    chooseAction("move");
   }
 }
