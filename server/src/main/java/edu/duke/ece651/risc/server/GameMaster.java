@@ -46,7 +46,7 @@ public class GameMaster implements Runnable {
     try {
       sendNameToClients();
     } catch (IOException e) {
-      System.out.println(e);
+      System.out.println("GameMaster raised an exception: " + e);
     }
     while (true) {
       try{
@@ -55,7 +55,8 @@ public class GameMaster implements Runnable {
           String player = socketPlayerMap.get(sc);
           Checker winCheck = new WinnerChecker(board, player);
           Checker loseCheck = new LoserChecker(board, player);
-          if (winCheck.isValid()) {
+          // if somebody wins or no players left in the room
+          if (winCheck.isValid() || playerSockets.size() == 0) {
             System.out.println(player + "wins the game");
             return;
           }
@@ -72,17 +73,12 @@ public class GameMaster implements Runnable {
           }
         }
         Map<SocketChannel, List<Instruction>> instrMap = recvInstrFromClients();
-        System.out.println("Instruction received");
         executeAll(instrMap);
+        autoIncrement();
       } catch (IOException e) {
-        System.out.println(e);
+        System.out.println("GameMaster raised an exception");
+        e.printStackTrace();
       }
-      autoIncrement();
-      //debug
-      System.out.println(board.getPlayer("Player1").getFoodAmount());
-      System.out.println(board.getPlayer("Player1").getTechAmount());
-      System.out.println(board.getPlayer("Player2").getTechAmount());
-      System.out.println(board.getPlayer("Player2").getFoodAmount());
     }
   }
 
@@ -91,9 +87,11 @@ public class GameMaster implements Runnable {
   }
 
   public void addPlayer(SocketChannel sc) {
-    playerSockets.add(sc);
+    if (sc.isConnected()) {
+      playerSockets.add(sc);
+    }
   }
-  
+
   public void sendNameToClients() throws IOException {
     Iterator<String> namesIter = board.getAllOwners().iterator();
     for (SocketChannel sc : playerSockets) {
@@ -108,11 +106,11 @@ public class GameMaster implements Runnable {
       }
     }
   }
-  
+
   public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      if (sc.isConnected()) {
-        sc.configureBlocking(true);
+      if(sc.isConnected()) {
+        //sc.configureBlocking(true);
         Socket s = sc.socket();
         ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
         serial.writeObject(this.board);
@@ -123,7 +121,7 @@ public class GameMaster implements Runnable {
   }
 
   public boolean recvYesFromClient(SocketChannel sc) throws IOException {
-    sc.configureBlocking(true);
+    //sc.configureBlocking(true);
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     try{

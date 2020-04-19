@@ -58,7 +58,6 @@ public class InstructionCollector {
       List<Instruction> ins = (ArrayList<Instruction>) deserial.readObject();
       return ins;
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
       return new ArrayList<Instruction>();
     }
   }

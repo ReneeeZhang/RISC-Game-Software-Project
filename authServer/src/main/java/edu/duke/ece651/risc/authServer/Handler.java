@@ -19,6 +19,9 @@ public class Handler implements Runnable {
     while (true) {
       try {
         handleRequest();
+        if (s.isClosed()) {
+          return;
+        }
       } catch (Exception e) {
         System.out.println(e);
       }

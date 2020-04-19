@@ -32,7 +32,7 @@ public class Server {
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println(e);
+      System.out.println("Server raised an exception" + e);
     }
   }
 
