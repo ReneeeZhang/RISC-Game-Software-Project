@@ -35,12 +35,12 @@ public class AuthServerTest {
     }
   }
 
-  @AfterAll
-  public static void close_AuthServer() {
-    try{
-      auth.close();
-    } catch (IOException e) {
-      System.out.println(e);
-    }
-  }
+  // @AfterAll
+  // public static void close_AuthServer() {
+  //   try{
+  //     auth.close();
+  //   } catch (IOException e) {
+  //     System.out.println(e);
+  //   }
+  // }
 }

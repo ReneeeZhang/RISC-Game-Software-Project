@@ -1,22 +1,18 @@
 package shared.checkers;
 
-import java.util.Objects;
-
 import shared.Board;
 import shared.Player;
 
-public class AllyChecker implements Checker {
-  private Board b;
+public class AllyAvailableChecker implements Checker {
   private Player player1;
   private Player player2;
   private Checker next;
 
-  public AllyChecker(Board b, String player1, String player2) {
+  public AllyAvailableChecker(Board b, String player1, String player2) {
     this(b, player1, player2, null);
   }
 
-  public AllyChecker(Board b, String player1, String player2, Checker next) {
-    this.b = b;
+  public AllyAvailableChecker(Board b, String player1, String player2, Checker next) {
     this.player1 = b.getPlayer(player1);
     this.player2 = b.getPlayer(player2);
     this.next = next;

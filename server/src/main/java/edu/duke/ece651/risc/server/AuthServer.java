@@ -27,12 +27,10 @@ public class AuthServer implements Runnable{
   public void run() {
     while (true) {
       Socket s = acceptSocket();
-      while (s.isConnected()) {
-        try{
-          handleRequest(s);
-        } catch (Exception e) {
-          System.out.println(e);
-        }
+      try{
+        handleRequest(s);
+      } catch (Exception e) {
+        System.out.println(e);
       }
     }
   }
@@ -58,9 +56,5 @@ public class AuthServer implements Runnable{
     } else {
       serial.writeObject("no");
     }
-  }
-
-  public void close() throws IOException {
-    serverSocketChannel.close();
   }
 }
