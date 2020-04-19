@@ -284,6 +284,7 @@ public class GameController implements Initializable{
   public void setSrcChoice(String pname) {
     VBox entry = (VBox) right.getChildren().get(3);
     ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+    srcChoice.getItems().clear();
     for (String regionName: board.getRegionNames(pname)) {
       srcChoice.getItems().add(regionName);
     }
@@ -294,11 +295,13 @@ public class GameController implements Initializable{
     ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
     if (actionChoice.getValue().equals("move") ||
         actionChoice.getValue().equals("unit upgrade")) {
+      destChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
        destChoice.getItems().add(regionName);
       }
     }
     else if(actionChoice.getValue().equals("attack")) {
+      destChoice.getItems().clear();
       for (String regionName: board.getAllRegionNames()) {
         if (board.getRegion(regionName).getOwner().getName() != pname &&
             adj(board.getRegion(regionName), pname)) {
