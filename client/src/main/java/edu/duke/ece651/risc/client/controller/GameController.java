@@ -1,9 +1,11 @@
 package edu.duke.ece651.risc.client.controller;
 
 import edu.duke.ece651.risc.client.*;
+import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import shared.*;
 import shared.instructions.*;
+import shared.checkers.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -28,11 +30,7 @@ import shared.Region;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GameController implements Initializable{
 
@@ -84,6 +82,7 @@ public class GameController implements Initializable{
             board.getPlayer(currentName).getFoodAmount(),
             board.getPlayer(currentName).getTechAmount());
     this.info.setText(s);
+    chooseAction("move");
     return this;
   }
 
@@ -111,6 +110,11 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
+    setSrcChoice(gui.getCurrentName(currentRoom-1));
+    setDestChoice(gui.getCurrentName(currentRoom - 1));
+  }
+
+  private void refreshPage() {
     mainView.setRight(right);
     Stage window = (Stage)mainView.getScene().getWindow();
     window.setScene(mainView.getScene());
@@ -124,14 +128,14 @@ public class GameController implements Initializable{
     // Move
     if (actionChoice.getValue().equals("move")) {
       VBox entry = (VBox) right.getChildren().get(3);
-      TextField src = (TextField) entry.getChildren().get(1);
-      TextField dest = (TextField) entry.getChildren().get(3);
+      ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
+      ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       TextField level = (TextField) entry.getChildren().get(5);
       TextField num = (TextField) entry.getChildren().get(7);
       
-      Move moveIns = new Move(pname, src.getText(), dest.getText(),
+      Move moveIns = new Move(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
-                                  System.out.println(src.getText() + Integer.parseInt(level.getText()));
+                                 
           if(gui.getClient().isValidInst(room, moveIns)) {
               insList.add(moveIns);
               Popup.showInfo("Instruction added!");
@@ -145,12 +149,12 @@ public class GameController implements Initializable{
       // Attack
         else if (actionChoice.getValue().equals("attack")) {
           VBox entry = (VBox) right.getChildren().get(3);
-          TextField src = (TextField) entry.getChildren().get(1);
-          TextField dest = (TextField) entry.getChildren().get(3);
+          ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
+          ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
           TextField level = (TextField) entry.getChildren().get(5);
           TextField num = (TextField) entry.getChildren().get(7);
       
-          Attack attackIns = new Attack(pname, src.getText(), dest.getText(),
+          Attack attackIns = new Attack(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
           if(gui.getClient().isValidInst(room, attackIns)) {
             insList.add(attackIns);
@@ -163,12 +167,12 @@ public class GameController implements Initializable{
       // Upgrade unit
         else if (actionChoice.getValue().equals("unit upgrade")) {
           VBox entry = (VBox) right.getChildren().get(3);
-          TextField region = (TextField) entry.getChildren().get(1);
+          ChoiceBox<String> region = (ChoiceBox<String>) entry.getChildren().get(1);
           TextField oldlevel = (TextField) entry.getChildren().get(3);
           TextField newlevel = (TextField) entry.getChildren().get(5);
           TextField num = (TextField) entry.getChildren().get(7);
           
-          UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getText(), Integer.parseInt(oldlevel.getText()),
+          UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getValue(), Integer.parseInt(oldlevel.getText()),
                                                   Integer.parseInt(newlevel.getText()),Integer.parseInt(num.getText()));
           if(gui.getClient().isValidInst(room, upUnitIns)) {
             insList.add(upUnitIns);
@@ -207,9 +211,11 @@ public class GameController implements Initializable{
 
         // check win/lose
         if (gui.getClient().hasWon(room)) {
+          System.out.println("you win!");
           gui.setWinScene();
         }
         else if (gui.getClient().hasLost(room)) {
+          System.out.println("you lost!");
           gui.setLoseScene(room);
         }
      gui.setGameScene(currentRoom);
@@ -257,6 +263,57 @@ public class GameController implements Initializable{
     }
   }
 
+
+
+  public void setSrcChoice(String pname) {
+    VBox entry = (VBox) right.getChildren().get(3);
+    ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+    srcChoice.getItems().clear();
+    for (String regionName: board.getRegionNames(pname)) {
+      srcChoice.getItems().add(regionName);
+    }
+  }
+
+  public void setDestChoice(String pname) {
+    VBox entry = (VBox) right.getChildren().get(3);
+    // if (actionChoice.getValue().equals("unit upgrade")) {
+    //   return;
+    // }
+    ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
+    // if (actionChoice.getValue().equals("attack")) {
+      
+    //   destChoice.getItems().clear();
+    //   for (String regionName: board.getAllRegionNames()) {
+    //     if (board.getRegion(regionName).getOwner().getName() != pname &&
+    //         adj(board.getRegion(regionName), pname)) {
+    //         destChoice.getItems().add(regionName);
+    //     }
+    //   }
+    // }
+    // else if(actionChoice.getValue().equals("move")) {
+    //   destChoice.getItems().clear();
+    //   for (String regionName: board.getRegionNames(pname)) {
+    //    destChoice.getItems().add(regionName);
+    //   }
+    // }
+    destChoice.getItems().clear();
+      for (String regionName: board.getAllRegionNames()) {
+          destChoice.getItems().add(regionName);
+      }
+  }
+
+  // check if adjacent to a player's region
+  public boolean adj(Region reg, String pname) {
+    for (Region region: board.getAllRegions(pname)) {
+      AdjacentChecker acheck = new AdjacentChecker(board, reg, region);
+      if (acheck.isValid()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
@@ -265,14 +322,16 @@ public class GameController implements Initializable{
     actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
+      refreshPage();
     });
-    URL resource = getClass().getResource("/fxml/component/move.fxml");
-    try {
-      action = FXMLLoader.load(resource);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    right.getChildren().set(3, action);
+//    URL resource = getClass().getResource("/fxml/component/move.fxml");
+//    try {
+//      action = FXMLLoader.load(resource);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//    right.getChildren().set(3, action);
 
+//    chooseAction("move");
   }
 }

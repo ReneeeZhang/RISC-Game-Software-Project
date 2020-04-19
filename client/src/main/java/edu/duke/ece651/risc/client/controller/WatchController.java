@@ -91,7 +91,7 @@ public class WatchController implements Initializable{
     int room = currentRoom - 1;
     Board newBoard = (GameBoard) gui.receiveObj(room);
     gui.getClient().setBoard(room, newBoard);
-    gui.setGameScene(currentRoom);
+    gui.setWatchScene(currentRoom);
   }
 
   private void initMap() {
