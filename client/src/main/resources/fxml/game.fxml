@@ -22,7 +22,7 @@
                   <Insets bottom="10.0" left="10.0" top="10.0" />
                </VBox.margin>
             </Circle>
-            <Label fx:id="info" text="Label">
+            <Label fx:id="info" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="108.0" prefWidth="135.0" text="Label" wrapText="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" />
                </VBox.margin>
@@ -52,12 +52,12 @@
       </VBox>
    </right>
    <top>
-      <TabPane fx:id="games" prefHeight="37.0" prefWidth="602.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="games" prefHeight="33.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
 <!--          <Tab fx:id = "1" text="Game 1" />-->
             <Tab fx:id="newGame" onSelectionChanged="#createNewGame" text="New Game">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="67.0" prefWidth="900.0" />
               </content>
             </Tab>
         </tabs>
