@@ -584,8 +584,9 @@ public class ClientGUI extends Application {
 
   public Scene game(int currentRoom) {
     Group map = null;
+    int currentNumPlayers = getCurrentNumPlayers(currentRoom - 1);
     try {
-      map = FXMLLoader.load(getClass().getResource("/fxml/twoPlayerMap.fxml"));
+      map = FXMLLoader.load(getClass().getResource(String.format("/fxml/%dPlayerMap.fxml", currentNumPlayers)));
     } catch (IOException e) {
       e.printStackTrace();
     }
