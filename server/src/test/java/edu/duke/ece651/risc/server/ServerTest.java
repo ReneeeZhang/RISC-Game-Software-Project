@@ -19,7 +19,6 @@ public class ServerTest {
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 }

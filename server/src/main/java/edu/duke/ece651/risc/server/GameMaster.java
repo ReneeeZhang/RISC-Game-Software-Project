@@ -35,7 +35,6 @@ public class GameMaster implements Runnable {
       Initializer initer = new Initializer(n);
       this.board = initer.initGame();
     } catch (IOException e) {
-      System.out.println(e);
     }
     this.playerSockets = new ArrayList<SocketChannel>();
     this.socketPlayerMap = new HashMap<SocketChannel, String>();
@@ -46,7 +45,6 @@ public class GameMaster implements Runnable {
     try {
       sendNameToClients();
     } catch (IOException e) {
-      System.out.println("GameMaster raised an exception: " + e);
     }
     while (true) {
       try{
