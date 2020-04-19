@@ -1,6 +1,7 @@
 package edu.duke.ece651.risc.client.controller;
 
 import edu.duke.ece651.risc.client.*;
+import javafx.scene.input.MouseEvent;
 import shared.*;
 import shared.instructions.*;
 
@@ -75,6 +76,14 @@ public class GameController implements Initializable{
   }
   public GameController addBoard(Board board) {
     this.board = board;
+    String currentName = gui.getCurrentName(currentRoom - 1);
+    this.color.setFill(colorMapper.get(currentName));
+    String s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\n",
+            currentName,
+            board.getPlayer(currentName).getCurrLevel(),
+            board.getPlayer(currentName).getFoodAmount(),
+            board.getPlayer(currentName).getTechAmount());
+    this.info.setText(s);
     return this;
   }
 
@@ -188,7 +197,7 @@ public class GameController implements Initializable{
     // send instructions, set board
     int room = currentRoom - 1;
     gui.sendObj(room, insList);
-    //System.out.println("send :" + numChoice.getValue());
+
     
         Board newBoard = (GameBoard) gui.receiveObj(room);
         System.out.println(newBoard.toString());
@@ -203,17 +212,7 @@ public class GameController implements Initializable{
         else if (gui.getClient().hasLost(room)) {
           gui.setLoseScene(room);
         }
-
-        // roomLabel.setText("Name: " + pname + "\n"
-        //                       + "You are in Room: " + (currentRoom+1) + "\n"
-        //                       + "Level: " + newBoard.getPlayer(pname).getCurrLevel() + "\n"
-        //                       + "Food resource: " + newBoard.getPlayer(pname).getFoodAmount() + "\n"
-        //                       + "Technology resource: " + newBoard.getPlayer(pname).getTechAmount());
-
-        // borderPane.setTop(rooms);
-        // borderPane.setRight(allIns);
-        // borderPane.setCenter(mapScene(newBoard, playerNumbers.get(currentRoom)));
-     
+     gui.setGameScene(currentRoom);
   }
 
   private void initMap() {
@@ -221,6 +220,7 @@ public class GameController implements Initializable{
     for (Region region : allRegions) {
       String owner = region.getOwner().getName();
       Circle circle = (Circle)group.lookup("#" + region.getName());
+      circle.setOnMouseClicked(this::showInfo);
       circle.setFill(colorMapper.get(owner));
     }
   }
@@ -232,6 +232,12 @@ public class GameController implements Initializable{
     gui.setNumPlayersScene();
   }
 
+  @FXML
+  public void showInfo(MouseEvent event) {
+    Node source = (Node)event.getSource();
+    String id = source.getId();
+    Popup.showInfo(board.getRegion(id).getInfo());
+  }
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
     while (size - 1 < activeRoom) {
