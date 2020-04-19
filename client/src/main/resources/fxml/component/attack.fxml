@@ -13,31 +13,31 @@
                 <Insets bottom="5.0" left="10.0" />
             </VBox.margin>
         </Label>
-      <ChoiceBox prefWidth="150.0">
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
-      </ChoiceBox>
+        <ChoiceBox prefWidth="150.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </ChoiceBox>
         <Label prefHeight="17.0" prefWidth="142.0" text="destination">
             <VBox.margin>
                 <Insets bottom="5.0" left="10.0" />
             </VBox.margin>
         </Label>
-      <ChoiceBox prefWidth="150.0">
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
-      </ChoiceBox>
+        <ChoiceBox prefWidth="150.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </ChoiceBox>
         <Label prefHeight="17.0" prefWidth="142.0" text="unit level">
             <VBox.margin>
                 <Insets bottom="5.0" left="10.0" />
             </VBox.margin>
         </Label>
-      <TextField prefHeight="27.0" prefWidth="146.0">
-         <VBox.margin>
-            <Insets left="10.0" right="10.0" />
-         </VBox.margin>
-      </TextField>
+        <TextField prefHeight="27.0" prefWidth="146.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
         <Label prefHeight="17.0" prefWidth="141.0" text="unit quantity">
             <VBox.margin>
                 <Insets bottom="5.0" left="10.0" />
