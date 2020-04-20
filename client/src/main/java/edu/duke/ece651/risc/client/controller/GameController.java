@@ -124,7 +124,7 @@ public class GameController implements Initializable{
   public void doAdd() {
     int room = currentRoom - 1;
     String pname = gui.getCurrentName(room);
-    System.out.println("pname is doing add");
+
     // Move
     if (actionChoice.getValue().equals("move")) {
       VBox entry = (VBox) right.getChildren().get(3);
@@ -204,18 +204,18 @@ public class GameController implements Initializable{
 
     
         Board newBoard = (GameBoard) gui.receiveObj(room);
-        System.out.println(newBoard.toString());
+        // System.out.println(newBoard.toString());
         gui.getClient().setBoard(room, newBoard);
         Popup.showInfo("Instructrion submitted.");
         insList.clear();
 
         // check win/lose
         if (gui.getClient().hasWon(room)) {
-          System.out.println("you win!");
+          // System.out.println("you win!");
           gui.setWinScene();
         }
         else if (gui.getClient().hasLost(room)) {
-          System.out.println("you lost!");
+          // System.out.println("you lost!");
           gui.setLoseScene(room);
         }
      gui.setGameScene(currentRoom);
@@ -249,7 +249,7 @@ public class GameController implements Initializable{
     while (size - 1 < activeRoom) {
       Tab tab = new Tab("Game " + size);
       tab.setId(String.valueOf(size));
-      System.out.println("create tab with id " + size);
+      // System.out.println("create tab with id " + size);
       tab.setOnSelectionChanged(event -> {
         if (init) return;
         if (tab.isSelected()) {
@@ -318,7 +318,7 @@ public class GameController implements Initializable{
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade");
+    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite");
     actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
