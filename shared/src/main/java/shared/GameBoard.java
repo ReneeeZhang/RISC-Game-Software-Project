@@ -148,6 +148,14 @@ public class GameBoard implements Board, Serializable {
   }
 
   @Override
+  public void supportFood(String supportor, String supportee, int amount) {
+    Player _supportor = getPlayer(supportor);
+    Player _supportee = getPlayer(supportee);
+    _supportor.decreaseFood(amount);
+    _supportee.increaseFood(amount);
+  }
+  
+  @Override
   public void resolveAlly() {
     for (Player p : playerNameMap.values()) {
       if (p.getAlly() != null) {
@@ -202,11 +210,11 @@ public class GameBoard implements Board, Serializable {
       int randB = rand.nextInt(20);
       BaseUnit unitA;
       BaseUnit unitB;
-      // A15 vs D0
+      // Highest attack bonus vs lowest defense bonus
       if (round % 2 == 0) {
         unitA = attack.get(attack.size() - 1);
         unitB = defense.get(0);
-      } else { // A0 vs D8
+      } else { // Lowest defense bonus vs highest attack bonus
         unitA = attack.get(0);
         unitB = defense.get(defense.size() - 1);
       }
@@ -219,5 +227,19 @@ public class GameBoard implements Board, Serializable {
       }
       round++;
     }
+  }
+
+  @Override
+  public String toString() {
+    String str = "";
+    for (String player: playerRegionMap.keySet()) {
+      str += player + " food: " + getPlayer(player).getFoodAmount() + ":\n-----------\n";
+      for (Region r: playerRegionMap.get(player)) {
+        String name = r.getName();
+        str += " " + name + ":" + r.getAllUnitsAmount();
+      }
+      str += "\n";
+    }
+    return str;
   }
 }

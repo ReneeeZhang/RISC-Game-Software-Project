@@ -1,4 +1,4 @@
-package edu.duke.ece651.risc.server;
+package edu.duke.ece651.risc.authServer;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,12 +11,12 @@ import java.nio.channels.SocketChannel;
 public class FakeAuthClient implements Runnable {
   private String login;
   private String ans;
-  
+
   public FakeAuthClient(String login, String ans) {
     this.login = login;
     this.ans = ans;
   }
-  
+
   public void run() {
     try {
       Thread.sleep(50);
