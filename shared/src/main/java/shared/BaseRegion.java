@@ -63,7 +63,7 @@ public class BaseRegion implements Region, Serializable {
   @Override
   public String getInfo() {
     StringBuilder sb = new StringBuilder();
-    sb.append(name).append("\nOwned by: ").append(owner).append("\nSize: ").append(size);
+    sb.append(name).append("\nOwned by: ").append(owner.getName()).append("\nSize: ").append(size);
     sb.append("\nResource Production: ").append(resourceProduction);
     sb.append("\nUnits Info:\n");
     // TODO: add if else
