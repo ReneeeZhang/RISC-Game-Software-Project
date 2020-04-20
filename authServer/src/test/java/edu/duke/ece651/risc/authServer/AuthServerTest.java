@@ -1,5 +1,4 @@
 package edu.duke.ece651.risc.authServer;
-
 import org.junit.jupiter.api.Test;
 
 public class AuthServerTest {
@@ -10,7 +9,7 @@ public class AuthServerTest {
     fake1.start();
     fake2.start();
     try{
-      AuthServer server = new AuthServer(6666);
+      AuthServer server = AuthServer.start("src/main/resources/config.txt");
       for (int i = 0; i < 2; i++) {
         server.handleRequest();
       }

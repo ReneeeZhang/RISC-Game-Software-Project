@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 public class ServerTest {
   @Test
   public void test_Server() {
-    try{
-      Server server = new Server(7777);
+    try {
+      Server server = Server.start("src/main/resources/config.txt");
       Thread fc1 = new Thread(new FakeClient("Hudson\nFitzpatrick\n0\n3\nHudson\nWilson\n0\n2\n"));
       Thread fc2 = new Thread(new FakeClient("Wilson\nBostock\n0\n5\nTeer\nPerkins\n0\n5\n"));
       fc1.start();

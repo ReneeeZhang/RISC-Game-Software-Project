@@ -28,8 +28,8 @@ public class FakeAuthClient implements Runnable {
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String res = (String) deserial.readObject();
       assertTrue(res.equals(ans));
+      sc.close();
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 }

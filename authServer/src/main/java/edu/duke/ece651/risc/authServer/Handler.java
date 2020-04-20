@@ -36,7 +36,6 @@ public class Handler implements Runnable {
     ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
     if (password.equals(db.get(user))) {
       serial.writeObject("yes");
-      // TODO: after a successful login, close the socket and return
       s.close();
       return;
     } else {
