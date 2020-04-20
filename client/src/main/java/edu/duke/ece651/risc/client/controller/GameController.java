@@ -311,14 +311,5 @@ public class GameController implements Initializable{
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
-//    URL resource = getClass().getResource("/fxml/component/move.fxml");
-//    try {
-//      action = FXMLLoader.load(resource);
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    right.getChildren().set(3, action);
-
-//    chooseAction("move");
   }
 }
