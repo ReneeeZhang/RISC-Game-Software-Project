@@ -110,8 +110,8 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
-    setSrcChoice(gui.getCurrentName(currentRoom-1));
-    setDestChoice(gui.getCurrentName(currentRoom - 1));
+    setSrcChoice(gui.getCurrentName(currentRoom - 1), a);
+    setDestChoice(gui.getCurrentName(currentRoom - 1), a);
   }
 
   private void refreshPage() {
@@ -265,41 +265,42 @@ public class GameController implements Initializable{
 
 
 
-  public void setSrcChoice(String pname) {
-    VBox entry = (VBox) right.getChildren().get(3);
-    ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
-    srcChoice.getItems().clear();
-    for (String regionName: board.getRegionNames(pname)) {
-      srcChoice.getItems().add(regionName);
+  public void setSrcChoice(String pname, String ins) {
+    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+      srcChoice.getItems().clear();
+      for (String regionName: board.getRegionNames(pname)) {
+        srcChoice.getItems().add(regionName);
+      }
     }
   }
 
-  public void setDestChoice(String pname) {
-    VBox entry = (VBox) right.getChildren().get(3);
-    // if (actionChoice.getValue().equals("unit upgrade")) {
-    //   return;
-    // }
-    ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
-    // if (actionChoice.getValue().equals("attack")) {
-      
-    //   destChoice.getItems().clear();
-    //   for (String regionName: board.getAllRegionNames()) {
-    //     if (board.getRegion(regionName).getOwner().getName() != pname &&
-    //         adj(board.getRegion(regionName), pname)) {
-    //         destChoice.getItems().add(regionName);
-    //     }
-    //   }
-    // }
-    // else if(actionChoice.getValue().equals("move")) {
-    //   destChoice.getItems().clear();
-    //   for (String regionName: board.getRegionNames(pname)) {
-    //    destChoice.getItems().add(regionName);
-    //   }
-    // }
-    destChoice.getItems().clear();
-      for (String regionName: board.getAllRegionNames()) {
-          destChoice.getItems().add(regionName);
+  public void setDestChoice(String pname, String ins) {
+    if (ins.equals("move")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
+      destChoice.getItems().clear();
+      for (String regionName: board.getRegionNames(pname)) {
+        destChoice.getItems().add(regionName);
       }
+    }
+    else if (ins.equals("attack")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
+      destChoice.getItems().clear();
+      Set<String> ownRegion = board.getRegionNames(pname);
+      for (String regionName: board.getAllRegionNames()) {
+        if (!ownRegion.contains(regionName) && adj(board.getRegion(regionName), pname)) {
+            destChoice.getItems().add(regionName);
+        }
+      }
+    
+    // destChoice.getItems().clear();
+    //   for (String regionName: board.getAllRegionNames()) {
+    //       destChoice.getItems().add(regionName);
+    //   }
+    }
   }
 
   // check if adjacent to a player's region
@@ -318,7 +319,7 @@ public class GameController implements Initializable{
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite");
+    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
     actionChoice.setValue("move");
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
