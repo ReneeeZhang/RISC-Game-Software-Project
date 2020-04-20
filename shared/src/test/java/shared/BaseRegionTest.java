@@ -69,9 +69,9 @@ public class BaseRegionTest {
   public void test_upgrade() {
     Player rowner = new Player("rowner");
     BaseRegion reg = new BaseRegion("rname", rowner, 10);
-    assertTrue(reg.getSize()==10);
+    assertTrue(reg.getSize() == 10);
     reg.upgradeUnit(0, 1, 2);
-    assertTrue(reg.numUnitWithLevel(1)==2);
-    assertTrue(reg.numUnitWithLevel(0)==3);
+    assertTrue(reg.numUnitWithLevel(1) == 2);
+    assertTrue(reg.numUnitWithLevel(0) == 3);
   }
 }

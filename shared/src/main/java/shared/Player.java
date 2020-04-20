@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Player implements Upgradable, Serializable {
   private String name;
-  private Food food;
-  private Technology tech;
+  private Resource food;
+  private Resource tech;
   private int techLevel;
   private Player ally;
 
@@ -63,7 +63,7 @@ public class Player implements Upgradable, Serializable {
   public void breakAlly() {
     this.ally = null;
   }
-  
+
   @Override
   public void upgrade() {
     techLevel++;
