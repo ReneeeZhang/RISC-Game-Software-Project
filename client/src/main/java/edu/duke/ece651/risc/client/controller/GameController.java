@@ -110,8 +110,10 @@ public class GameController implements Initializable{
       e.printStackTrace();
     }
     right.getChildren().set(3, action);
-    setSrcChoice(gui.getCurrentName(currentRoom - 1), a);
-    setDestChoice(gui.getCurrentName(currentRoom - 1), a);
+    String pname = gui.getCurrentName(currentRoom - 1);
+    setSrcChoice(pname, a);
+    setDestChoice(pname, a);
+    setP1Choice(pname, a);
   }
 
   private void refreshPage() {
@@ -124,9 +126,10 @@ public class GameController implements Initializable{
   public void doAdd() {
     int room = currentRoom - 1;
     String pname = gui.getCurrentName(room);
+    String ins = actionChoice.getValue();
 
     // Move
-    if (actionChoice.getValue().equals("move")) {
+    if (ins.equals("move")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
@@ -136,64 +139,81 @@ public class GameController implements Initializable{
       Move moveIns = new Move(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
                                  
-          if(gui.getClient().isValidInst(room, moveIns)) {
-              insList.add(moveIns);
-              Popup.showInfo("Instruction added!");
-          }
-          else {
-            Popup.showInfo("Invalid instruction!");
-          }
-              
-
-        }
-      // Attack
-        else if (actionChoice.getValue().equals("attack")) {
-          VBox entry = (VBox) right.getChildren().get(3);
-          ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
-          ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
-          TextField level = (TextField) entry.getChildren().get(5);
-          TextField num = (TextField) entry.getChildren().get(7);
+      if(gui.getClient().isValidInst(room, moveIns)) {
+          insList.add(moveIns);
+          Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }       
+     }
+    
+    // Attack
+    else if (ins.equals("attack")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
+      ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
+      TextField level = (TextField) entry.getChildren().get(5);
+      TextField num = (TextField) entry.getChildren().get(7);
       
-          Attack attackIns = new Attack(pname, src.getValue(), dest.getValue(),
-                                  Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
-          if(gui.getClient().isValidInst(room, attackIns)) {
-            insList.add(attackIns);
-            Popup.showInfo("Instruction added!");
-          }
-          else {
-            Popup.showInfo("Invalid instruction!");
-          }
-        }
-      // Upgrade unit
-        else if (actionChoice.getValue().equals("unit upgrade")) {
-          VBox entry = (VBox) right.getChildren().get(3);
-          ChoiceBox<String> region = (ChoiceBox<String>) entry.getChildren().get(1);
-          TextField oldlevel = (TextField) entry.getChildren().get(3);
-          TextField newlevel = (TextField) entry.getChildren().get(5);
-          TextField num = (TextField) entry.getChildren().get(7);
+      Attack attackIns = new Attack(pname, src.getValue(), dest.getValue(),
+                              Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
+      if(gui.getClient().isValidInst(room, attackIns)) {
+        insList.add(attackIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
+    }
+    
+    // Upgrade unit
+    else if (ins.equals("unit upgrade")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> region = (ChoiceBox<String>) entry.getChildren().get(1);
+      TextField oldlevel = (TextField) entry.getChildren().get(3);
+      TextField newlevel = (TextField) entry.getChildren().get(5);
+      TextField num = (TextField) entry.getChildren().get(7);
           
-          UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getValue(), Integer.parseInt(oldlevel.getText()),
-                                                  Integer.parseInt(newlevel.getText()),Integer.parseInt(num.getText()));
-          if(gui.getClient().isValidInst(room, upUnitIns)) {
-            insList.add(upUnitIns);
-            Popup.showInfo("Instruction added!");
-          }
-          else {
-            Popup.showInfo("Invalid instruction!");
-          }
-        }
-      // Upgrade technology
-        else if (actionChoice.getValue().equals("tech upgrade")) {
-      
-          TechUpgrade upTechIns = new TechUpgrade(pname, board.getPlayer(pname).getCurrLevel(), board.getPlayer(pname).getCurrLevel()+1);
-          if(gui.getClient().isValidInst(room, upTechIns)) {
-            insList.add(upTechIns);
-            Popup.showInfo("Instruction added!");
-          }
-          else {
-            Popup.showInfo("Invalid instruction!");
-          }
-        }
+      UnitUpgrade upUnitIns = new UnitUpgrade(pname, region.getValue(), Integer.parseInt(oldlevel.getText()),
+                                                 Integer.parseInt(newlevel.getText()),Integer.parseInt(num.getText()));
+      if(gui.getClient().isValidInst(room, upUnitIns)) {
+        insList.add(upUnitIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
+    }
+    
+    // Upgrade technology
+    else if (ins.equals("tech upgrade")) {
+      TechUpgrade upTechIns = new TechUpgrade(pname, board.getPlayer(pname).getCurrLevel(), board.getPlayer(pname).getCurrLevel()+1);
+      if(gui.getClient().isValidInst(room, upTechIns)) {
+        insList.add(upTechIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
+      actionChoice.getItems().remove(ins);
+    }
+
+    // Ally
+    else if (ins.equals("ally")) {
+      actionChoice.getItems().remove(ins);
+    }
+
+    // Food supproo
+    else if (ins.equals("food support")) {
+
+    }
+
+    // Incite
+    else if (ins.equals("incite defection")) {
+     actionChoice.getItems().remove(ins);
+    }
+       
   }
 
   @FXML
@@ -264,9 +284,9 @@ public class GameController implements Initializable{
   }
 
 
-
+  // Fill in source selection
   public void setSrcChoice(String pname, String ins) {
-    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit")) {
+    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit") || ins.equals("incite")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
       srcChoice.getItems().clear();
@@ -276,6 +296,7 @@ public class GameController implements Initializable{
     }
   }
 
+  // Fill in destination selection
   public void setDestChoice(String pname, String ins) {
     if (ins.equals("move")) {
       VBox entry = (VBox) right.getChildren().get(3);
@@ -285,7 +306,7 @@ public class GameController implements Initializable{
         destChoice.getItems().add(regionName);
       }
     }
-    else if (ins.equals("attack")) {
+    else if (ins.equals("attack") || ins.equals("incite")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> destChoice = (ChoiceBox<String>) entry.getChildren().get(3);
       destChoice.getItems().clear();
@@ -295,11 +316,6 @@ public class GameController implements Initializable{
             destChoice.getItems().add(regionName);
         }
       }
-    
-    // destChoice.getItems().clear();
-    //   for (String regionName: board.getAllRegionNames()) {
-    //       destChoice.getItems().add(regionName);
-    //   }
     }
   }
 
@@ -312,6 +328,20 @@ public class GameController implements Initializable{
       }
     }
     return false;
+  }
+
+  // Fill in player1 selection
+  public void setP1Choice(String pname, String ins) {
+    if (ins.equals("ally") || ins.equals("food")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> p1Choice = (ChoiceBox<String>) entry.getChildren().get(1);
+      p1Choice.getItems().clear();
+      for (String name: board.getAllOwners()) {
+        if (!name.equals(pname)) {
+          p1Choice.getItems().add(name);
+        }
+      }
+    }
   }
 
 
