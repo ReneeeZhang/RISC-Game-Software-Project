@@ -1,32 +1,24 @@
 package edu.duke.ece651.risc.client.controller;
 
-import edu.duke.ece651.risc.client.*;
-import javafx.event.ActionEvent;
-import javafx.scene.input.MouseEvent;
-import shared.*;
-import shared.instructions.*;
-import shared.checkers.*;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import edu.duke.ece651.risc.client.ClientGUI;
+import edu.duke.ece651.risc.client.Popup;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import shared.Board;
+import shared.GameBoard;
 import shared.Region;
+import shared.checkers.AdjacentChecker;
+import shared.instructions.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +50,10 @@ public class GameController implements Initializable{
   private Circle color;
   @FXML
   private Label info;
+  @FXML
+  private TextArea area;
+  @FXML private TextField input;
+  @FXML private Button send;
 
   Board board;
   boolean init = true;
@@ -330,6 +326,16 @@ public class GameController implements Initializable{
     return false;
   }
 
+  @FXML
+  public void send() {
+    String message = input.getText();
+    input.clear();
+    String currentName = gui.getCurrentName(currentRoom - 1);
+    area.appendText("You: " + message + "\n");
+    //TODO: send message
+  }
+
+
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
     if (ins.equals("ally") || ins.equals("food")) {
@@ -344,6 +350,10 @@ public class GameController implements Initializable{
     }
   }
 
+  //TODO: receive message
+  public void receive(String message) {
+    area.appendText(message);
+  }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -357,3 +367,4 @@ public class GameController implements Initializable{
     });
   }
 }
+
