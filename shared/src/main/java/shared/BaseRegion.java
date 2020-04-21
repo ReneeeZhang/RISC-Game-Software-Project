@@ -39,33 +39,59 @@ public class BaseRegion implements Region, Serializable {
     this.borderCamps = new HashMap<>();
   }
 
+  @Override
   public String getName() {
     return this.name;
   }
 
+  @Override
   public Player getOwner() {
     return this.owner;
   }
 
+  @Override
   public int getSize() {
     return this.size;
   }
 
+  @Override
   public int getResourceProduction() {
     return this.resourceProduction;
   }
 
+  // TODO: delete this
+  @Override
   public String getInfo() {
     StringBuilder sb = new StringBuilder();
     sb.append(name).append("\nOwned by: ").append(owner.getName()).append("\nSize: ").append(size);
     sb.append("\nResource Production: ").append(resourceProduction);
     sb.append("\nUnits Info:\n");
+    // TODO: add if else
     for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
       sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
     }
     return sb.toString();
   }
+  
+  @Override
+  public String getInfo(String player) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(name).append("\nOwned by: ").append(owner).append("\nSize: ").append(size);
+    sb.append("\nResource Production: ").append(resourceProduction);
+    sb.append("\nUnits Info:\n");
+    // TODO: add if else
+    if (player == owner.getName()) {
+      for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
+        sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
+      }
+    } else if (owner.getAlly() != null && player == owner.getAlly().getName()) {
+      // if has ally
+      
+    }
+    return sb.toString();
+  }
 
+  @Override
   public int getAllUnitsAmount() {
     int amount = 0;
     for (int level : majorCamp.keySet()) {

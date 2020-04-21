@@ -55,8 +55,8 @@ public class AccessibleChecker implements Checker {
       for (Region region : neighbor) {
         if (visited.contains(region) || !isSameGroup(region, r))
           continue;
-        if (isAccessible(region))
-          return true;
+        //if (isAccessible(region))
+        return isAccessible(region);
       }
       return false;
     }
@@ -64,12 +64,12 @@ public class AccessibleChecker implements Checker {
   @Override
     public boolean isValid() {
         if (!isSameGroup(source, dest)) {
-            System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
+            // System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
             return false;
         }
         boolean accessible = isAccessible(source);
         if (!accessible) {
-            System.out.println("Instruction failed because regions are not accessible. Source: " + source.getName() + ", Destination: " + dest.getName());
+            // System.out.println("Instruction failed because regions are not accessible. Source: " + source.getName() + ", Destination: " + dest.getName());
         }
         return next == null ? accessible : accessible && next.isValid();
     }

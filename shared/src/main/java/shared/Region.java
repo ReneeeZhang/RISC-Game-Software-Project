@@ -13,6 +13,8 @@ public interface Region {
 
   public String getInfo();
   
+  public String getInfo(String player);
+  
   public List<BaseUnit> sendUnit(int level, int num);
 
   public List<BaseUnit> sendUnit(Player whoOwns, int level, int num);

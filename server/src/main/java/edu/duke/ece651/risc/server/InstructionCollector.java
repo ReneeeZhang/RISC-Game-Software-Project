@@ -8,12 +8,12 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Iterator;
 
-import shared.instructions.*;
+import shared.instructions.Instruction;
 
 public class InstructionCollector {
   private Selector selector;
@@ -21,8 +21,12 @@ public class InstructionCollector {
   public InstructionCollector(List<SocketChannel> playerSockets) throws IOException {
     selector = Selector.open();
     for (SocketChannel sc : playerSockets) {
-      sc.configureBlocking(false);
-      sc.register(selector, SelectionKey.OP_READ);
+      if (sc.isConnected()) {
+        sc.configureBlocking(false);
+        sc.register(selector, SelectionKey.OP_READ);
+      } else {
+        playerSockets.remove(sc);
+      }
     }
   }
 
@@ -54,7 +58,6 @@ public class InstructionCollector {
       List<Instruction> ins = (ArrayList<Instruction>) deserial.readObject();
       return ins;
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
       return new ArrayList<Instruction>();
     }
   }
