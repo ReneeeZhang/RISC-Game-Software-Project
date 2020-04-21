@@ -58,6 +58,10 @@ public class GameController implements Initializable{
   private Circle color;
   @FXML
   private Label info;
+  @FXML
+  private TextArea area;
+  @FXML private TextField input;
+  @FXML private Button send;
 
   Board board;
   boolean init = true;
@@ -313,7 +317,19 @@ public class GameController implements Initializable{
     return false;
   }
 
+  @FXML
+  public void send() {
+    String message = input.getText();
+    input.clear();
+    String currentName = gui.getCurrentName(currentRoom - 1);
+    area.appendText("You: " + message);
+    //TODO: send message
+  }
 
+  //TODO: receive message
+  public void receive(String message) {
+    area.appendText(message);
+  }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
