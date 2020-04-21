@@ -326,7 +326,6 @@ public class GameController implements Initializable{
     return false;
   }
 
-
   @FXML
   public void send() {
     String message = input.getText();
@@ -335,6 +334,7 @@ public class GameController implements Initializable{
     area.appendText("You: " + message + "\n");
     //TODO: send message
   }
+
 
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
