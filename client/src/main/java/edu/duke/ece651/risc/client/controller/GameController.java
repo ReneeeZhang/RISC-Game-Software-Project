@@ -2,7 +2,6 @@ package edu.duke.ece651.risc.client.controller;
 
 import edu.duke.ece651.risc.client.ClientGUI;
 import edu.duke.ece651.risc.client.Popup;
-import edu.duke.ece651.risc.client.ChatThread;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,7 +59,7 @@ public class GameController implements Initializable{
   Board board;
   boolean init = true;
   int currentRoom;
-  ChatThread chat;
+
   private static Map<String, Color> colorMapper = new HashMap<>();
   private ArrayList<Instruction> insList = new ArrayList<>();
 
@@ -275,7 +274,6 @@ public class GameController implements Initializable{
           String id = tab.getId();
           System.out.println("switch to room " + id);
           gui.setGameScene(Integer.parseInt(id));
-          chat.changeRoom(Integer.parseInt(id)); // chat change content
         }
       });
       games.getTabs().add(size - 1, tab);
