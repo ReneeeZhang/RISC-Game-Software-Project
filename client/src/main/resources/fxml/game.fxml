@@ -58,7 +58,7 @@
                   <HBox>
                      <children>
                         <TextField fx:id="input" prefHeight="27.0" prefWidth="116.0" />
-                        <Button fx:id="send" mnemonicParsing="false" onMouseClicked="#send" prefHeight="27.0" prefWidth="50.0" text="Send" />
+                        <Button fx:id="send" mnemonicParsing="false" onMouseClicked="#send" prefHeight="27.0" prefWidth="50.0" text=">>" />
                      </children>
                   </HBox>
                </children>

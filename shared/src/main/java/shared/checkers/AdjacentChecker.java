@@ -27,7 +27,7 @@ public class AdjacentChecker implements Checker {
         List<Region> neighbor = board.getNeighbor(source.getName());
         boolean contains = neighbor.contains(dest);
         if (!contains) {
-            System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
+          // System.out.println("Instruction failed because of having different owner. Source: " + source.getName() + ", Destination: " + dest.getName());
         }
         return next == null ? contains : contains && next.isValid();
     }
