@@ -337,7 +337,7 @@ public class GameController implements Initializable{
     String currentName = gui.getCurrentName(currentRoom - 1);
     area.appendText("You: " + message + "\n");
     //send message
-    gui.sendStr(currentRoom - 1, message);
+    // gui.sendStr(currentRoom - 1, message);
   }
 
   //append message
