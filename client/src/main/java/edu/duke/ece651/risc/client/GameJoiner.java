@@ -26,7 +26,7 @@ public class GameJoiner extends Connector {
   }
 
   public void sendChatMsg(String msg) {
-    chatController.send(msg);
+    chatController.send(name + ": " + msg);
   }
 
   public void sendNumPlayerToChat(int numPlayer) {
