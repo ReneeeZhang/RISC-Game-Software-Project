@@ -1,6 +1,5 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.IOException;
 import shared.Board;
 
 import shared.instructions.*;
@@ -13,9 +12,11 @@ import shared.checkers.WinnerChecker;
 public class GameJoiner extends Connector {
   private String name;
   private Board board;
+  private ChatController chatController;
 
-  public GameJoiner(String hostname, int port) throws IOException {
-    super(hostname, port);
+  public GameJoiner(String hostname, int gamePort, int chatPort) {
+    super(hostname, gamePort);
+    chatController = new ChatController(hostname, chatPort);
   }
 
   // Must init GameJoiner after receiving name and board
@@ -24,6 +25,18 @@ public class GameJoiner extends Connector {
     setBoard(board);
   }
 
+  public void sendChatMsg(String msg) {
+    chatController.send(msg);
+  }
+
+  public void sendNumPlayerToChat(int numPlayer) {
+    chatController.send(numPlayer);
+  }
+  
+  public String receiveChatMsg() {
+    return (String) chatController.receive();
+  }
+  
   public void setName(String name) {
     this.name = name;
   }
