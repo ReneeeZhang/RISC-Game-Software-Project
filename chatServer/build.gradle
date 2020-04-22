@@ -19,6 +19,6 @@ application {
     mainClassName = 'edu.duke.ece651.risc.chatServer.ChatServer'
 }
 
-run{
+run {
     standardInput = System.in
 }

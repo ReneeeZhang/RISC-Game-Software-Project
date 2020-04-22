@@ -74,7 +74,6 @@ public class GameMaster implements Runnable {
         executeAll(instrMap);
         autoIncrement();
       } catch (IOException e) {
-        System.out.println("GameMaster raised an exception");
         return;
       }
     }
@@ -85,9 +84,7 @@ public class GameMaster implements Runnable {
   }
 
   public void addPlayer(SocketChannel sc) {
-    if (sc.isConnected()) {
-      playerSockets.add(sc);
-    }
+    playerSockets.add(sc);
   }
 
   public void sendNameToClients() throws IOException {
@@ -108,7 +105,6 @@ public class GameMaster implements Runnable {
   public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
       if(sc.isConnected()) {
-        //sc.configureBlocking(true);
         Socket s = sc.socket();
         ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
         serial.writeObject(this.board);
@@ -119,7 +115,6 @@ public class GameMaster implements Runnable {
   }
 
   public boolean recvYesFromClient(SocketChannel sc) throws IOException {
-    //sc.configureBlocking(true);
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     try{
