@@ -19,10 +19,8 @@ public class ServerTest {
       for (int i = 0; i < 3; i++) {
         server.handleRequest();
       }
-
       // wait for gamemaster and clients to stop
-      fc1.join();
-      fc2.join();
+      Thread.sleep(10000);
     } catch (Exception e) {
     }
   }
