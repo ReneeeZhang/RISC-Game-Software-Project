@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import shared.Board;
+import shared.GameBoard;
 import shared.Initializer;
 import shared.Player;
 import shared.Region;
@@ -24,7 +24,7 @@ import shared.instructions.Instruction;
 
 public class GameMaster implements Runnable {
   private int playerNum;
-  private Board board;
+  private GameBoard board;
   private List<SocketChannel> playerSockets;
   private Map<SocketChannel, String> socketPlayerMap;
   private Set<String> loser;
@@ -47,24 +47,21 @@ public class GameMaster implements Runnable {
     } catch (IOException e) {
     }
     while (true) {
-      try{
-        sendBoardToClients();
-        for (SocketChannel sc :playerSockets) {
+      try {
+        System.out.println(board);
+        sendBoardToClient();
+        for (SocketChannel sc : playerSockets) {
           String player = socketPlayerMap.get(sc);
           Checker winCheck = new WinnerChecker(board, player);
           Checker loseCheck = new LoserChecker(board, player);
           // if somebody wins or no players left in the room
           if (winCheck.isValid() || playerSockets.size() == 0) {
-            System.out.println(player + "wins the game");
             return;
           }
           if (loseCheck.isValid() && !loser.contains(player)) {
-            System.out.println(player + "loses the game");
             if (recvYesFromClient(sc)) {
               loser.add(player);
-              Socket s = sc.socket();
-              ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-              serial.writeObject(this.board);
+              sendBoardToClient(sc);
             } else {
               playerSockets.remove(sc);
             }
@@ -74,7 +71,6 @@ public class GameMaster implements Runnable {
         executeAll(instrMap);
         autoIncrement();
       } catch (IOException e) {
-        System.out.println("GameMaster raised an exception");
         return;
       }
     }
@@ -85,48 +81,39 @@ public class GameMaster implements Runnable {
   }
 
   public void addPlayer(SocketChannel sc) {
-    if (sc.isConnected()) {
-      playerSockets.add(sc);
-    }
+    playerSockets.add(sc);
   }
 
   public void sendNameToClients() throws IOException {
     Iterator<String> namesIter = board.getAllOwners().iterator();
     for (SocketChannel sc : playerSockets) {
-      if (sc.isConnected()) {
-        String name = namesIter.next();
-        socketPlayerMap.put(sc, name);
-        Socket s = sc.socket();
-        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-        serial.writeObject(name);
-      } else {
-        playerSockets.remove(sc);
-      }
+      String name = namesIter.next();
+      socketPlayerMap.put(sc, name);
+      Socket s = sc.socket();
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(name);
     }
   }
 
-  public void sendBoardToClients() throws IOException {
+  public void sendBoardToClient() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      if(sc.isConnected()) {
-        //sc.configureBlocking(true);
-        Socket s = sc.socket();
-        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-        serial.writeObject(this.board);
-      } else {
-        playerSockets.remove(sc);
-      }
+      sendBoardToClient(sc);
     }
+  }
+
+  public void sendBoardToClient(SocketChannel sc) throws IOException {
+    Socket s = sc.socket();
+    ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+    serial.writeObject(board);
   }
 
   public boolean recvYesFromClient(SocketChannel sc) throws IOException {
-    //sc.configureBlocking(true);
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     try{
       String yes = (String) deserial.readObject();
       return yes.equals("yes");
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
       return false;
     }
   }
@@ -142,8 +129,8 @@ public class GameMaster implements Runnable {
         instr.execute(board);
       }
     }
-    board.resolve();
     // TODO: figure out when to execute ally instructions
+    board.resolve();
     board.resolveAlly();
   }
 

@@ -26,14 +26,17 @@ public class Server {
 
   public static void main(String[] args) {
     try {
-      Scanner config = new Scanner(new File("src/main/resources/config.txt"));
-      Server server = new Server(config.nextInt());
+      Server server = Server.start("src/main/resources/config.txt");
       while (true) {
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println("Server raised an exception" + e);
     }
+  }
+
+  public static Server start(String path) throws IOException {
+    Scanner config = new Scanner(new File(path));
+    return new Server(config.nextInt());
   }
 
   public int getPlayerNum(SocketChannel sc) throws IOException, ClassNotFoundException{

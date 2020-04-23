@@ -86,8 +86,7 @@ project (':server'){
 project (':authServer'){
 }
 
-project (':chatServer'){
-    
+project (':chatServer'){    
 }
 
 project (':client'){
