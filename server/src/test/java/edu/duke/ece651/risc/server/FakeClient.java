@@ -53,7 +53,9 @@ public class FakeClient implements Runnable {
       serial.writeObject(ins);
 
       sc.close();
+      return;
     } catch (Exception e) {
+      return;
     }
   }
 }
