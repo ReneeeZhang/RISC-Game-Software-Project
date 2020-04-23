@@ -16,7 +16,9 @@ public class GameJoiner extends Connector {
 
   public GameJoiner(String hostname, int gamePort, int chatPort) {
     super(hostname, gamePort);
+    System.out.println("Game server connected");
     chatController = new ChatController(hostname, chatPort);
+    System.out.println("Chat server connected");
   }
 
   // Must init GameJoiner after receiving name and board
