@@ -17,8 +17,8 @@ public class ChatThread implements Runnable {
   @Override
   public void run() {
     while(true) {
-      // String str = gui.receiveStr(room);
-      // controller.appendMsg(str);
+      String str = gui.getClient().receiveChatMsg(room);
+      controller.appendMsg(str);
     }
   }
 

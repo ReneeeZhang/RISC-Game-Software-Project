@@ -35,7 +35,7 @@ public class NumPlayersController implements Initializable{
   @FXML
   public void selectNum() {
     try {
-        gui.sendObj(gui.getActiveGames(), numChoice.getValue());
+        gui.getClient().sendNumPlayer(gui.getActiveGames(), numChoice.getValue());
         System.out.println("send :" + numChoice.getValue());
       } catch (Exception ex1) {
         ex1.printStackTrace();

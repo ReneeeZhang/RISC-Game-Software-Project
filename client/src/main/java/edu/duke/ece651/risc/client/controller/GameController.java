@@ -335,9 +335,9 @@ public class GameController implements Initializable{
     String message = input.getText();
     input.clear();
     String currentName = gui.getCurrentName(currentRoom - 1);
-    area.appendText("You: " + message + "\n");
+    // area.appendText("You: " + message + "\n");
     //send message
-    // gui.sendStr(currentRoom - 1, message);
+    gui.getClient().sendChatMsg(currentRoom - 1, message);
   }
 
   //append message
@@ -346,7 +346,7 @@ public class GameController implements Initializable{
   }
 
   public void startChat() {
-    this.chat = new ChatThread(gui, this, currentRoom - 1);
+    this.chat = new ChatThread(gui, this, currentRoom);
     Thread thread = new Thread(chat);
     thread.start();
   }
@@ -376,6 +376,7 @@ public class GameController implements Initializable{
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
+    startChat();
   }
 }
 

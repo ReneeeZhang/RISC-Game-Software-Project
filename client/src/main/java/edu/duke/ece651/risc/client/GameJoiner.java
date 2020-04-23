@@ -34,7 +34,12 @@ public class GameJoiner extends Connector {
   }
   
   public String receiveChatMsg() {
-    return (String) chatController.receive();
+    String msg = (String) chatController.receive();
+    String[] splittedMsg = msg.split(": ");
+    if (splittedMsg[0].equals(this.name)) {
+      return "You: " + splittedMsg[1];
+    }
+    return msg;
   }
   
   public void setName(String name) {

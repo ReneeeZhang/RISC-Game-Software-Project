@@ -248,11 +248,7 @@ public class ClientGUI extends Application {
   
   /* ========== Send and receive ========== */
   public void sendStr(String str) {
-    try {
       client.send(str);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
   public String receiveStr() {
