@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+
+<Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fitHeight="515" fitWidth="715" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Map_5_players.png" />
+            </image>
+        </ImageView>
+        <Circle fx:id="Lily" fill="DODGERBLUE" layoutX="334.0" layoutY="190.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Grosshall" fill="DODGERBLUE" layoutX="381.0" layoutY="308.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Bostock" fill="DODGERBLUE" layoutX="125.0" layoutY="190.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Hudson" fill="DODGERBLUE" layoutX="79.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Perkins" fill="DODGERBLUE" layoutX="204.0" layoutY="167.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Fitzpatrick" fill="DODGERBLUE" layoutX="260.0" layoutY="58.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Label layoutX="44.0" layoutY="41.0" text="Hudson" />
+        <Label layoutX="301.0" layoutY="82.0" text="Wilson" />
+        <Label layoutX="302.0" layoutY="150.0" text="Lily" />
+        <Label layoutX="250.0" layoutY="11.0" text="Fitz" />
+        <Label layoutX="61.0" layoutY="208.0" prefHeight="17.0" prefWidth="51.0" text="Bostock" />
+        <Label layoutX="384.0" layoutY="323.0" text="Grosshall" />
+        <Label layoutX="192.0" layoutY="332.0" text="Oldchem" />
+        <Label layoutX="169.0" layoutY="50.0" text="Teer" />
+        <Circle fx:id="Teer" fill="DODGERBLUE" layoutX="181.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Wilson" fill="DODGERBLUE" layoutX="371.0" layoutY="104.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fx:id="Oldchem" fill="DODGERBLUE" layoutX="217.0" layoutY="308.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+        <Label layoutX="220.0" layoutY="182.0" text="Perkins" />
+      <Circle fx:id="Brodie" fill="DODGERBLUE" layoutX="433.0" layoutY="212.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Rubenstein" fill="DODGERBLUE" layoutX="459.0" layoutY="94.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Chapel" fill="DODGERBLUE" layoutX="590.0" layoutY="331.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Label layoutX="459.0" layoutY="220.0" text="Brodie" />
+      <Label layoutX="428.0" layoutY="120.0" text="Rubenstein" />
+      <Label layoutX="507.0" layoutY="331.0" text="Chapel" />
+      <Label layoutX="590.0" layoutY="142.0" text="Gardens" />
+      <Label layoutX="546.0" layoutY="205.0" text="Ambler" />
+      <Label layoutX="536.0" layoutY="112.0" text="Fuqua" />
+      <Circle fx:id="Gardens" fill="DODGERBLUE" layoutX="636.0" layoutY="113.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Fuqua" fill="DODGERBLUE" layoutX="553.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="Ambler" fill="DODGERBLUE" layoutX="526.0" layoutY="205.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
+    </children>
+</Group>
