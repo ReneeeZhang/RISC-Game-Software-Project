@@ -28,6 +28,7 @@ public class Server {
     try {
       Server server = Server.start("src/main/resources/config.txt");
       while (true) {
+        System.out.println("request");
         server.handleRequest();
       }
     } catch (Exception e) {

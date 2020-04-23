@@ -22,6 +22,7 @@ public abstract class Connector {
         SocketChannel sc = SocketChannel.open();
         sc.connect(new InetSocketAddress(hostname, port));
         this.socket = sc.socket();
+        return;
       } catch (IOException ex) {
         System.out.println("Game server in " + hostname + " has not prepared yet. Wait for reconnection.");
         try{
