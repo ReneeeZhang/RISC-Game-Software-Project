@@ -34,5 +34,4 @@ public class GameMasterTest {
     gm.executeAll(map);
     gm.autoIncrement();
   }
-
 }

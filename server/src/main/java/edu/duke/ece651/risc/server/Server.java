@@ -31,7 +31,6 @@ public class Server {
         server.handleRequest();
       }
     } catch (Exception e) {
-      //System.out.println("Server raised an exception" + e);
     }
   }
 
@@ -39,7 +38,7 @@ public class Server {
     Scanner config = new Scanner(new File(path));
     return new Server(config.nextInt());
   }
-  
+
   public int getPlayerNum(SocketChannel sc) throws IOException, ClassNotFoundException{
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());

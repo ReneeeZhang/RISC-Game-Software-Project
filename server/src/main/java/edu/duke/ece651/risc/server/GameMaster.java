@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import shared.Board;
+import shared.GameBoard;
 import shared.Initializer;
 import shared.Player;
 import shared.Region;
@@ -24,7 +24,7 @@ import shared.instructions.Instruction;
 
 public class GameMaster implements Runnable {
   private int playerNum;
-  private Board board;
+  private GameBoard board;
   private List<SocketChannel> playerSockets;
   private Map<SocketChannel, String> socketPlayerMap;
   private Set<String> loser;
@@ -34,6 +34,7 @@ public class GameMaster implements Runnable {
     try {
       Initializer initer = new Initializer(n);
       this.board = initer.initGame();
+      System.out.println(board);
     } catch (IOException e) {
     }
     this.playerSockets = new ArrayList<SocketChannel>();
@@ -90,27 +91,25 @@ public class GameMaster implements Runnable {
   public void sendNameToClients() throws IOException {
     Iterator<String> namesIter = board.getAllOwners().iterator();
     for (SocketChannel sc : playerSockets) {
-      if (sc.isConnected()) {
-        String name = namesIter.next();
-        socketPlayerMap.put(sc, name);
-        Socket s = sc.socket();
-        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-        serial.writeObject(name);
-      } else {
-        playerSockets.remove(sc);
-      }
+      String name = namesIter.next();
+      socketPlayerMap.put(sc, name);
+      Socket s = sc.socket();
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(name);
     }
   }
 
   public void sendBoardToClients() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      if(sc.isConnected()) {
-        Socket s = sc.socket();
-        ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-        serial.writeObject(this.board);
+      Socket s = sc.socket();
+      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+      if (board == null) {
+        System.out.println("null");
       } else {
-        playerSockets.remove(sc);
+        System.out.println("not null");
+        System.out.println(board);
       }
+      serial.writeObject(board);
     }
   }
 
