@@ -1,7 +1,5 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 
 import shared.Board;
@@ -36,15 +34,8 @@ public class ClientTest {
       Move m2 = new Move("p2", "Perkins", "Teer", 0, 1);
       client.isValidInst(0, m1);
       //client.isValidInst(0, m2);
-    } catch (IOException e) {
-      System.out.println(e);
-    } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
-    }
-    try{
       Thread.sleep(50);
-    } catch (InterruptedException e) {
-      System.out.println(e);
+    } catch (Exception e) {
     }
     //Client.main(new String[] { "localhost", "6666" });
   }

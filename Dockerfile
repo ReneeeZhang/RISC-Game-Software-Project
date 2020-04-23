@@ -18,13 +18,16 @@ RUN apt-get update && apt-get -yq dist-upgrade \
      openjdk-11-jdk-headless \
      emacs25
 
+
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
+
 
 ARG LOCAL_USER_ID=1001
 ENV USER_ID ${LOCAL_USER_ID}
 RUN adduser --uid ${USER_ID} juser
 WORKDIR /home/juser
+
 
 # Setup a minimal emacs with dcoverage
 USER juser
@@ -49,6 +52,7 @@ RUN ./gradlew resolveDependencies
 # if we change src, etc, but not our gradle setup,
 # Docker can resume from this point
 COPY --chown=juser ./ ./
+
 
 # compile the code
 RUN ./gradlew  assemble
