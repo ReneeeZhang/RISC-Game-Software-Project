@@ -35,12 +35,12 @@ public class FakeClient implements Runnable {
       // recv player name from server
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String name = (String) deserial.readObject();
-      System.out.println(name);
+      //System.out.println(name);
 
       // recv board from server
       deserial = new ObjectInputStream(s.getInputStream());
       GameBoard b = (GameBoard) deserial.readObject();
-      System.out.println(b);
+      //System.out.println(b);
       
       Instruction move = new Move(input.next(), input.next(), input.next(), input.nextInt(), input.nextInt());
       Instruction attack = new Attack(input.next(), input.next(), input.next(), input.nextInt(), input.nextInt());
@@ -51,6 +51,7 @@ public class FakeClient implements Runnable {
       // send instr to server
       serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(ins);
+
       sc.close();
     } catch (Exception e) {
     }
