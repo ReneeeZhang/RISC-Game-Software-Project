@@ -20,9 +20,9 @@ public class ServerTest {
         server.handleRequest();
       }
       // wait for gamemaster and clients to stop
-      Thread.sleep(15000);
-      //fc1.join();
-      //fc2.join();
+      //Thread.sleep(15000);
+      fc1.join();
+      fc2.join();
     } catch (Exception e) {
     }
   }
