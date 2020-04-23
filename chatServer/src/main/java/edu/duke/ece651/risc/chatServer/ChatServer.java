@@ -3,6 +3,7 @@ package edu.duke.ece651.risc.chatServer;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -16,7 +17,11 @@ public class ChatServer {
 
   public ChatServer(int port) throws IOException{
     ssc = ServerSocketChannel.open();
+    ssc.socket().bind(new InetSocketAddress(port));
     rooms = new HashMap<Integer, ChatRoom>();
+    for (int i = 2; i < 6; i++) {
+      rooms.put(i, new ChatRoom(i));
+    }
   }
   
   public static void main(String[] args){
@@ -30,7 +35,7 @@ public class ChatServer {
   }
 
   public static ChatServer start(String path) throws IOException {
-    Scanner config = new Scanner(new File("/src/main/resources"));
+    Scanner config = new Scanner(new File(path));
     return new ChatServer(config.nextInt());
   }
 

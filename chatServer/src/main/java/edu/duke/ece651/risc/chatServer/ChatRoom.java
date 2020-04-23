@@ -15,6 +15,7 @@ import java.util.Set;
 public class ChatRoom implements Runnable {
   private int num;
   private List<SocketChannel> sockets;
+  private Selector selector;
 
   public ChatRoom(int num) throws IOException {
     this.num = num;
@@ -22,12 +23,12 @@ public class ChatRoom implements Runnable {
   }
 
   public void run() {
-    try{
+    try {
       while (true) {
-        
+        setUpSelector();
+        select();
       }
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 
@@ -39,39 +40,40 @@ public class ChatRoom implements Runnable {
     sockets.add(sc);
   }
   
-
-  public Selector setUpSelector() throws IOException {
-    Selector selector = Selector.open();
+  public void setUpSelector() throws IOException {
+    selector = Selector.open();
     for (SocketChannel sc : sockets) {
       sc.configureBlocking(false);
       sc.register(selector, SelectionKey.OP_READ);
-      sockets.remove(sc);
     }
-    return selector;
   }
 
-  public void select(Selector selector) throws IOException, ClassNotFoundException{
-    setUpSelector();
+  public void select() throws IOException, ClassNotFoundException{
     selector.select();
     Set<SelectionKey> keys = selector.selectedKeys();
     Iterator<SelectionKey> keyIterator = keys.iterator();
+    String mesg = "";
     while (keyIterator.hasNext()) {
       SelectionKey key = keyIterator.next();
-      if (key.isReadable()) {
-        SocketChannel sc = (SocketChannel) key.channel();
-        // send to all
-        String msg = recvMessage(sc);
-        sendToAll(msg);
-      }
       keyIterator.remove();
+      if (key.isReadable()) {
+        key.cancel();
+        SocketChannel sc = (SocketChannel) key.channel();
+        sc.configureBlocking(true);
+        mesg = recvMessage(sc);
+      }
     }
+    selector.close();
+    sendToAll(mesg);
   }
   
   public String recvMessage(SocketChannel sc) throws IOException, ClassNotFoundException {
-    sc.configureBlocking(true);
+    //sc.configureBlocking(true);
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    return (String) deserial.readObject();
+    String mesg = (String) deserial.readObject();
+    System.out.println(mesg);
+    return mesg;
   }
 
   public void sendToAll(String msg) throws IOException {
