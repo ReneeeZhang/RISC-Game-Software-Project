@@ -34,7 +34,6 @@ public class GameMaster implements Runnable {
     try {
       Initializer initer = new Initializer(n);
       this.board = initer.initGame();
-      System.out.println(board);
     } catch (IOException e) {
     }
     this.playerSockets = new ArrayList<SocketChannel>();
@@ -48,24 +47,21 @@ public class GameMaster implements Runnable {
     } catch (IOException e) {
     }
     while (true) {
-      try{
-        sendBoardToClients();
-        for (SocketChannel sc :playerSockets) {
+      try {
+        System.out.println(board);
+        sendBoardToClient();
+        for (SocketChannel sc : playerSockets) {
           String player = socketPlayerMap.get(sc);
           Checker winCheck = new WinnerChecker(board, player);
           Checker loseCheck = new LoserChecker(board, player);
           // if somebody wins or no players left in the room
           if (winCheck.isValid() || playerSockets.size() == 0) {
-            System.out.println(player + "wins the game");
             return;
           }
           if (loseCheck.isValid() && !loser.contains(player)) {
-            System.out.println(player + "loses the game");
             if (recvYesFromClient(sc)) {
               loser.add(player);
-              Socket s = sc.socket();
-              ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-              serial.writeObject(this.board);
+              sendBoardToClient(sc);
             } else {
               playerSockets.remove(sc);
             }
@@ -99,18 +95,16 @@ public class GameMaster implements Runnable {
     }
   }
 
-  public void sendBoardToClients() throws IOException {
+  public void sendBoardToClient() throws IOException {
     for (SocketChannel sc : playerSockets) {
-      Socket s = sc.socket();
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      if (board == null) {
-        System.out.println("null");
-      } else {
-        System.out.println("not null");
-        System.out.println(board);
-      }
-      serial.writeObject(board);
+      sendBoardToClient(sc);
     }
+  }
+
+  public void sendBoardToClient(SocketChannel sc) throws IOException {
+    Socket s = sc.socket();
+    ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
+    serial.writeObject(board);
   }
 
   public boolean recvYesFromClient(SocketChannel sc) throws IOException {
@@ -120,7 +114,6 @@ public class GameMaster implements Runnable {
       String yes = (String) deserial.readObject();
       return yes.equals("yes");
     } catch (ClassNotFoundException e) {
-      System.out.println(e);
       return false;
     }
   }
@@ -136,8 +129,8 @@ public class GameMaster implements Runnable {
         instr.execute(board);
       }
     }
-    board.resolve();
     // TODO: figure out when to execute ally instructions
+    board.resolve();
     board.resolveAlly();
   }
 
