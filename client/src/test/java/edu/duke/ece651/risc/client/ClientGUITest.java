@@ -20,5 +20,7 @@ class ClientGUITest {
 //        Popup.showInfo("shiba");
         ChatThread cThread = new ChatThread(gui, gControl, 0);
         cThread.changeRoom(1);
+
+
     }
 }
