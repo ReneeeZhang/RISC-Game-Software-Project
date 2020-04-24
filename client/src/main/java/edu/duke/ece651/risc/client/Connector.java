@@ -54,12 +54,15 @@ public abstract class Connector {
       try {
         ObjectOutputStream serial = new ObjectOutputStream(socket.getOutputStream());
         serial.writeObject(obj);
+        System.out.println("No exception while sending");
         return;
-      } catch (IOException ex) {
+      }
+      catch (IOException ex) {
         System.out.println("I/O exception. Waiting for resending");
         try {
           TimeUnit.SECONDS.sleep(SLEEP_TIME);
         } catch (InterruptedException interruptex) {
+          System.out.println("Interrupt exception.");
           continue;
         }
       }

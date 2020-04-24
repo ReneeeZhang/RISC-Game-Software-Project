@@ -42,10 +42,12 @@ public class ChatServer {
   public void handleRequest() throws IOException, ClassNotFoundException {
     SocketChannel sc = ssc.accept();
     int num = getPlayerNum(sc);
+    System.out.println("Chat server get player num: " + num);
     ChatRoom room = getChatRoom(num);
     room.addPlayer(sc);
     if (room.isFull()) {
       Thread chatRoom = new Thread(room);
+      System.out.println("Chat room starting");
       chatRoom.start();
     }
   }
