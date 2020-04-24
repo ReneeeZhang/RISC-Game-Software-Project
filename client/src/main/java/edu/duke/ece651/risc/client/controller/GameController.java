@@ -332,12 +332,15 @@ public class GameController implements Initializable{
 
   @FXML
   public void send() {
+    System.out.println("Send() called ========");
     String message = input.getText();
     input.clear();
-    String currentName = gui.getCurrentName(currentRoom - 1);
-    area.appendText("You: " + message + "\n");
+    System.out.println("Message collected ===============");
+    // String currentName = gui.getCurrentName(currentRoom - 1);
     //send message
-    // gui.sendStr(currentRoom - 1, message);
+    System.out.println("CurrentRoom = " + currentRoom);
+    gui.getClient().sendChatMsg(currentRoom - 1, message);
+    System.out.println("Message sent ====================");
   }
 
   //append message
@@ -346,7 +349,7 @@ public class GameController implements Initializable{
   }
 
   public void startChat() {
-    this.chat = new ChatThread(gui, this, currentRoom - 1);
+    this.chat = new ChatThread(gui, this, currentRoom);
     Thread thread = new Thread(chat);
     thread.start();
   }
@@ -376,6 +379,7 @@ public class GameController implements Initializable{
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
+    startChat();
   }
 }
 

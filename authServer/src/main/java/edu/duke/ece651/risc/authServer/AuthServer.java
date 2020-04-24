@@ -25,16 +25,19 @@ public class AuthServer{
 
   public static void main(String args[]) {
     try {
-      Scanner config = new Scanner(new File("src/main/resources/config.txt"));
-      AuthServer server = new AuthServer(config.nextInt());
+      AuthServer server = AuthServer.start("src/main/resources/config.txt");
       while (true) {
         server.handleRequest();
       }
     } catch (Exception e) {
-      System.out.println(e);
     }
   }
 
+  public static AuthServer start(String path) throws IOException{
+    Scanner config = new Scanner(new File(path));
+    return new AuthServer(config.nextInt());
+  }
+  
   public void handleRequest() throws IOException {
     SocketChannel sc = serverSocketChannel.accept();
     Thread t = new Thread(new Handler(sc.socket(), db));
