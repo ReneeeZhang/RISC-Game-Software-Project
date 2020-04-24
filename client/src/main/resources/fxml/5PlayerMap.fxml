@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -19,27 +20,72 @@
         <Circle fx:id="Hudson" fill="DODGERBLUE" layoutX="79.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
         <Circle fx:id="Perkins" fill="DODGERBLUE" layoutX="204.0" layoutY="167.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
         <Circle fx:id="Fitzpatrick" fill="DODGERBLUE" layoutX="260.0" layoutY="58.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
-        <Label layoutX="44.0" layoutY="41.0" text="Hudson" />
-        <Label layoutX="301.0" layoutY="82.0" text="Wilson" />
-        <Label layoutX="302.0" layoutY="150.0" text="Lily" />
-        <Label layoutX="250.0" layoutY="11.0" text="Fitz" />
-        <Label layoutX="61.0" layoutY="208.0" prefHeight="17.0" prefWidth="51.0" text="Bostock" />
-        <Label layoutX="384.0" layoutY="323.0" text="Grosshall" />
-        <Label layoutX="192.0" layoutY="332.0" text="Oldchem" />
-        <Label layoutX="169.0" layoutY="50.0" text="Teer" />
+        <Label layoutX="43.0" layoutY="40.0" text="Hudson">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="300.0" layoutY="81.0" text="Wilson">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="351.0" layoutY="156.0" text="Lily">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="286.0" layoutY="24.0" text="Fitz">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="44.0" layoutY="208.0" prefHeight="23.0" prefWidth="71.0" text="Bostock">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="398.0" layoutY="334.0" text="Grosshall">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="146.0" layoutY="334.0" text="Oldchem">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <Label layoutX="141.0" layoutY="106.0" text="Teer">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
         <Circle fx:id="Teer" fill="DODGERBLUE" layoutX="181.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
         <Circle fx:id="Wilson" fill="DODGERBLUE" layoutX="371.0" layoutY="104.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
         <Circle fx:id="Oldchem" fill="DODGERBLUE" layoutX="217.0" layoutY="308.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
-        <Label layoutX="220.0" layoutY="182.0" text="Perkins" />
+        <Label layoutX="219.0" layoutY="181.0" text="Perkins">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <Circle fx:id="Brodie" fill="DODGERBLUE" layoutX="433.0" layoutY="212.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Rubenstein" fill="DODGERBLUE" layoutX="459.0" layoutY="94.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Chapel" fill="DODGERBLUE" layoutX="590.0" layoutY="331.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label layoutX="459.0" layoutY="220.0" text="Brodie" />
-      <Label layoutX="428.0" layoutY="120.0" text="Rubenstein" />
-      <Label layoutX="507.0" layoutY="331.0" text="Chapel" />
-      <Label layoutX="590.0" layoutY="142.0" text="Gardens" />
-      <Label layoutX="546.0" layoutY="205.0" text="Ambler" />
-      <Label layoutX="536.0" layoutY="112.0" text="Fuqua" />
+      <Label layoutX="409.0" layoutY="244.0" text="Brodie">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="416.0" layoutY="47.0" text="Rubenstein">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="549.0" layoutY="354.0" text="Chapel">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="627.0" layoutY="61.0" text="Gardens">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="545.0" layoutY="204.0" text="Ambler">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="529.0" layoutY="38.0" text="Fuqua">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <Circle fx:id="Gardens" fill="DODGERBLUE" layoutX="636.0" layoutY="113.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Fuqua" fill="DODGERBLUE" layoutX="553.0" layoutY="90.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Ambler" fill="DODGERBLUE" layoutX="526.0" layoutY="205.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
