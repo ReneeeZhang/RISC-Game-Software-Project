@@ -14,11 +14,11 @@ import java.util.ResourceBundle;
 public class LoginController {
 
     @FXML
-    public TextField userName;
+    private TextField userName;
     @FXML
-    public TextField password;
+    private TextField password;
     @FXML
-    public Button login;
+    private Button login;
 
     private ClientGUI gui;
     public LoginController(ClientGUI g) {
@@ -26,7 +26,7 @@ public class LoginController {
     }
   
     @FXML
-    public void doLogin() throws IOException {
+    private void doLogin() throws IOException {
         System.out.println(userName.getText() + "&&" + password.getText());
         String username = userName.getText();
         String pwd = password.getText();
