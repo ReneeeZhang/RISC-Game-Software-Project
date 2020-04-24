@@ -22,14 +22,21 @@ public class FakeClient implements Runnable {
       SocketChannel sc = SocketChannel.open();
       sc.connect(new InetSocketAddress("localhost", 8888));
       Socket s = sc.socket();
+
+      // send player num
       ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(2);
+
+      // if has input, send mesg
       if (input.hasNext()) {
         serial = new ObjectOutputStream(s.getOutputStream());
         serial.writeObject(input.next());
       }
+
+      // recv message
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String mesg = (String) deserial.readObject();
+
       sc.close();
     } catch (Exception e) {
     }
