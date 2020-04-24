@@ -36,6 +36,7 @@ public class ClientTest {
       Move m2 = new Move("p2", "Perkins", "Teer", 0, 1);
       client.isValidInst(0, m1);
       //client.isValidInst(0, m2);
+      ClientGUI.launch();
     } catch (IOException e) {
       System.out.println(e);
     } catch (ClassNotFoundException ex) {

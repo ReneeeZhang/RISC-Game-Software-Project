@@ -14,11 +14,11 @@ import java.util.ResourceBundle;
 public class LoginController {
 
     @FXML
-    private TextField userName;
+    public TextField userName;
     @FXML
-    private TextField password;
+    public TextField password;
     @FXML
-    private Button login;
+    public Button login;
 
     private ClientGUI gui;
     public LoginController(ClientGUI g) {
