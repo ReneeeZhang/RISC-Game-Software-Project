@@ -1,15 +1,30 @@
 package edu.duke.ece651.risc.client.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import edu.duke.ece651.risc.client.ChatThread;
 import edu.duke.ece651.risc.client.ClientGUI;
 import edu.duke.ece651.risc.client.Popup;
-import edu.duke.ece651.risc.client.ChatThread;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -20,11 +35,13 @@ import shared.Board;
 import shared.GameBoard;
 import shared.Region;
 import shared.checkers.AdjacentChecker;
-import shared.instructions.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
+import shared.instructions.Ally;
+import shared.instructions.Attack;
+import shared.instructions.FoodSupport;
+import shared.instructions.Instruction;
+import shared.instructions.Move;
+import shared.instructions.TechUpgrade;
+import shared.instructions.UnitUpgrade;
 
 public class GameController implements Initializable{
 
