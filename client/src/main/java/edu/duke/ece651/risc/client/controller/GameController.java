@@ -200,17 +200,49 @@ public class GameController implements Initializable{
 
     // Ally
     else if (ins.equals("ally")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> allys = (ChoiceBox<String>) entry.getChildren().get(1);
+      Ally allyIns = new Ally(pname, allys.getValue());
+      if(gui.getClient().isValidInst(room, allyIns)) {
+        insList.add(allyIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
       actionChoice.getItems().remove(ins);
     }
 
     // Food supproo
     else if (ins.equals("food support")) {
-
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> supports = (ChoiceBox<String>) entry.getChildren().get(1);
+      TextField amount = (TextField) entry.getChildren().get(3);
+      FoodSupport foodIns = new FoodSupport(pname, supports.getValue(), Integer.parseInt(amount.getText()));
+      if(gui.getClient().isValidInst(room, foodIns)) {
+        insList.add(foodIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
     }
 
     // Incite
     else if (ins.equals("incite defection")) {
-     actionChoice.getItems().remove(ins);
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
+      ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
+      
+      // Incite inciteIns = new Incite(pname, src.getValue(), dest.getValue());
+      // if(gui.getClient().isValidInst(room, inciteIns)) {
+      //   insList.add(inciteIns);
+      //   Popup.showInfo("Instruction added!");
+      // }
+      // else {
+      //   Popup.showInfo("Invalid instruction!");
+      // }
+      actionChoice.getItems().remove(ins);
     }
        
   }

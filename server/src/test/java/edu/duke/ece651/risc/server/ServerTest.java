@@ -12,15 +12,16 @@ public class ServerTest {
       Thread fc3 = new Thread(new FakeClient(""));
       fc1.start();
       fc2.start();
-      fc3.start();
 
       // runserver
       Server server = Server.start("src/main/resources/config.txt");
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 2;  i++) {
         server.handleRequest();
       }
       // wait for gamemaster and clients to stop
       //Thread.sleep(15000);
+      fc3.start();
+      server.handleRequest();
       fc1.join();
       fc2.join();
     } catch (Exception e) {
