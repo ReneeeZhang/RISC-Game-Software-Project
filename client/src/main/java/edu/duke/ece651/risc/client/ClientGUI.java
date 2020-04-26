@@ -65,9 +65,10 @@ public class ClientGUI extends Application {
   }
   
   @Override
-  public void init() throws Exception{
+  public void init() throws Exception {
     activeGames = 0;
     List<String> configs = readConfig();
+    System.out.println("new client");
     client = new Client(configs.get(0), Integer.parseInt(configs.get(1)), Integer.parseInt(configs.get(2)), Integer.parseInt(configs.get(3)));
     playerNames = new ArrayList<>();
     playerNumbers = new ArrayList<>();
@@ -75,6 +76,7 @@ public class ClientGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
+    System.out.println("enter start");
     window = primaryStage;
     window.setTitle("RISC");
     window.setScene(loginScene());
@@ -248,11 +250,7 @@ public class ClientGUI extends Application {
   
   /* ========== Send and receive ========== */
   public void sendStr(String str) {
-    try {
       client.send(str);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
   public String receiveStr() {
@@ -270,7 +268,7 @@ public class ClientGUI extends Application {
     try {
       client.sendViaChannel(room, str);
     } catch(Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
   }
   
@@ -280,7 +278,7 @@ public class ClientGUI extends Application {
     try {
       ans = (String) client.receiveViaChannel(room);
     } catch(Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
     return ans;
   }
@@ -290,7 +288,7 @@ public class ClientGUI extends Application {
     try {
       client.sendViaChannel(room, obj);
     } catch(Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
   }
 
@@ -300,7 +298,7 @@ public class ClientGUI extends Application {
     try {
       ans = client.receiveViaChannel(room);
     } catch(Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
     return ans;
   }

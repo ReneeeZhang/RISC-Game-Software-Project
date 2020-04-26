@@ -25,10 +25,12 @@ public class ChatRoom implements Runnable {
   public void run() {
     try {
       while (true) {
+        System.out.println("Chat room starts");
         setUpSelector();
         select();
       }
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
