@@ -254,14 +254,14 @@ public class GameController implements Initializable{
       ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       
-      // Incite inciteIns = new Incite(pname, src.getValue(), dest.getValue());
-      // if(gui.getClient().isValidInst(room, inciteIns)) {
-      //   insList.add(inciteIns);
-      //   Popup.showInfo("Instruction added!");
-      // }
-      // else {
-      //   Popup.showInfo("Invalid instruction!");
-      // }
+      InciteDefection inciteIns = new InciteDefection(pname, src.getValue(), dest.getValue(), 0, 0);
+      if(gui.getClient().isValidInst(room, inciteIns)) {
+        insList.add(inciteIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
       actionChoice.getItems().remove(ins);
     }
        
