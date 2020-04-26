@@ -52,15 +52,18 @@ public class GameController implements Initializable{
   private Circle color;
   @FXML
   private Label info;
-  @FXML
-  private TextArea area;
-  @FXML private TextField input;
-  @FXML private Button send;
+  @FXML private VBox chat;
+
+//  @FXML
+//  private TextArea area;
+//  @FXML private TextField input;
+//  @FXML private Button send;
 
   Board board;
   boolean init = true;
   int currentRoom;
-  ChatThread chat;
+//  ChatThread chat;
+  ChatController chatController;
   private static Map<String, Color> colorMapper = new HashMap<>();
   private ArrayList<Instruction> insList = new ArrayList<>();
 
@@ -307,7 +310,7 @@ public class GameController implements Initializable{
           String id = tab.getId();
           System.out.println("switch to room " + id);
           gui.setGameScene(Integer.parseInt(id));
-          chat.changeRoom(Integer.parseInt(id)); // chat change content
+          chatController.setCurrentRoom(Integer.parseInt(id)); // chat change content
         }
       });
       games.getTabs().add(size - 1, tab);
@@ -362,29 +365,29 @@ public class GameController implements Initializable{
     return false;
   }
 
-  @FXML
-  public void send() {
-    System.out.println("Send() called ========");
-    String message = input.getText();
-    input.clear();
-    System.out.println("Message collected ===============");
-    // String currentName = gui.getCurrentName(currentRoom - 1);
-    //send message
-    System.out.println("CurrentRoom = " + currentRoom);
-    gui.getClient().sendChatMsg(currentRoom - 1, message);
-    System.out.println("Message sent ====================");
-  }
-
-  //append message
-  public void appendMsg(String message) {
-    area.appendText(message);
-  }
-
-  public void startChat() {
-    this.chat = new ChatThread(gui, this, currentRoom);
-    Thread thread = new Thread(chat);
-    thread.start();
-  }
+//  @FXML
+//  public void send() {
+//    System.out.println("Send() called ========");
+//    String message = input.getText();
+//    input.clear();
+//    System.out.println("Message collected ===============");
+//    // String currentName = gui.getCurrentName(currentRoom - 1);
+//    //send message
+//    System.out.println("CurrentRoom = " + currentRoom);
+//    gui.getClient().sendChatMsg(currentRoom - 1, message);
+//    System.out.println("Message sent ====================");
+//  }
+//
+//  //append message
+//  public void appendMsg(String message) {
+//    area.appendText(message);
+//  }
+//
+//  public void startChat() {
+//    this.chat = new ChatThread(gui, this, currentRoom);
+//    Thread thread = new Thread(chat);
+//    thread.start();
+//  }
 
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
@@ -400,7 +403,17 @@ public class GameController implements Initializable{
     }
   }
 
-
+  private void initChat() {
+    URL resource = getClass().getResource("/fxml/component/chat.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    try {
+      chat = fxmlLoader.load();
+      chatController = fxmlLoader.getController();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
@@ -411,7 +424,8 @@ public class GameController implements Initializable{
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
-    startChat();
+    initChat();
+//    startChat();
   }
 }
 

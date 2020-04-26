@@ -1,14 +1,15 @@
 package edu.duke.ece651.risc.client;
 
+import edu.duke.ece651.risc.client.controller.ChatController;
 import edu.duke.ece651.risc.client.controller.GameController;
 
 public class ChatThread implements Runnable {
   
   private ClientGUI gui;
-  private GameController controller;
+  private ChatController controller;
   private int room;
 
-  public ChatThread(ClientGUI gui, GameController controller, int room) {
+  public ChatThread(ClientGUI gui, ChatController controller, int room) {
     this.gui = gui;
     this.controller = controller;
     this.room = room;
