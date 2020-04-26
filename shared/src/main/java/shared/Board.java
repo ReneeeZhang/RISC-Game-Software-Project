@@ -29,6 +29,8 @@ public interface Board {
   public void ally(String player1, String player2);
 
   public void supportFood(String supportor, String supportee, int amount);
+
+  public void inciteDefection(String src, String dst);
   
   public void resolve();
 

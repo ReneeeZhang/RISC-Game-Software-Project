@@ -115,7 +115,8 @@ public class WatchController implements Initializable{
   public void showInfo(MouseEvent event) {
     Node source = (Node)event.getSource();
     String id = source.getId();
-    Popup.showInfo(board.getRegion(id).getInfo());
+    String currentName = gui.getCurrentName(currentRoom - 1);
+    Popup.showInfo(board.getRegion(id).getInfo(currentName));
   }
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();

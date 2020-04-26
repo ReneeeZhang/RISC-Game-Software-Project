@@ -10,7 +10,6 @@ public class ChatServerTest {
     try{
       Thread fakeClient1 = new Thread(new FakeClient("mesg1"));
       Thread fakeClient2 = new Thread(new FakeClient("mesg2"));
-      Thread fakeClient3 = new Thread(new FakeClient(""));
       fakeClient1.start();
       fakeClient2.start();
       ChatServer server = ChatServer.start("src/main/resources/config.txt");
@@ -19,6 +18,7 @@ public class ChatServerTest {
       }
       fakeClient1.join();
       fakeClient2.join();
+      Thread fakeClient3 = new Thread(new FakeClient(""));
       fakeClient3.start();
       server.handleRequest();
     } catch (Exception e) {

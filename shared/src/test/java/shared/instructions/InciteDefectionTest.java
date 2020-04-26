@@ -16,10 +16,9 @@ public class InciteDefectionTest {
   @BeforeEach
   public void init() {
     try{
-    Initializer init = new Initializer(2);
-    this.board = init.initGame();
-  } catch (IOException ex) {
-      ex.printStackTrace();
+      Initializer init = new Initializer(2);
+      this.board = init.initGame();
+    } catch (IOException ex) {
     }
   }
   

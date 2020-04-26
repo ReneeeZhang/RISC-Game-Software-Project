@@ -3,7 +3,6 @@ package shared;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,16 +52,6 @@ public class BaseRegionTest {
         .println("------ all units num:------" + br1.getAllUnitsAmount() + "------------" + br1.numUnitWithLevel(0));
     assertTrue(br1.numUnitWithLevel(0) != 0);
     assertTrue(br1.numUnitWithLevel(1) == 0);
-  }
-
-  @Test
-  public void test_getInfo() {
-    System.out.println(br1.getInfo());
-  }
-
-  @Test
-  public void test_getMajorCamp() {
-    Collections.sort(br1.getDefenseTroop());
   }
 
   @Test
