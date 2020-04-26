@@ -64,12 +64,12 @@ public class BaseRegion implements Region, Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append(name).append("\nOwned by: ").append(owner.getName()).append("\nSize: ").append(size);
     sb.append("\nResource Production: ").append(resourceProduction);
-    if (player == owner.getName()) {
+    if (player.equals(owner.getName())) {
       sb.append("\nUnits Info:\n");
       for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
         sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(owner, i)).append("\n");
       }
-    } else if (owner.getAlly() != null && player == owner.getAlly().getName()) {
+    } else if (owner.getAlly() != null && player.equals(owner.getAlly().getName())) {
       // if has ally and it's ally getting info
       sb.append("\nUnits Info:\n");
       for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
