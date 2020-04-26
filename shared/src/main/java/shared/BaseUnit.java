@@ -16,6 +16,10 @@ public class BaseUnit implements Unit, Upgradable, Serializable, Comparable<Base
   public Player getOwner() {
     return this.owner;
   }
+
+  public void setOwner(Player p) {
+    this.owner = p;
+  }
   
   public void upgrade() {
     this.level++;
