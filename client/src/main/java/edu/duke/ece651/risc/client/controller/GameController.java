@@ -313,7 +313,8 @@ public class GameController implements Initializable{
   public void showInfo(MouseEvent event) {
     Node source = (Node)event.getSource();
     String id = source.getId();
-    Popup.showInfo(board.getRegion(id).getInfo());
+    String pname = gui.getCurrentName(currentRoom - 1);
+    Popup.showInfo(board.getRegion(id).getInfo(pname));
   }
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();

@@ -14,19 +14,18 @@ public class GameBoard implements Board, Serializable {
   private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
-  // TODO: move list<region> into player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
 
   public GameBoard() {
-    this.regionMap = new HashMap<Region, List<Region>>();
-    this.regionNameMap = new HashMap<String, Region>();
-    this.playerRegionMap = new HashMap<String, List<Region>>();
-    this.playerNameMap = new HashMap<String, Player>();
+    this.regionMap = new HashMap<>();
+    this.regionNameMap = new HashMap<>();
+    this.playerRegionMap = new HashMap<>();
+    this.playerNameMap = new HashMap<>();
     this.lookUp = new UpgradeLookup();
   }
-
+  
   public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap,
       Map<String, Player> playerNamemap, Map<String, List<Region>> playerRegionMap) {
     this.regionMap = regionMap;
@@ -106,7 +105,6 @@ public class GameBoard implements Board, Serializable {
       if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
         visited.add(curr);
         for (Region r : regionMap.get(curr)) {
-          // TODO: getAlly
           if (r.getOwner().equals(owner)) {
             stack.add(r);
             int cost = dist.get(curr) + curr.getSize();
@@ -154,6 +152,21 @@ public class GameBoard implements Board, Serializable {
     _supportor.decreaseFood(amount);
     _supportee.increaseFood(amount);
   }
+
+  @Override
+  public void inciteDefection(String src, String dst) {
+    Region srcRegion = getRegion(src);
+    Region dstRegion = getRegion(dst);
+    List<BaseUnit> allUnits= dstRegion.getDefenseTroop();
+    Collections.sort(allUnits);
+    int len = allUnits.size();
+    List<BaseUnit> traitors = new ArrayList<BaseUnit>();
+    // defect half of the dest region's units
+    for (int i = 0; i < len / 2; i++) {
+      traitors.add(allUnits.remove(0));
+    }
+    srcRegion.receiveUnit(traitors);
+  }
   
   @Override
   public void resolveAlly() {
@@ -161,6 +174,7 @@ public class GameBoard implements Board, Serializable {
       if (p.getAlly() != null) {
         // if p.ally has no ally or not p
         if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
+          // break all unilateral relations
           p.breakAlly();
         }
       }
@@ -180,7 +194,6 @@ public class GameBoard implements Board, Serializable {
     playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : getAllRegions()) {
       if (!playerRegionMap.containsKey(r.getOwner().getName())) {
-        //TODO: might be deleted
         playerRegionMap.put(r.getOwner().getName(), new ArrayList<Region>());
       }
       playerRegionMap.get(r.getOwner().getName()).add(r);
@@ -229,6 +242,7 @@ public class GameBoard implements Board, Serializable {
     }
   }
 
+  // for test only
   @Override
   public String toString() {
     String str = "";
