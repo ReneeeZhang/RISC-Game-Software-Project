@@ -2,4 +2,4 @@
 
 gradle run-server &
 gradle run-authServer &
-#gradle run-chatServer &
+gradle run-chatServer &

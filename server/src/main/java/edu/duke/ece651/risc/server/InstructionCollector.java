@@ -23,9 +23,7 @@ public class InstructionCollector {
     for (SocketChannel sc : playerSockets) {
       if (sc.isConnected()) {
         sc.configureBlocking(false);
-        sc.register(selector, SelectionKey.OP_READ);
-      } else {
-        playerSockets.remove(sc);
+        sc.register(selector, SelectionKey.OP_READ);  
       }
     }
   }

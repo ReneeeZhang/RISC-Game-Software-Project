@@ -26,7 +26,7 @@ public class LoginController {
     }
   
     @FXML
-    public void doLogin() throws IOException {
+    private void doLogin() throws IOException {
         System.out.println(userName.getText() + "&&" + password.getText());
         String username = userName.getText();
         String pwd = password.getText();

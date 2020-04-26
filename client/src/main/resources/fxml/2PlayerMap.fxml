@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -19,11 +20,29 @@
       <Circle fx:id="Hudson" fill="DODGERBLUE" layoutX="124.0" layoutY="87.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Wilson" fill="DODGERBLUE" layoutX="387.0" layoutY="95.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="Perkins" fill="DODGERBLUE" layoutX="387.0" layoutY="287.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label layoutX="132.0" layoutY="36.0" text="Hudson" />
-      <Label layoutX="572.0" layoutY="204.0" text="Teer" />
-      <Label layoutX="526.0" layoutY="46.0" text="Bostock" />
-      <Label layoutX="357.0" layoutY="46.0" text="Wilson" />
-      <Label layoutX="164.0" layoutY="302.0" text="Fitz" />
-      <Label layoutX="410.0" layoutY="302.0" text="Perkins" />
+      <Label layoutX="41.0" layoutY="99.0" text="Hudson">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="572.0" layoutY="204.0" text="Teer">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="525.0" layoutY="35.0" text="Bostock">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="357.0" layoutY="46.0" text="Wilson">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="164.0" layoutY="302.0" text="Fitz">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="410.0" layoutY="302.0" text="Perkins">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </Group>
