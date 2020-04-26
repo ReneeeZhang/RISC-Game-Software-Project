@@ -3,6 +3,7 @@ package shared;
 import java.util.List;
 
 public interface Region {
+
   public String getName();
 
   public Player getOwner();
@@ -11,8 +12,6 @@ public interface Region {
 
   public int getResourceProduction();
 
-  public String getInfo();
-  
   public String getInfo(String player);
   
   public List<BaseUnit> sendUnit(int level, int num);
@@ -40,6 +39,6 @@ public interface Region {
   public void upgradeUnit(int oldLevel, int newLevel, int numUnit);
 
   public int numUnitWithLevel(int level);
-
+  
   public int numUnitWithLevel(Player whoOwns, int level);
 }

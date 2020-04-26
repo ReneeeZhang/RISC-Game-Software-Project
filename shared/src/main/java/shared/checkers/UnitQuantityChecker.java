@@ -18,10 +18,6 @@ public class UnitQuantityChecker implements Checker {
     this.expect = expect;
     this.next = next;
   }
-
-  public void setNext(Checker next) {
-    this.next = next;
-  }
   
   @Override
   public boolean isValid() {

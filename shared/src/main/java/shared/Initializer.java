@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import shared.BaseRegion;
-import shared.GameBoard;
-import shared.Region;
-
 public class Initializer {
   private String configFilePath;
 

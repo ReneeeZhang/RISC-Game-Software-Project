@@ -14,18 +14,9 @@ public class GameBoard implements Board, Serializable {
   private static final long serialVersionUID = 12367648;
   private Map<Region, List<Region>> regionMap;
   private Map<String, Region> regionNameMap;
-  // TODO: move list<region> into player object
   private Map<String, List<Region>> playerRegionMap;
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
-
-  public GameBoard() {
-    this.regionMap = new HashMap<Region, List<Region>>();
-    this.regionNameMap = new HashMap<String, Region>();
-    this.playerRegionMap = new HashMap<String, List<Region>>();
-    this.playerNameMap = new HashMap<String, Player>();
-    this.lookUp = new UpgradeLookup();
-  }
 
   public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap,
       Map<String, Player> playerNamemap, Map<String, List<Region>> playerRegionMap) {
@@ -154,6 +145,21 @@ public class GameBoard implements Board, Serializable {
     _supportor.decreaseFood(amount);
     _supportee.increaseFood(amount);
   }
+
+  @Override
+  public void inciteDefection(String src, String dst) {
+    Region srcRegion = getRegion(src);
+    Region dstRegion = getRegion(dst);
+    List<BaseUnit> allUnits= dstRegion.getDefenseTroop();
+    Collections.sort(allUnits);
+    int len = allUnits.size();
+    List<BaseUnit> traitors = new ArrayList<BaseUnit>();
+    // defect half of the dest region's units
+    for (int i = 0; i < len / 2; i++) {
+      traitors.add(allUnits.remove(0));
+    }
+    srcRegion.receiveUnit(traitors);
+  }
   
   @Override
   public void resolveAlly() {
@@ -229,6 +235,7 @@ public class GameBoard implements Board, Serializable {
     }
   }
 
+  // for test only
   @Override
   public String toString() {
     String str = "";
