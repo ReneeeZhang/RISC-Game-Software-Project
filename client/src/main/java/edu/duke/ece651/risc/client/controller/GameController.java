@@ -1,15 +1,29 @@
 package edu.duke.ece651.risc.client.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+
+import edu.duke.ece651.risc.client.ChatThread;
 import edu.duke.ece651.risc.client.ClientGUI;
 import edu.duke.ece651.risc.client.Popup;
-import edu.duke.ece651.risc.client.ChatThread;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -21,11 +35,14 @@ import shared.Board;
 import shared.GameBoard;
 import shared.Region;
 import shared.checkers.AdjacentChecker;
-import shared.instructions.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
+import shared.instructions.Ally;
+import shared.instructions.Attack;
+import shared.instructions.FoodSupport;
+import shared.instructions.Instruction;
+import shared.instructions.Move;
+import shared.instructions.TechUpgrade;
+import shared.instructions.UnitUpgrade;
+import shared.instructions.InciteDefection;
 
 public class GameController implements Initializable{
 
@@ -81,13 +98,23 @@ public class GameController implements Initializable{
     this.board = board;
     String currentName = gui.getCurrentName(currentRoom - 1);
     this.color.setFill(colorMapper.get(currentName));
-    String s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\n",
-            currentName,
-            board.getPlayer(currentName).getCurrLevel(),
-            board.getPlayer(currentName).getFoodAmount(),
-            board.getPlayer(currentName).getTechAmount());
+    String s;
+    if (board.getPlayer(currentName).getAlly() != null) {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: %s\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount(), board.getPlayer(currentName).getAlly().getName());
+    }
+    else {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: N/A\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount());
+    }
+    
     this.info.setText(s);
     chooseAction("move");
+    if (board.getAllOwners().size() == 2) {
+      actionChoice.getItems().remove("ally");
+    }
     return this;
   }
 
@@ -241,14 +268,14 @@ public class GameController implements Initializable{
       ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       
-      // Incite inciteIns = new Incite(pname, src.getValue(), dest.getValue());
-      // if(gui.getClient().isValidInst(room, inciteIns)) {
-      //   insList.add(inciteIns);
-      //   Popup.showInfo("Instruction added!");
-      // }
-      // else {
-      //   Popup.showInfo("Invalid instruction!");
-      // }
+      InciteDefection inciteIns = new InciteDefection(null, src.getValue(), dest.getValue(), 0, 0);
+      if(gui.getClient().isValidInst(room, inciteIns)) {
+        insList.add(inciteIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
       actionChoice.getItems().remove(ins);
     }
        
@@ -300,7 +327,8 @@ public class GameController implements Initializable{
   public void showInfo(MouseEvent event) {
     Node source = (Node)event.getSource();
     String id = source.getId();
-    Popup.showInfo(board.getRegion(id).getInfo());
+    String pname = gui.getCurrentName(currentRoom - 1);
+    Popup.showInfo(board.getRegion(id).getInfo(pname));
   }
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
@@ -343,6 +371,11 @@ public class GameController implements Initializable{
       destChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         destChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          destChoice.getItems().add(regionName);
+        }
       }
     }
     else if (ins.equals("attack") || ins.equals("incite")) {
@@ -432,6 +465,7 @@ public class GameController implements Initializable{
     generateTabs(gui.getActiveGames());
     actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
     actionChoice.setValue("move");
+
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();

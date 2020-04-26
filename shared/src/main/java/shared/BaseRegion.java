@@ -59,34 +59,22 @@ public class BaseRegion implements Region, Serializable {
     return this.resourceProduction;
   }
 
-  // TODO: delete this
-  @Override
-  public String getInfo() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(name).append("\nOwned by: ").append(owner.getName()).append("\nSize: ").append(size);
-    sb.append("\nResource Production: ").append(resourceProduction);
-    sb.append("\nUnits Info:\n");
-    // TODO: add if else
-    for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
-      sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
-    }
-    return sb.toString();
-  }
-  
   @Override
   public String getInfo(String player) {
     StringBuilder sb = new StringBuilder();
-    sb.append(name).append("\nOwned by: ").append(owner).append("\nSize: ").append(size);
+    sb.append(name).append("\nOwned by: ").append(owner.getName()).append("\nSize: ").append(size);
     sb.append("\nResource Production: ").append(resourceProduction);
-    sb.append("\nUnits Info:\n");
-    // TODO: add if else
-    if (player == owner.getName()) {
+    if (player.equals(owner.getName())) {
+      sb.append("\nUnits Info:\n");
       for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
-        sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(i)).append("\n");
+        sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(owner, i)).append("\n");
       }
-    } else if (owner.getAlly() != null && player == owner.getAlly().getName()) {
-      // if has ally
-      
+    } else if (owner.getAlly() != null && player.equals(owner.getAlly().getName())) {
+      // if has ally and it's ally getting info
+      sb.append("\nUnits Info:\n");
+      for (int i = MIN_UNIT_LEVEL; i < MAX_UNIT_LEVEL; i++) {
+        sb.append("Level ").append(i).append(": ").append(numUnitWithLevel(owner.getAlly(), i)).append("\n");
+      }
     }
     return sb.toString();
   }
@@ -103,6 +91,7 @@ public class BaseRegion implements Region, Serializable {
   /**
    * Send unit(s) which belong to this Region owner with level and num  
    */
+  @Override
   public List<BaseUnit> sendUnit(int level, int num) {
     return sendUnit(owner, level, num);
   }
@@ -110,6 +99,7 @@ public class BaseRegion implements Region, Serializable {
   /**
    * Send unit(s) which belong to whoOwns with level and num
    */
+  @Override
   public List<BaseUnit> sendUnit(Player whoOwns, int level, int num) {
     List<BaseUnit> toSend = new ArrayList<>();
     List<BaseUnit> levelCamp = majorCamp.get(level);
@@ -128,6 +118,7 @@ public class BaseRegion implements Region, Serializable {
     return toSend;
   }
 
+  @Override
   public void receiveUnit(List<BaseUnit> toReceive) {
     for (BaseUnit unit : toReceive) {
       int level = unit.getCurrLevel();
@@ -135,14 +126,17 @@ public class BaseRegion implements Region, Serializable {
     }
   }
 
+  @Override
   public void setOwner(Player owner) {
     this.owner = owner;
   }
-  
+
+  @Override
   public void dispatch(String adjDest, int level, int num) {
     dispatch(adjDest, owner, level, num);
   }
 
+  @Override
   public void dispatch(String adjDest, Player whoOwns, int level, int num) {
     List<BaseUnit> borderCamp = borderCamps.get(adjDest);
     List<BaseUnit> levelCamp = majorCamp.get(level);
@@ -160,6 +154,7 @@ public class BaseRegion implements Region, Serializable {
     }
   }
 
+  @Override
   public List<BaseUnit> getDefenseTroop() {
     List<BaseUnit> troop = new ArrayList<>();
     for (int i = MIN_UNIT_LEVEL; i <= MAX_UNIT_LEVEL; i++) {
@@ -170,20 +165,24 @@ public class BaseRegion implements Region, Serializable {
     return troop;
   }
 
+  @Override
   public List<BaseUnit> getBorderCamp(String dest) {
     List<BaseUnit> troop = borderCamps.get(dest);
     borderCamps.replace(dest, new ArrayList<>());
     return troop;
   }
 
+  @Override
   public void initOneBorderCamp(String neighbor) {
     borderCamps.put(neighbor, new ArrayList<>());
   }
 
+  @Override
   public void autoIncrement() {
     majorCamp.get(MIN_UNIT_LEVEL).add(new BaseUnit(owner));
   }
 
+  @Override
   public void upgradeUnit(int oldLevel, int newLevel, int numUnit) {
     int count = numUnit;
     List<BaseUnit> oldLevelCamp = majorCamp.get(oldLevel);
@@ -201,12 +200,12 @@ public class BaseRegion implements Region, Serializable {
     }
   }
 
-  //TODO: add Player
-  public int numUnitWithLevel(int level) {
+  @Override
+  public int numUnitWithLevel(int level){
     return numUnitWithLevel(owner, level);
-    
   }
 
+  @Override
   public int numUnitWithLevel(Player whoOwns, int level) {
     int num = 0;
     List<BaseUnit> levelCamp = majorCamp.get(level);

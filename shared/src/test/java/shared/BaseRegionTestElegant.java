@@ -44,4 +44,17 @@ public class BaseRegionTestElegant {
     br.dispatch(adj.getName(), p2, 0, 2);
     assertTrue(br.getBorderCamp(adj.getName()).size() == 0);
   }
+
+  @Test
+  public void test_get_info() {
+    p1.allyWith(p2);
+    p2.allyWith(p1);
+    // TODO: add asserts
+    String info1 = br.getInfo("p1");
+    System.out.println(info1);
+    String info2 = br.getInfo("p2");
+    System.out.println(info2);
+    String info3 = br.getInfo("p3");
+    System.out.println(info3);
+  }
 }

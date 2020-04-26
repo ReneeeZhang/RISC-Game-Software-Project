@@ -1,7 +1,5 @@
 package edu.duke.ece651.risc.chatServer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
