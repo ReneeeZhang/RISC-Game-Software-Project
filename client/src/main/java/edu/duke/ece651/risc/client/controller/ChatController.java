@@ -24,7 +24,8 @@ public class ChatController implements Initializable {
     private ClientGUI gui;
     int currentRoom;
     ChatThread chat;
-    @FXML public void send() {
+  
+  @FXML public void send() {
     System.out.println("Send() called ========");
     String message = input.getText();
     input.clear();
@@ -32,7 +33,8 @@ public class ChatController implements Initializable {
     // String currentName = gui.getCurrentName(currentRoom - 1);
     //send message
     System.out.println("CurrentRoom = " + currentRoom);
-    gui.getClient().sendChatMsg(currentRoom - 1, message);
+    // gui.getClient().sendChatMsg(currentRoom - 1, message);
+    chat.send(message);
     System.out.println("Message sent ====================");
   }
 
@@ -51,6 +53,6 @@ public class ChatController implements Initializable {
   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        startChat();
+       startChat();
     }
 }
