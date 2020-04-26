@@ -163,7 +163,9 @@ public class GameBoard implements Board, Serializable {
     List<BaseUnit> traitors = new ArrayList<BaseUnit>();
     // defect half of the dest region's units
     for (int i = 0; i < len / 2; i++) {
-      traitors.add(allUnits.remove(0));
+      BaseUnit traitor = (allUnits.remove(0));
+      traitor.setOwner(srcRegion.getOwner());
+      traitors.add(traitor);
     }
     srcRegion.receiveUnit(traitors);
     dstRegion.receiveUnit(allUnits);
