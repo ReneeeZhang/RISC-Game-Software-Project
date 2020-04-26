@@ -38,7 +38,7 @@ public class InciteDefectionTargetCheckerTest {
   public void test_isValid_hasAlly_invaild() {
     p1.allyWith(p2);
     p2.allyWith(p1);
-    InciteDefectionTargetChecker chekcer = new InciteDefectionTargetChecker(p1, p1);
+    InciteDefectionTargetChecker chekcer = new InciteDefectionTargetChecker(p1, p2);
     assertFalse(chekcer.isValid());
   }
 

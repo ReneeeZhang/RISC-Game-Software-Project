@@ -18,15 +18,17 @@ public class InciteDefectionTargetChecker implements Checker {
   }
 
   public boolean isValid() {
+    boolean correctTarget = false;
     if (inciter.equals(incitee)) {
       System.out.println(inciter.getName() + " is trying to incite from his owner region");
-      return false;
+      correctTarget = false;
     }
     else if (inciter.getAlly() == null) {
-      return true;
+      correctTarget = true;
     }
     else {
-      return !inciter.getAlly().equals(incitee);
+      correctTarget = !inciter.getAlly().equals(incitee);
     }
+    return next == null ? correctTarget : correctTarget && next.isValid();
   }
 }
