@@ -22,27 +22,27 @@
          <children>
             <Circle fx:id="color" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
+                  <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </Circle>
             <Label fx:id="info" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="79.0" prefWidth="135.0" text="Label" wrapText="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="5.0" left="10.0" />
                </VBox.margin>
             </Label>
             <ChoiceBox fx:id="actionChoice" prefHeight="27.0" prefWidth="134.0">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="5.0" left="10.0" />
                </VBox.margin>
             </ChoiceBox>
             <VBox fx:id="action" prefHeight="142.0" prefWidth="150.0">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="5.0" left="10.0" />
                </VBox.margin>
             </VBox>
             <HBox>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="5.0" left="10.0" />
                </VBox.margin>
                <children>
                   <Button mnemonicParsing="false" onAction="#doAdd" prefHeight="27.0" prefWidth="61.0" style="-fx-background-color: #87CEFA#87CEFA;" text="Add" textFill="WHITE" />

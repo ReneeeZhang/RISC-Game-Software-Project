@@ -92,11 +92,18 @@ public class GameController implements Initializable{
     this.board = board;
     String currentName = gui.getCurrentName(currentRoom - 1);
     this.color.setFill(colorMapper.get(currentName));
-    String s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\n",
-            currentName,
-            board.getPlayer(currentName).getCurrLevel(),
-            board.getPlayer(currentName).getFoodAmount(),
-            board.getPlayer(currentName).getTechAmount());
+    String s;
+    if (board.getPlayer(currentName).getAlly() != null) {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: %s\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount(), board.getPlayer(currentName).getAlly().getName());
+    }
+    else {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: N/A\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount());
+    }
+    
     this.info.setText(s);
     chooseAction("move");
     if (board.getAllOwners().size() == 2) {
@@ -357,6 +364,11 @@ public class GameController implements Initializable{
       destChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         destChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          destChoice.getItems().add(regionName);
+        }
       }
     }
     else if (ins.equals("attack") || ins.equals("incite")) {
