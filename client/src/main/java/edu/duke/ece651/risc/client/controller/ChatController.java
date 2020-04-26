@@ -21,11 +21,10 @@ public class ChatController implements Initializable {
     @FXML private TextField input;
     @FXML private Button send;
 
-    ClientGUI gui;
+    private ClientGUI gui;
     int currentRoom;
     ChatThread chat;
-    @FXML
-  public void send() {
+    @FXML public void send() {
     System.out.println("Send() called ========");
     String message = input.getText();
     input.clear();
@@ -52,6 +51,6 @@ public class ChatController implements Initializable {
   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        startChat();
+//        startChat();
     }
 }

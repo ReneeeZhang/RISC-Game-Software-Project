@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shared.Board;
 import shared.GameBoard;
 import shared.Region;
@@ -52,7 +53,6 @@ public class GameController implements Initializable{
   private Circle color;
   @FXML
   private Label info;
-  @FXML private VBox chat;
 
 //  @FXML
 //  private TextArea area;
@@ -63,7 +63,10 @@ public class GameController implements Initializable{
   boolean init = true;
   int currentRoom;
 //  ChatThread chat;
-  ChatController chatController;
+  @FXML private VBox chat;
+  @FXML
+  private ChatController chatController;
+
   private static Map<String, Color> colorMapper = new HashMap<>();
   private ArrayList<Instruction> insList = new ArrayList<>();
 
@@ -99,6 +102,7 @@ public class GameController implements Initializable{
     this.currentRoom = room;
     System.out.println("set current room " + currentRoom);
     games.getSelectionModel().select(currentRoom - 1);
+    initChat();
     init = false;
     return this;
   }
@@ -364,6 +368,10 @@ public class GameController implements Initializable{
     }
     return false;
   }
+//  @FXML
+// public void send() {
+//    chatController.send();
+//  }
 
 //  @FXML
 //  public void send() {
@@ -402,17 +410,21 @@ public class GameController implements Initializable{
       }
     }
   }
-
+//
   private void initChat() {
     URL resource = getClass().getResource("/fxml/component/chat.fxml");
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(resource);
     try {
+      fxmlLoader.setControllerFactory(c -> new ChatController(gui));
       chat = fxmlLoader.load();
+
       chatController = fxmlLoader.getController();
+      chatController.setCurrentRoom(currentRoom);
     } catch (IOException e) {
       e.printStackTrace();
     }
+    right.getChildren().set(6, chat);
   }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -424,7 +436,7 @@ public class GameController implements Initializable{
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
-    initChat();
+//    initChat();
 //    startChat();
   }
 }
