@@ -18,6 +18,14 @@ public class GameBoard implements Board, Serializable {
   private Map<String, Player> playerNameMap;
   private UpgradeLookup lookUp;
 
+  public GameBoard() {
+    this.regionMap = new HashMap<>();
+    this.regionNameMap = new HashMap<>();
+    this.playerRegionMap = new HashMap<>();
+    this.playerNameMap = new HashMap<>();
+    this.lookUp = new UpgradeLookup();
+  }
+  
   public GameBoard(Map<Region, List<Region>> regionMap, Map<String, Region> regionNameMap,
       Map<String, Player> playerNamemap, Map<String, List<Region>> playerRegionMap) {
     this.regionMap = regionMap;
@@ -97,7 +105,6 @@ public class GameBoard implements Board, Serializable {
       if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
         visited.add(curr);
         for (Region r : regionMap.get(curr)) {
-          // TODO: getAlly
           if (r.getOwner().equals(owner)) {
             stack.add(r);
             int cost = dist.get(curr) + curr.getSize();
@@ -167,6 +174,7 @@ public class GameBoard implements Board, Serializable {
       if (p.getAlly() != null) {
         // if p.ally has no ally or not p
         if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
+          // break all unilateral relations
           p.breakAlly();
         }
       }
@@ -186,7 +194,6 @@ public class GameBoard implements Board, Serializable {
     playerRegionMap = new HashMap<String, List<Region>>();
     for (Region r : getAllRegions()) {
       if (!playerRegionMap.containsKey(r.getOwner().getName())) {
-        //TODO: might be deleted
         playerRegionMap.put(r.getOwner().getName(), new ArrayList<Region>());
       }
       playerRegionMap.get(r.getOwner().getName()).add(r);
