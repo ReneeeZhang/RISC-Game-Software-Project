@@ -99,6 +99,9 @@ public class GameController implements Initializable{
             board.getPlayer(currentName).getTechAmount());
     this.info.setText(s);
     chooseAction("move");
+    if (board.getAllOwners().size() == 2) {
+      actionChoice.getItems().remove("ally");
+    }
     return this;
   }
 
@@ -424,6 +427,7 @@ public class GameController implements Initializable{
     generateTabs(gui.getActiveGames());
     actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
     actionChoice.setValue("move");
+
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
