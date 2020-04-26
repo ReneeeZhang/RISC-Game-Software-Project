@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import edu.duke.ece651.risc.client.ChatThread;
 import edu.duke.ece651.risc.client.ClientGUI;
@@ -42,6 +41,7 @@ import shared.instructions.Instruction;
 import shared.instructions.Move;
 import shared.instructions.TechUpgrade;
 import shared.instructions.UnitUpgrade;
+import shared.instructions.InciteDefection;
 
 public class GameController implements Initializable{
 
@@ -254,7 +254,7 @@ public class GameController implements Initializable{
       ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       
-      InciteDefection inciteIns = new InciteDefection(pname, src.getValue(), dest.getValue(), 0, 0);
+      InciteDefection inciteIns = new InciteDefection(null, src.getValue(), dest.getValue(), 0, 0);
       if(gui.getClient().isValidInst(room, inciteIns)) {
         insList.add(inciteIns);
         Popup.showInfo("Instruction added!");
