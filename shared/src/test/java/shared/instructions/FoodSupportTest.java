@@ -23,6 +23,4 @@ public class FoodSupportTest {
     assertTrue(fs.isValid(b));
     fs.execute(b);
   }
-  
-
 }

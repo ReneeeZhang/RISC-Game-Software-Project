@@ -1,15 +1,30 @@
 package edu.duke.ece651.risc.client.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import edu.duke.ece651.risc.client.ChatThread;
 import edu.duke.ece651.risc.client.ClientGUI;
 import edu.duke.ece651.risc.client.Popup;
-import edu.duke.ece651.risc.client.ChatThread;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -20,11 +35,13 @@ import shared.Board;
 import shared.GameBoard;
 import shared.Region;
 import shared.checkers.AdjacentChecker;
-import shared.instructions.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
+import shared.instructions.Ally;
+import shared.instructions.Attack;
+import shared.instructions.FoodSupport;
+import shared.instructions.Instruction;
+import shared.instructions.Move;
+import shared.instructions.TechUpgrade;
+import shared.instructions.UnitUpgrade;
 
 public class GameController implements Initializable{
 
@@ -200,17 +217,49 @@ public class GameController implements Initializable{
 
     // Ally
     else if (ins.equals("ally")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> allys = (ChoiceBox<String>) entry.getChildren().get(1);
+      Ally allyIns = new Ally(pname, allys.getValue());
+      if(gui.getClient().isValidInst(room, allyIns)) {
+        insList.add(allyIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
       actionChoice.getItems().remove(ins);
     }
 
     // Food supproo
     else if (ins.equals("food support")) {
-
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> supports = (ChoiceBox<String>) entry.getChildren().get(1);
+      TextField amount = (TextField) entry.getChildren().get(3);
+      FoodSupport foodIns = new FoodSupport(pname, supports.getValue(), Integer.parseInt(amount.getText()));
+      if(gui.getClient().isValidInst(room, foodIns)) {
+        insList.add(foodIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
     }
 
     // Incite
     else if (ins.equals("incite defection")) {
-     actionChoice.getItems().remove(ins);
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
+      ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
+      
+      // Incite inciteIns = new Incite(pname, src.getValue(), dest.getValue());
+      // if(gui.getClient().isValidInst(room, inciteIns)) {
+      //   insList.add(inciteIns);
+      //   Popup.showInfo("Instruction added!");
+      // }
+      // else {
+      //   Popup.showInfo("Invalid instruction!");
+      // }
+      actionChoice.getItems().remove(ins);
     }
        
   }
@@ -332,12 +381,15 @@ public class GameController implements Initializable{
 
   @FXML
   public void send() {
+    System.out.println("Send() called ========");
     String message = input.getText();
     input.clear();
-    String currentName = gui.getCurrentName(currentRoom - 1);
-    // area.appendText("You: " + message + "\n");
+    System.out.println("Message collected ===============");
+    // String currentName = gui.getCurrentName(currentRoom - 1);
     //send message
+    System.out.println("CurrentRoom = " + currentRoom);
     gui.getClient().sendChatMsg(currentRoom - 1, message);
+    System.out.println("Message sent ====================");
   }
 
   //append message

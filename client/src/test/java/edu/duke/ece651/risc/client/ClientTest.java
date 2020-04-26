@@ -28,6 +28,10 @@ public class ClientTest {
   //     client.hasWon(0);
   //     client.isGameOver(0);
 
+
+    //Client.main(new String[] { "localhost", "6666" });
+
+
   //     client.sendViaChannel(0, 1);
   //     String a = (String) client.receiveViaChannel(0);
   //     Move m1 = new Move("p1", "Hudson", "Teer", 4, 1);
@@ -39,4 +43,5 @@ public class ClientTest {
   //   }
   //   //Client.main(new String[] { "localhost", "6666" });
   // }
+
 }

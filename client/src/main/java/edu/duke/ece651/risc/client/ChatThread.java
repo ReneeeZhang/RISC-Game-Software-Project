@@ -18,6 +18,7 @@ public class ChatThread implements Runnable {
   public void run() {
     while(true) {
       String str = gui.getClient().receiveChatMsg(room);
+      System.out.println("Message received ====================");
       controller.appendMsg(str);
     }
   }

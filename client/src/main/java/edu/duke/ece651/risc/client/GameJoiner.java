@@ -18,7 +18,7 @@ public class GameJoiner extends Connector {
     super(hostname, gamePort);
     System.out.println("Game server connected");
     chatController = new ChatController(hostname, chatPort);
-    System.out.println("Chat server connected");
+    System.out.println("Chat Server connected");
   }
 
   // Must init GameJoiner after receiving name and board
@@ -28,7 +28,9 @@ public class GameJoiner extends Connector {
   }
 
   public void sendChatMsg(String msg) {
+    System.out.println("msg coming to gamejoinger: " + msg);
     chatController.send(name + ": " + msg);
+    System.out.println("msg successfully sent");
   }
 
   public void sendNumPlayerToChat(int numPlayer) {
