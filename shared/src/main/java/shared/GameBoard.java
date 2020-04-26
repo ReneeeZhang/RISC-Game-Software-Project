@@ -166,6 +166,7 @@ public class GameBoard implements Board, Serializable {
       traitors.add(allUnits.remove(0));
     }
     srcRegion.receiveUnit(traitors);
+    dstRegion.receiveUnit(allUnits);
   }
   
   @Override
