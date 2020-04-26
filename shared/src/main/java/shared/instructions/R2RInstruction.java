@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import shared.Board;
 
-abstract public class R2RInstruction implements Instruction, Serializable {
+ public abstract class R2RInstruction implements Instruction, Serializable {
   private static final long serialVersionUID = 435352123;
   protected String player;
   protected String src;
