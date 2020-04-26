@@ -51,7 +51,8 @@
                   </Button>
                </children>
             </HBox>
-            <Region fx:id="chat" prefHeight="0.0" prefWidth="160.0" VBox.vgrow="ALWAYS" />
+            <Region prefHeight="0.0" prefWidth="160.0" VBox.vgrow="ALWAYS" />
+            <VBox fx:id="chat" />
          </children>
       </VBox>
    </right>
