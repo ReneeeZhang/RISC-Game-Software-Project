@@ -70,6 +70,7 @@ public class ChatRoom implements Runnable {
   }
   
   public String recvMessage(SocketChannel sc) throws IOException, ClassNotFoundException {
+    sc.configureBlocking(true);
     Socket s = sc.socket();
     ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
     String mesg = (String) deserial.readObject();
