@@ -11,11 +11,10 @@ public class InciteDefection extends R2RInstruction{
   public InciteDefection(String player, String src, String dest, int level, int num) {
     super(player, src, dest, level, num);
   }
-
+  
   @Override
   public void execute(Board board) {
-    // TODO: add such method in board
-
+    board.inciteDefection(src, dest);
   }
 
   @Override
