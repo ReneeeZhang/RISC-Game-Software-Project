@@ -302,8 +302,8 @@ public class ClientGUI extends Application {
     }
     return ans;
   }
-
   public Scene game(int currentRoom) {
+
     Group map = null;
     int currentNumPlayers = getCurrentNumPlayers(currentRoom - 1);
     try {

@@ -3,8 +3,8 @@ package edu.duke.ece651.risc.chatServer;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
@@ -29,6 +29,7 @@ public class ChatServer {
       ChatServer server = ChatServer.start("src/main/resources/config.txt");
       while (true) {
         server.handleRequest();
+        System.out.println("handle request suc");
       }
     } catch (Exception e) {
     }
@@ -41,10 +42,16 @@ public class ChatServer {
 
   public void handleRequest() throws IOException, ClassNotFoundException {
     SocketChannel sc = ssc.accept();
-    int num = getPlayerNum(sc);
+    ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
+    System.out.println("oos");
+    ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
+    System.out.println("ois");
+    int num = getPlayerNum(ois);
     System.out.println("Chat server get player num: " + num);
     ChatRoom room = getChatRoom(num);
-    room.addPlayer(sc);
+    System.out.println("get room");
+    room.addPlayer(sc, ois, oos);
+    System.out.println("add player");
     if (room.isFull()) {
       Thread chatRoom = new Thread(room);
       System.out.println("Chat room starting");
@@ -52,10 +59,8 @@ public class ChatServer {
     }
   }
 
-  public int getPlayerNum(SocketChannel sc) throws IOException, ClassNotFoundException{
-    Socket s = sc.socket();
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    Integer playerNum = (Integer) deserial.readObject();
+  public int getPlayerNum(ObjectInputStream ois) throws IOException, ClassNotFoundException{
+    Integer playerNum = (Integer) ois.readObject();
     return playerNum;
   }
 

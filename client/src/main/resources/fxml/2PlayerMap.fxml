@@ -26,23 +26,23 @@
          </font></Label>
       <Label layoutX="572.0" layoutY="204.0" text="Teer">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
       <Label layoutX="525.0" layoutY="35.0" text="Bostock">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
       <Label layoutX="357.0" layoutY="46.0" text="Wilson">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
       <Label layoutX="164.0" layoutY="302.0" text="Fitz">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
       <Label layoutX="410.0" layoutY="302.0" text="Perkins">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
    </children>
 </Group>
