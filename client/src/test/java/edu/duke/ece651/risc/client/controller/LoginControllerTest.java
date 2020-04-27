@@ -44,6 +44,6 @@ class LoginControllerTest {
     @Test
     void should_contain_button_with_text(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Login"));
-        robot.clickOn(".button");
+//        robot.clickOn(".button");
     }
 }

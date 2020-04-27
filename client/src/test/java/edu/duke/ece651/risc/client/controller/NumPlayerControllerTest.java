@@ -44,6 +44,6 @@ public class NumPlayerControllerTest {
     @Test
     void should_contain_button_with_text(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Start"));
-        robot.clickOn(".button");
+//        robot.clickOn(".button");
     }
 }

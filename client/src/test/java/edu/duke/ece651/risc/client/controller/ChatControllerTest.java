@@ -45,7 +45,7 @@ public class ChatControllerTest {
     void should_contain_button_with_text(FxRobot robot) {
         FxAssert.verifyThat("#send", LabeledMatchers.hasText(">>"));
 
-        robot.clickOn("#send");
+//        robot.clickOn("#send");
 
     }
 }

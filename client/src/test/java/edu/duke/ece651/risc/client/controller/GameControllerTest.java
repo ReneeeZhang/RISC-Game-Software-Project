@@ -45,7 +45,7 @@ public class GameControllerTest {
     void should_contain_button_with_text(FxRobot robot) {
         FxAssert.verifyThat("#add", LabeledMatchers.hasText("Add"));
         FxAssert.verifyThat("#done", LabeledMatchers.hasText("Done"));
-        robot.clickOn("#add");
-        robot.clickOn("#done");
+//        robot.clickOn("#add");
+//        robot.clickOn("#done");
     }
 }

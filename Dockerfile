@@ -17,7 +17,11 @@ RUN apt-get update && apt-get -yq dist-upgrade \
      unzip \
      openjdk-11-jdk-headless \
      emacs25 \
-
+     openssh-server \
+     xfce4 \
+     xfce4-goodies \
+     x11vnc \
+     xvfb
 
 
 

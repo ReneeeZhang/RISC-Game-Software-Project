@@ -44,6 +44,6 @@ public class WatchControllerTest {
     @Test
     void should_contain_button_with_text(FxRobot robot) {
         FxAssert.verifyThat("#refresh", LabeledMatchers.hasText("Refresh"));
-        robot.clickOn("#refresh");
+//        robot.clickOn("#refresh");
     }
 }
