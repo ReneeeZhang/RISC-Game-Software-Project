@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Connector {
-  private ObjectOutputStream serial;
-  private ObjectInputStream deserial;
+  protected Socket socket;
   private final int SLEEP_TIME = 10;
   
   public Connector(String hostname, int port) {
@@ -20,8 +20,7 @@ public abstract class Connector {
       try{
         SocketChannel sc = SocketChannel.open();
         sc.connect(new InetSocketAddress(hostname, port));
-        this.serial = new ObjectOutputStream(sc.socket().getOutputStream());
-        this.deserial = new ObjectInputStream(sc.socket().getInputStream());
+        this.socket = sc.socket();
         return;
       } catch (IOException ex) {
         System.out.println("Game server in " + hostname + " has not prepared yet. Wait for reconnection.");
@@ -37,6 +36,7 @@ public abstract class Connector {
   protected Object receive() {
     while (true) {
       try {
+        ObjectInputStream deserial = new ObjectInputStream(socket.getInputStream());
         return deserial.readObject();
       } catch (IOException ioex) {
         System.out.println("I/O exception when receiving.");
@@ -51,9 +51,9 @@ public abstract class Connector {
   protected void send(Object obj) {
     while (true) {
       try {
-        this.serial.writeObject(obj);
+        ObjectOutputStream serial = new ObjectOutputStream(socket.getOutputStream());
+        serial.writeObject(obj);
         System.out.println("No exception while sending");
-        this.serial.flush();
         return;
       }
       catch (IOException ex) {
