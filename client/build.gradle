@@ -28,3 +28,9 @@ run {
         args Eval.me(appArgs)
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'edu.duke.ece651.risc.client.ClientGUI'
+    }
+}

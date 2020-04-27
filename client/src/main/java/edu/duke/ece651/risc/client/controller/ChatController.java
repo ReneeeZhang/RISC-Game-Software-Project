@@ -53,6 +53,7 @@ public class ChatController implements Initializable {
   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       startChat();
+      //startChat();
+      area.setEditable(false);
     }
 }
