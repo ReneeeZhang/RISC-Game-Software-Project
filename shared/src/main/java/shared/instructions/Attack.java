@@ -21,7 +21,7 @@ public class Attack extends R2RInstruction {
   public boolean isValid(Board b) {
     Region source =  b.getRegion(src);
     Region destination = b.getRegion(dest);
-    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit);
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, b.getPlayer(player), level, numUnit);
     AdjacentChecker aChecker = new AdjacentChecker(b, source, destination, uChecker);
     boolean sameOwner = source.getOwner().equals(destination.getOwner());
     return aChecker.isValid() && !sameOwner;

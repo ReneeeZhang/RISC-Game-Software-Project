@@ -21,7 +21,7 @@ public class Move extends R2RInstruction {
     Region destination = b.getRegion(dest);
     FoodResourceChecker fChecker = new FoodResourceChecker(b, player, src, dest, numUnit);
     AccessibleChecker aChecker = new AccessibleChecker(b, source, destination, fChecker);
-    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, level, numUnit, aChecker);
+    UnitQuantityChecker uChecker = new UnitQuantityChecker(source, b.getPlayer(player), level, numUnit, aChecker);
     return uChecker.isValid();
   }
 

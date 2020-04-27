@@ -85,12 +85,12 @@ public class GameBoard implements Board, Serializable {
     Region srcRegion = getRegion(src);
     Region dstRegion = getRegion(dst);
     Player p = getPlayer(player);
+    Player ally = p.getAlly();
     List<Region> stack = new ArrayList<Region>();
-    Player owner = getRegion(src).getOwner();
     Set<Region> visited = new HashSet<Region>();
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
     // region : shortest distance
-    for (Region r : playerRegionMap.get(owner.getName())) {
+    for (Region r : playerRegionMap.get(player)) {
       if (r.getName().equals(src)) {
         dist.put(r, 0);
       } else {
@@ -101,11 +101,12 @@ public class GameBoard implements Board, Serializable {
     stack.add(srcRegion);
     while (stack.size() > 0) {
       Region curr = stack.remove(0);
-      // if not visited and under the same owner's control
-      if (!visited.contains(curr) && curr.getOwner().equals(owner)) {
+      // if not visited
+      if (!visited.contains(curr)) {
         visited.add(curr);
         for (Region r : regionMap.get(curr)) {
-          if (r.getOwner().equals(owner)) {
+          // if region's owner is player or player's ally
+          if (r.getOwner().equals(p) || (ally != null && r.getOwner().equals(ally))) {
             stack.add(r);
             int cost = dist.get(curr) + curr.getSize();
             if (cost < dist.get(r)) {

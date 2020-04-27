@@ -38,8 +38,10 @@ public class AttackTest {
     when(boardMock.getRegion("r3")).thenReturn(r3);
     //when(boardMock.attack("r1", "r2", 1));
     //when(boardMock.attack("r1", "r3", 1));
-    
+    Player playerMock = mock(Player.class);
+    when(boardMock.getPlayer("A")).thenReturn(playerMock);
     Attack a1 = new Attack("A", "r1", "r3", 0, 1);
+    when(r1.numUnitWithLevel(playerMock, 0)).thenReturn(5);
     assertEquals(true, a1.isValid(boardMock));
     a1.execute(boardMock);
 
