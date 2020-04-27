@@ -318,7 +318,7 @@ public class GameController implements Initializable{
 
   @FXML
   void createNewGame() throws IOException {
-    System.out.println("start game " + (currentRoom + 1));
+    //System.out.println("start game " + (currentRoom + 1));
     gui.getClient().joinGame();
     gui.setNumPlayersScene();
   }

@@ -7,6 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ public class ChatRoom implements Runnable {
   public ChatRoom(int num) throws IOException {
     this.num = num;
     sockets = new ArrayList<SocketChannel>();
+    inputs = new HashMap<>();
+    outputs = new HashMap<>();
   }
 
   public void run() {
@@ -40,10 +43,10 @@ public class ChatRoom implements Runnable {
     return sockets.size() == num;
   }
 
-  public void addPlayer(SocketChannel sc) throws IOException{
+  public void addPlayer(SocketChannel sc, ObjectInputStream ois, ObjectOutputStream oos) throws IOException{
     sockets.add(sc);
-    outputs.put(sc, new ObjectOutputStream(sc.socket().getOutputStream()));
-    inputs.put(sc, new ObjectInputStream(sc.socket().getInputStream()));
+    outputs.put(sc, oos);
+    inputs.put(sc, ois);
   }
   
   public void setUpSelector() throws IOException {
