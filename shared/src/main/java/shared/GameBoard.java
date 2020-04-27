@@ -200,9 +200,6 @@ public class GameBoard implements Board, Serializable {
         }
       }
     }
-    for (Player p : playerNameMap.values()) {
-      
-    }
   }
 
   @Override

@@ -39,8 +39,6 @@ public class GameBoardTest {
     board.getAllRegions("Player1");
     board.getNeighbor("Hudson");
     board.getRegion("Hudson");
-    int dist = board.getDistance("Player1", "Hudson", "Wilson");
-    System.out.println("Shortest distance between hudson and wilson: " + dist);
     board.move("Player1", "Hudson", "Fitzpatrick", 0, 1);
     board.attack("Player1", "Fitzpatrick", "Wilson", 0, 3);
     board.inciteDefection("Hudson", "Fitzpatrick");
@@ -49,12 +47,21 @@ public class GameBoardTest {
 
   @Test
   public void test_getDistance_no_ally() {
-    //board.getDistance("Player1");
+    assertEquals(25, board.getDistance("Player1", "Hudson", "Wilson"));
   }
 
   @Test
-  public void test_getDistance_has_ally() {
-    
+  public void test_getDistance_has_ally1() {
+    board.ally("Player1", "Player2");
+    board.ally("Player2", "Player1");
+    assertEquals(25, board.getDistance("Player1", "Hudson", "Wilson"));
+  }
+
+  @Test
+  public void test_getDistance_has_ally2() {
+    board.ally("Player1", "Player2");
+    board.ally("Player2", "Player1");
+    assertEquals(22, board.getDistance("Player1", "Hudson", "Perkins"));
   }
   
   @Test
@@ -76,6 +83,14 @@ public class GameBoardTest {
     board.ally("Player2", "Player1");
     board.resolveAlly();
     assertEquals(board.getPlayer("Player1").getAlly(), board.getPlayer("Player2"));
+  }
+
+  @Test
+  public void test_breakAlly() {
+    board.ally("Player1", "Player2");
+    board.ally("Player2", "Player1");
+    board.attack("Player1", "Hudson", "Teer", 0, 1);
+    assertNull(board.getPlayer("Player1").getAlly());
   }
   
   @Test
