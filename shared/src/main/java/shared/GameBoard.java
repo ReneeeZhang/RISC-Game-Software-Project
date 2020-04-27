@@ -86,10 +86,17 @@ public class GameBoard implements Board, Serializable {
     Region dstRegion = getRegion(dst);
     Player p = getPlayer(player);
     Player ally = p.getAlly();
-    List<Region> stack = new ArrayList<Region>();
-    Set<Region> visited = new HashSet<Region>();
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
     // region : shortest distance
+    initDistance(dist, player, src);
+    if (ally != null && ally.getAlly().equals(p)) {
+      initDistance(dist, ally.getName(), src);
+    }
+    getShortestDistance(dist, srcRegion, p, ally);
+    return dist.get(dstRegion);
+  }
+
+  private void initDistance(Map<Region, Integer> dist, String player, String src) {
     for (Region r : playerRegionMap.get(player)) {
       if (r.getName().equals(src)) {
         dist.put(r, 0);
@@ -97,7 +104,12 @@ public class GameBoard implements Board, Serializable {
         dist.put(r, 1000);
       }
     }
+  }
+
+  private void getShortestDistance(Map<Region, Integer> dist, Region srcRegion, Player p, Player ally) {
     // DFS
+    List<Region> stack = new ArrayList<Region>();
+    Set<Region> visited = new HashSet<Region>();
     stack.add(srcRegion);
     while (stack.size() > 0) {
       Region curr = stack.remove(0);
@@ -117,9 +129,8 @@ public class GameBoard implements Board, Serializable {
         }
       }
     }
-    return dist.get(dstRegion);
   }
-
+  
   @Override
   public void move(String player, String src, String dst, int level, int num) {
     Region srcRegion = regionNameMap.get(src);
@@ -132,8 +143,14 @@ public class GameBoard implements Board, Serializable {
 
   @Override
   public void attack(String player, String src, String dst, int level, int num) {
-    Region srcRegion = regionNameMap.get(src);
+    Region srcRegion = getRegion(src);
+    Region dstRegion = getRegion(dst);
     Player p = getPlayer(player);
+    // if attack ally's region
+    if (p.getAlly() != null
+        && p.getAlly().equals(dstRegion.getOwner())) {
+      p.breakAlly();
+    }
     // costs 1 food per unit attacking
     p.decreaseFood(num);
     srcRegion.dispatch(dst, p, level, num);
@@ -182,6 +199,9 @@ public class GameBoard implements Board, Serializable {
           p.breakAlly();
         }
       }
+    }
+    for (Player p : playerNameMap.values()) {
+      
     }
   }
 
