@@ -17,10 +17,6 @@ RUN apt-get update && apt-get -yq dist-upgrade \
      unzip \
      openjdk-11-jdk-headless \
      emacs25 \
-     openssh-server \
-     xfce4 \
-     xfce4-goodies \
-     x11vnc \
      xvfb
 
 
@@ -63,10 +59,3 @@ COPY --chown=juser ./ ./
 
 # compile the code
 RUN ./gradlew  assemble
-
-RUN apt-get install -y supervisor -yq --no-install-recommends \
-     openssh-server \
-     xfce4 \
-     xfce4-goodies \
-     x11vnc \
-     xvfb
