@@ -63,27 +63,27 @@ public class WatchController implements Initializable{
     colorMapper.put("Player4", Color.RED);
     colorMapper.put("Player5", Color.ORANGE);
   }
-  public WatchController addBoard(Board board) {
-    this.board = board;
-    String currentName = gui.getCurrentName(currentRoom - 1);
-    
-    return this;
-  }
-
-  public WatchController addMap(Group group) {
-    this.group = group;
-    initMap();
-    mainView.setCenter(group);
-    return this;
-  }
-
-  public WatchController setCurrentRoom(int room) {
-    this.currentRoom = room;
-    System.out.println("set current room " + currentRoom);
-    games.getSelectionModel().select(currentRoom - 1);
-    init = false;
-    return this;
-  }
+//  public WatchController addBoard(Board board) {
+//    this.board = board;
+//    String currentName = gui.getCurrentName(currentRoom - 1);
+//
+//    return this;
+//  }
+//
+//  public WatchController addMap(Group group) {
+//    this.group = group;
+//    initMap();
+//    mainView.setCenter(group);
+//    return this;
+//  }
+//
+//  public WatchController setCurrentRoom(int room) {
+//    this.currentRoom = room;
+//    System.out.println("set current room " + currentRoom);
+//    games.getSelectionModel().select(currentRoom - 1);
+//    init = false;
+//    return this;
+//  }
 
   @FXML
   public void doRefresh() {
@@ -94,30 +94,32 @@ public class WatchController implements Initializable{
     gui.setWatchScene(currentRoom);
   }
 
-  private void initMap() {
-    List<Region> allRegions = board.getAllRegions();
-    for (Region region : allRegions) {
-      String owner = region.getOwner().getName();
-      Circle circle = (Circle)group.lookup("#" + region.getName());
-      circle.setOnMouseClicked(this::showInfo);
-      circle.setFill(colorMapper.get(owner));
-    }
-  }
+//  private void initMap() {
+//    List<Region> allRegions = board.getAllRegions();
+//    for (Region region : allRegions) {
+//      String owner = region.getOwner().getName();
+//      Circle circle = (Circle)group.lookup("#" + region.getName());
+//      circle.setOnMouseClicked(this::showInfo);
+//      circle.setFill(colorMapper.get(owner));
+//    }
+//  }
 
   @FXML
   void createNewGame() throws IOException {
-    System.out.println("start game " + (currentRoom + 1));
-    gui.getClient().joinGame();
-    gui.setNumPlayersScene();
+    if (games.getTabs().size() > 1) {
+      System.out.println("start game " + (currentRoom + 1));
+      gui.getClient().joinGame();
+      gui.setNumPlayersScene();
+    }
   }
 
-  @FXML
-  public void showInfo(MouseEvent event) {
-    Node source = (Node)event.getSource();
-    String id = source.getId();
-    String currentName = gui.getCurrentName(currentRoom - 1);
-    Popup.showInfo(board.getRegion(id).getInfo(currentName));
-  }
+//  @FXML
+//  public void showInfo(MouseEvent event) {
+//    Node source = (Node)event.getSource();
+//    String id = source.getId();
+//    String currentName = gui.getCurrentName(currentRoom - 1);
+//    Popup.showInfo(board.getRegion(id).getInfo(currentName));
+//  }
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
     while (size - 1 < activeRoom) {
