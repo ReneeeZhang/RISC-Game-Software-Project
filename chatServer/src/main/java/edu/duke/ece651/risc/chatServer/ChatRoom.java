@@ -3,18 +3,20 @@ package edu.duke.ece651.risc.chatServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ChatRoom implements Runnable {
   private int num;
   private List<SocketChannel> sockets;
+  private Map<SocketChannel, ObjectInputStream> inputs;
+  private Map<SocketChannel, ObjectOutputStream> outputs;
   private Selector selector;
 
   public ChatRoom(int num) throws IOException {
@@ -38,8 +40,10 @@ public class ChatRoom implements Runnable {
     return sockets.size() == num;
   }
 
-  public void addPlayer(SocketChannel sc) {
+  public void addPlayer(SocketChannel sc) throws IOException{
     sockets.add(sc);
+    outputs.put(sc, new ObjectOutputStream(sc.socket().getOutputStream()));
+    inputs.put(sc, new ObjectInputStream(sc.socket().getInputStream()));
   }
   
   public void setUpSelector() throws IOException {
@@ -71,19 +75,14 @@ public class ChatRoom implements Runnable {
   
   public String recvMessage(SocketChannel sc) throws IOException, ClassNotFoundException {
     sc.configureBlocking(true);
-    Socket s = sc.socket();
-    ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
-    String mesg = (String) deserial.readObject();
+    String mesg = (String) inputs.get(sc).readObject();
     System.out.println(mesg);
     return mesg;
   }
 
   public void sendToAll(String msg) throws IOException {
     for (SocketChannel sc : sockets) {
-      //sc.configureBlocking(true);
-      Socket s = sc.socket();
-      ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
-      serial.writeObject(msg);
+      outputs.get(sc).writeObject(msg);
     }
   }
 }
