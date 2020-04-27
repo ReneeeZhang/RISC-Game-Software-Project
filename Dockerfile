@@ -18,7 +18,7 @@ RUN apt-get update && apt-get -yq dist-upgrade \
      openjdk-11-jdk-headless \
      emacs25 \
      xvfb
-RUN xvfb-run
+
 
 
 
