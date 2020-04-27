@@ -16,7 +16,10 @@ RUN apt-get update && apt-get -yq dist-upgrade \
      git \
      unzip \
      openjdk-11-jdk-headless \
-     emacs25
+     emacs25 \
+     xvfb
+RUN xvfb-run
+
 
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
