@@ -79,7 +79,7 @@ public class ChatRoom implements Runnable {
 
   public void sendToAll(String msg) throws IOException {
     for (SocketChannel sc : sockets) {
-      sc.configureBlocking(true);
+      //sc.configureBlocking(true);
       Socket s = sc.socket();
       ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(msg);
