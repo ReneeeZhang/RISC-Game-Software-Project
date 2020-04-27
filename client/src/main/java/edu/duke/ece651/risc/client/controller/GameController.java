@@ -323,11 +323,11 @@ public class GameController implements Initializable{
   @FXML
   void createNewGame() throws IOException {
     System.out.println("start game " + (currentRoom + 1));
-    // if (gui.getActiveGames() >= 1) {
-    //   System.out.println("Start game, activeGames > 1");
-    //   gui.getClient().joinGame();
-    //   gui.setNumPlayersScene();
-    // }
+    if (games.getTabs().size() > 1) {
+      System.out.println("Start game, activeGames > 1");
+      gui.getClient().joinGame();
+      gui.setNumPlayersScene();
+    }
   }
 
   @FXML
@@ -457,8 +457,8 @@ public class GameController implements Initializable{
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
-    actionChoice.setValue("move");
+    actionChoice.getItems().addAll("attack", "move", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
+    actionChoice.setValue("attack");
 
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
