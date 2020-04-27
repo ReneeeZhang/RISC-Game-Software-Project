@@ -12,11 +12,11 @@ import shared.Board;
 import shared.Initializer;
 import shared.Region;
 
-public class FakeServer2 implements Runnable {
+public class FakeGameServer implements Runnable {
   private ServerSocketChannel ssc;
   private Socket socket;
 
-  public FakeServer2(int port) {
+  public FakeGameServer(int port) {
     try {
       System.out.println("Constructing fake server");
       ssc = ServerSocketChannel.open();
