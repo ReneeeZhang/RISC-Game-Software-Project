@@ -168,9 +168,13 @@ public class GameController implements Initializable{
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       TextField level = (TextField) entry.getChildren().get(5);
       TextField num = (TextField) entry.getChildren().get(7);
+
+      System.out.println("making move");
       
       Move moveIns = new Move(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
+      System.out.println("move made: " + src.getValue() + dest.getValue()+
+                         level.getText() + num.getText());
                                  
       if(gui.getClient().isValidInst(room, moveIns)) {
           insList.add(moveIns);
@@ -356,12 +360,25 @@ public class GameController implements Initializable{
 
   // Fill in source selection
   public void setSrcChoice(String pname, String ins) {
-    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit") || ins.equals("incite")) {
+    if (ins.equals("unit") || ins.equals("incite")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
       srcChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         srcChoice.getItems().add(regionName);
+      }
+    }
+    else if(ins.equals("move") || ins.equals("attack")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+      srcChoice.getItems().clear();
+      for (String regionName: board.getRegionNames(pname)) {
+        srcChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          srcChoice.getItems().add(regionName);
+        }
       }
     }
   }

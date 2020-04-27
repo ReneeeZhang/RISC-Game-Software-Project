@@ -1,7 +1,6 @@
 package edu.duke.ece651.risc.client;
 
 import edu.duke.ece651.risc.client.controller.ChatController;
-import edu.duke.ece651.risc.client.controller.GameController;
 
 public class ChatThread implements Runnable {
   
@@ -18,11 +17,17 @@ public class ChatThread implements Runnable {
   @Override
   public void run() {
     while(true) {
+      System.out.println("loop in chat thread =========");
       String str = gui.getClient().receiveChatMsg(room);
       System.out.println("Message received ====================");
       controller.appendMsg(str);
     }
   }
+
+  public void send(String message) {
+    gui.getClient().sendChatMsg(room, message);
+  }
+    
 
   public void changeRoom(int newRoom) {
     this.room = newRoom;

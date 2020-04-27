@@ -40,7 +40,7 @@ public class MoveTest {
     when(playerMock.getFoodAmount()).thenReturn(50);
 
     when(boardMock.getPlayer("A")).thenReturn(playerMock);
-    
+    when(r1.numUnitWithLevel(playerMock, 0)).thenReturn(5);
     Move m1 = new Move("A", "r1", "r2", 0, 1);
     assertTrue(m1.isValid(boardMock));
     m1.execute(boardMock);
