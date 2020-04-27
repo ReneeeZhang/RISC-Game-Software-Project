@@ -49,4 +49,13 @@ public class InciteDefectionTargetCheckerTest {
     InciteDefectionTargetChecker checker = new InciteDefectionTargetChecker(p1, p3);
     assertTrue(checker.isValid());
   }
+
+  @Test
+  void test_isValid_next() {
+    p1.allyWith(p2);
+    p2.allyWith(p1);
+    InciteDefectionTargetChecker checker1 = new InciteDefectionTargetChecker(p1, p3);
+    InciteDefectionTargetChecker checker = new InciteDefectionTargetChecker(p1, p3, checker1);
+    assertTrue(checker.isValid());
+  }
 }
