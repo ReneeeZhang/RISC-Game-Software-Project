@@ -22,6 +22,14 @@ public class GameBoardTest {
   }
 
   @Test
+  public void test_emptyBoard() {
+    Board b = new GameBoard();
+    assertEquals(b.getAllOwners().size(), 0);
+    assertEquals(b.getAllRegionNames().size(), 0);
+    assertEquals(b.getAllRegions().size(), 0);
+  }
+  
+  @Test
   public void test_GameBoard() {
     board.getPlayer("Player1");
     board.getAllOwners();
@@ -39,6 +47,16 @@ public class GameBoardTest {
     board.resolve();
   }
 
+  @Test
+  public void test_getDistance_no_ally() {
+    //board.getDistance("Player1");
+  }
+
+  @Test
+  public void test_getDistance_has_ally() {
+    
+  }
+  
   @Test
   public void test_ally() {
     board.ally("Player1", "Player2");
