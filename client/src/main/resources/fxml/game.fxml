@@ -23,7 +23,7 @@
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </Circle>
-            <Label fx:id="info" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="79.0" prefWidth="135.0" text="Label" wrapText="true" VBox.vgrow="ALWAYS">
+            <Label fx:id="info" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="135.0" text="Label" wrapText="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" />
                </VBox.margin>

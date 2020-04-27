@@ -100,7 +100,7 @@ public class GameController implements Initializable{
     this.color.setFill(colorMapper.get(currentName));
     String s;
     if (board.getPlayer(currentName).getAlly() != null) {
-      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: %s\n", currentName,
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %sgr\nAlly: %s\n", currentName,
           board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
           board.getPlayer(currentName).getTechAmount(), board.getPlayer(currentName).getAlly().getName());
     }
@@ -333,6 +333,7 @@ public class GameController implements Initializable{
     String pname = gui.getCurrentName(currentRoom - 1);
     Popup.showInfo(board.getRegion(id).getInfo(pname));
   }
+
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
     while (size - 1 < activeRoom) {
@@ -404,34 +405,7 @@ public class GameController implements Initializable{
     }
     return false;
   }
-//  @FXML
-// public void send() {
-//    chatController.send();
-//  }
 
-//  @FXML
-//  public void send() {
-//    System.out.println("Send() called ========");
-//    String message = input.getText();
-//    input.clear();
-//    System.out.println("Message collected ===============");
-//    // String currentName = gui.getCurrentName(currentRoom - 1);
-//    //send message
-//    System.out.println("CurrentRoom = " + currentRoom);
-//    gui.getClient().sendChatMsg(currentRoom - 1, message);
-//    System.out.println("Message sent ====================");
-//  }
-//
-//  //append message
-//  public void appendMsg(String message) {
-//    area.appendText(message);
-//  }
-//
-//  public void startChat() {
-//    this.chat = new ChatThread(gui, this, currentRoom);
-//    Thread thread = new Thread(chat);
-//    thread.start();
-//  }
 
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
