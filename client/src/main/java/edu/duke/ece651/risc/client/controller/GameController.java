@@ -100,7 +100,7 @@ public class GameController implements Initializable{
     this.color.setFill(colorMapper.get(currentName));
     String s;
     if (board.getPlayer(currentName).getAlly() != null) {
-      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %sgr\nAlly: %s\n", currentName,
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: %s\n", currentName,
           board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
           board.getPlayer(currentName).getTechAmount(), board.getPlayer(currentName).getAlly().getName());
     }
@@ -318,9 +318,11 @@ public class GameController implements Initializable{
 
   @FXML
   void createNewGame() throws IOException {
-    System.out.println("start game " + (currentRoom + 1));
-    gui.getClient().joinGame();
-    gui.setNumPlayersScene();
+    if (games.getTabs().size() > 1) {
+      System.out.println("start game " + (currentRoom + 1));
+      gui.getClient().joinGame();
+      gui.setNumPlayersScene();
+    }
   }
 
   @FXML
