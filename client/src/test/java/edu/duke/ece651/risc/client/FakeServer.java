@@ -25,8 +25,8 @@ public class FakeServer implements Runnable {
     }
     catch (IOException ex) {
       ex.printStackTrace();
-    }
   }
+    }
 
 
   public void run() {
