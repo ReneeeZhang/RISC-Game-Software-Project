@@ -49,7 +49,6 @@ public class GameMaster implements Runnable {
     }
     while (true) {
       try {
-        System.out.println(board);
         sendBoardToClient();
         for (SocketChannel sc : playerSockets) {
           String player = socketPlayerMap.get(sc);
