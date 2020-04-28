@@ -37,6 +37,5 @@ public class CorrectAllyCheckerTest {
     p1.allyWith(p2);
     CorrectAllyChecker caChecker = new CorrectAllyChecker(p1, new Player("p3"));
     assertFalse(caChecker.isValid());
-  }
-
+  }  
 }

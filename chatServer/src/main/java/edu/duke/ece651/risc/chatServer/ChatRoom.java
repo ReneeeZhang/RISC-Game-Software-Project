@@ -45,8 +45,8 @@ public class ChatRoom implements Runnable {
 
   public void addPlayer(SocketChannel sc, ObjectInputStream ois, ObjectOutputStream oos) throws IOException{
     sockets.add(sc);
-    outputs.put(sc, oos);
     inputs.put(sc, ois);
+    outputs.put(sc, oos);
   }
   
   public void setUpSelector() throws IOException {
