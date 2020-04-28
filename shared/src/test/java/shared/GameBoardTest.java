@@ -2,6 +2,7 @@ package shared;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -46,6 +47,17 @@ public class GameBoardTest {
   }
 
   @Test
+  public void test_attack() {
+    board.move("Player2", "Teer", "Perkins", 0, 4);
+    assertEquals(1, board.getRegion("Teer").getDefenseTroop().size());
+    board.attack("Player1", "Hudson", "Teer", 0, 5);
+    board.attack("Player3", "Fuqua", "Ambler", 0, 5);
+    board.attack("Player5", "Lily", "Grosshall", 0, 5);
+    board.resolve();
+    assertEquals(board.getPlayer("Player1"), board.getRegion("Teer").getOwner());
+  }
+  
+  @Test
   public void test_getDistance_no_ally() {
     assertEquals(25, board.getDistance("Player1", "Hudson", "Wilson"));
   }
@@ -86,10 +98,18 @@ public class GameBoardTest {
   }
 
   @Test
-  public void test_breakAlly() {
+  public void test_breakAlly1() {
     board.ally("Player1", "Player2");
     board.ally("Player2", "Player1");
     board.attack("Player1", "Hudson", "Teer", 0, 1);
+    assertNull(board.getPlayer("Player1").getAlly());
+  }
+
+  @Test
+  public void test_breakAlly2() {
+    board.ally("Player1", "Player2");
+    board.move("Player1", "Hudson", "Teer", 0, 1);
+    board.resolveAlly();
     assertNull(board.getPlayer("Player1").getAlly());
   }
   

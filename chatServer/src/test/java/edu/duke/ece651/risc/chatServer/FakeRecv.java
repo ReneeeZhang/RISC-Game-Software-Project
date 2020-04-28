@@ -13,7 +13,6 @@ public class FakeRecv implements Runnable {
     while (true) {
       try {
         String mesg = (String) ois.readObject();
-        assert (mesg.equals("mesg1"));
       } catch (Exception e) {
       }  
     }
