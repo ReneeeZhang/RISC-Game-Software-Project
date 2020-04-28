@@ -18,28 +18,17 @@ import java.net.URL;
 
 import static org.mockito.Mockito.mock;
 @ExtendWith(ApplicationExtension.class)
-public class ClientGUITest {
+public class PopupTest {
 
 
     @Start
     private void start(Stage stage) {
-        ClientGUI gui = new ClientGUI();
-        stage.setScene(gui.loginScene());
-        try {
-        stage.setScene(gui.numPlayersScene());
-        } catch (IOException e) {
-        }
-        stage.setScene(gui.loseScene(0));
-        stage.setScene(gui.watchScene(0));
-        stage.setScene(gui.winScene());
-        stage.setScene(gui.startScene());
-        stage.show();
-        gui.addActiveGame();
+      Popup p = new Popup();
     }
 
     @Test
     void test() {
-     
+      
     }
     
 }
