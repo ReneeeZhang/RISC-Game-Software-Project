@@ -34,6 +34,9 @@ public class ChatControllerTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ChatController controller = fxmlLoader.getController();
+        controller.setCurrentRoom(0);
+        controller.appendMsg("good");
         stage.setScene(new Scene(load));
         stage.show();
     }

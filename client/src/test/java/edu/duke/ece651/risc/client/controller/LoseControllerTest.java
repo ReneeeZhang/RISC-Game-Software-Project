@@ -16,6 +16,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import java.io.IOException;
 import java.net.URL;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(ApplicationExtension.class)
@@ -24,10 +25,12 @@ public class LoseControllerTest {
 
     @Start
     private void start(Stage stage) {
-        ClientGUI mock = mock(ClientGUI.class);
+        ClientGUI gui = mock(ClientGUI.class);
+        doNothing().when(gui).setWatchScene(0);
+        doNothing().when(gui).sendStr(0, "yes");
         URL resource = ClientGUI.class.getResource("/fxml/lose.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setControllerFactory(c -> new LoseController(mock, 0));
+        fxmlLoader.setControllerFactory(c -> new LoseController(gui, 0));
         fxmlLoader.setLocation(resource);
         Parent load = null;
         try {
@@ -35,6 +38,8 @@ public class LoseControllerTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LoseController controller = fxmlLoader.getController();
+        controller.watchGame();
         stage.setScene(new Scene(load));
         stage.show();
     }
