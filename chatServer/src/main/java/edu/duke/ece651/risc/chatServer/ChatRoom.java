@@ -84,6 +84,7 @@ public class ChatRoom implements Runnable {
 
   public void sendToAll(String msg) throws IOException {
     for (SocketChannel sc : sockets) {
+      sc.configureBlocking(true);
       outputs.get(sc).writeObject(msg);
     }
   }
