@@ -19,7 +19,14 @@ public class CorrectAllyChecker implements Checker {
 
   @Override
   public boolean isValid() {
-    boolean isCorrectAlly = player.getAlly().equals(expectedAlly);
+    boolean isCorrectAlly = false;
+    if (player.getAlly() == null) {
+      System.out.println(player.getName() + " does not have an ally, can't conduct food support.");
+      isCorrectAlly = false;
+    }
+    else {
+      isCorrectAlly = player.getAlly().equals(expectedAlly);
+    }
     return next == null ? isCorrectAlly : isCorrectAlly && next.isValid();
   }
 }

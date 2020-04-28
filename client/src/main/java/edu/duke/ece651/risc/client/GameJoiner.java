@@ -28,8 +28,8 @@ public class GameJoiner extends Connector {
   }
 
   public void sendChatMsg(String msg) {
-    System.out.println("msg coming to gamejoinger: " + msg);
-    chatController.send(name + ": " + msg);
+    System.out.println("msg coming to gamejoiner: " + msg);
+    chatController.send(this.name + ": " + msg);
     System.out.println("msg successfully sent");
   }
 

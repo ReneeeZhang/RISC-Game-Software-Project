@@ -1,5 +1,4 @@
 package edu.duke.ece651.risc.client;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,7 +23,7 @@ public abstract class Connector {
         this.socket = sc.socket();
         return;
       } catch (IOException ex) {
-        System.out.println("Game server in " + hostname + " has not prepared yet. Wait for reconnection.");
+        System.out.println("Game server in " + hostname + " with port: " + port + " has not prepared yet. Wait for reconnection.");
         try{
           TimeUnit.SECONDS.sleep(SLEEP_TIME);
         } catch (InterruptedException interruptEx) {

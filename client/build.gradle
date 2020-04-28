@@ -10,8 +10,8 @@ plugins {
     // Apply the application plugin to add support for building a CLI application.
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
-}
 
+}
 javafx {
     version = "14"
     modules = [ 'javafx.controls', 'javafx.base', 'javafx.graphics', 'javafx.fxml']
@@ -26,5 +26,11 @@ run {
     standardInput = System.in
     if(project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'edu.duke.ece651.risc.client.ClientGUI'
     }
 }

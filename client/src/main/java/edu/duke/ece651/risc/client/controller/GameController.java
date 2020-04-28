@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import edu.duke.ece651.risc.client.ChatThread;
 import edu.duke.ece651.risc.client.ClientGUI;
@@ -31,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shared.Board;
 import shared.GameBoard;
 import shared.Region;
@@ -42,6 +42,7 @@ import shared.instructions.Instruction;
 import shared.instructions.Move;
 import shared.instructions.TechUpgrade;
 import shared.instructions.UnitUpgrade;
+import shared.instructions.InciteDefection;
 
 public class GameController implements Initializable{
 
@@ -69,15 +70,20 @@ public class GameController implements Initializable{
   private Circle color;
   @FXML
   private Label info;
-  @FXML
-  private TextArea area;
-  @FXML private TextField input;
-  @FXML private Button send;
+
+//  @FXML
+//  private TextArea area;
+//  @FXML private TextField input;
+//  @FXML private Button send;
 
   Board board;
   boolean init = true;
   int currentRoom;
-  ChatThread chat;
+//  ChatThread chat;
+  @FXML private VBox chat;
+  @FXML
+  private ChatController chatController;
+
   private static Map<String, Color> colorMapper = new HashMap<>();
   private ArrayList<Instruction> insList = new ArrayList<>();
 
@@ -92,13 +98,23 @@ public class GameController implements Initializable{
     this.board = board;
     String currentName = gui.getCurrentName(currentRoom - 1);
     this.color.setFill(colorMapper.get(currentName));
-    String s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\n",
-            currentName,
-            board.getPlayer(currentName).getCurrLevel(),
-            board.getPlayer(currentName).getFoodAmount(),
-            board.getPlayer(currentName).getTechAmount());
+    String s;
+    if (board.getPlayer(currentName).getAlly() != null) {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: %s\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount(), board.getPlayer(currentName).getAlly().getName());
+    }
+    else {
+      s = String.format("Name: %s\nLevel: %s\nFood resource: %s\nTech resource: %s\nAlly: N/A\n", currentName,
+          board.getPlayer(currentName).getCurrLevel(), board.getPlayer(currentName).getFoodAmount(),
+          board.getPlayer(currentName).getTechAmount());
+    }
+    
     this.info.setText(s);
     chooseAction("move");
+    if (board.getAllOwners().size() == 2) {
+      actionChoice.getItems().remove("ally");
+    }
     return this;
   }
 
@@ -113,6 +129,7 @@ public class GameController implements Initializable{
     this.currentRoom = room;
     System.out.println("set current room " + currentRoom);
     games.getSelectionModel().select(currentRoom - 1);
+    initChat();
     init = false;
     return this;
   }
@@ -151,9 +168,13 @@ public class GameController implements Initializable{
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       TextField level = (TextField) entry.getChildren().get(5);
       TextField num = (TextField) entry.getChildren().get(7);
+
+      System.out.println("making move");
       
       Move moveIns = new Move(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
+      System.out.println("move made: " + src.getValue() + dest.getValue()+
+                         level.getText() + num.getText());
                                  
       if(gui.getClient().isValidInst(room, moveIns)) {
           insList.add(moveIns);
@@ -251,14 +272,14 @@ public class GameController implements Initializable{
       ChoiceBox<String> src = (ChoiceBox<String>) entry.getChildren().get(1);
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       
-      // Incite inciteIns = new Incite(pname, src.getValue(), dest.getValue());
-      // if(gui.getClient().isValidInst(room, inciteIns)) {
-      //   insList.add(inciteIns);
-      //   Popup.showInfo("Instruction added!");
-      // }
-      // else {
-      //   Popup.showInfo("Invalid instruction!");
-      // }
+      InciteDefection inciteIns = new InciteDefection(null, src.getValue(), dest.getValue(), 0, 0);
+      if(gui.getClient().isValidInst(room, inciteIns)) {
+        insList.add(inciteIns);
+        Popup.showInfo("Instruction added!");
+      }
+      else {
+        Popup.showInfo("Invalid instruction!");
+      }
       actionChoice.getItems().remove(ins);
     }
        
@@ -302,16 +323,21 @@ public class GameController implements Initializable{
   @FXML
   void createNewGame() throws IOException {
     System.out.println("start game " + (currentRoom + 1));
-    gui.getClient().joinGame();
-    gui.setNumPlayersScene();
+    if (games.getTabs().size() > 1) {
+      System.out.println("Start game, activeGames > 1");
+      gui.getClient().joinGame();
+      gui.setNumPlayersScene();
+    }
   }
 
   @FXML
   public void showInfo(MouseEvent event) {
     Node source = (Node)event.getSource();
     String id = source.getId();
-    Popup.showInfo(board.getRegion(id).getInfo());
+    String pname = gui.getCurrentName(currentRoom - 1);
+    Popup.showInfo(board.getRegion(id).getInfo(pname));
   }
+
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
     while (size - 1 < activeRoom) {
@@ -324,7 +350,7 @@ public class GameController implements Initializable{
           String id = tab.getId();
           System.out.println("switch to room " + id);
           gui.setGameScene(Integer.parseInt(id));
-          chat.changeRoom(Integer.parseInt(id)); // chat change content
+          chatController.setCurrentRoom(Integer.parseInt(id)); // chat change content
         }
       });
       games.getTabs().add(size - 1, tab);
@@ -335,12 +361,25 @@ public class GameController implements Initializable{
 
   // Fill in source selection
   public void setSrcChoice(String pname, String ins) {
-    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit") || ins.equals("incite")) {
+    if (ins.equals("unit") || ins.equals("incite")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
       srcChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         srcChoice.getItems().add(regionName);
+      }
+    }
+    else if(ins.equals("move") || ins.equals("attack")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+      srcChoice.getItems().clear();
+      for (String regionName: board.getRegionNames(pname)) {
+        srcChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          srcChoice.getItems().add(regionName);
+        }
       }
     }
   }
@@ -353,6 +392,11 @@ public class GameController implements Initializable{
       destChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         destChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          destChoice.getItems().add(regionName);
+        }
       }
     }
     else if (ins.equals("attack") || ins.equals("incite")) {
@@ -379,29 +423,6 @@ public class GameController implements Initializable{
     return false;
   }
 
-  @FXML
-  public void send() {
-    System.out.println("Send() called ========");
-    String message = input.getText();
-    input.clear();
-    System.out.println("Message collected ===============");
-    // String currentName = gui.getCurrentName(currentRoom - 1);
-    //send message
-    System.out.println("CurrentRoom = " + currentRoom);
-    gui.getClient().sendChatMsg(currentRoom - 1, message);
-    System.out.println("Message sent ====================");
-  }
-
-  //append message
-  public void appendMsg(String message) {
-    area.appendText(message);
-  }
-
-  public void startChat() {
-    this.chat = new ChatThread(gui, this, currentRoom);
-    Thread thread = new Thread(chat);
-    thread.start();
-  }
 
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
@@ -416,19 +437,35 @@ public class GameController implements Initializable{
       }
     }
   }
+//
+  private void initChat() {
+    URL resource = getClass().getResource("/fxml/component/chat.fxml");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(resource);
+    try {
+      fxmlLoader.setControllerFactory(c -> new ChatController(gui));
+      chat = fxmlLoader.load();
 
-
+      chatController = fxmlLoader.getController();
+      chatController.setCurrentRoom(currentRoom);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    right.getChildren().set(6, chat);
+  }
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
-    actionChoice.setValue("move");
+    actionChoice.getItems().addAll("attack", "move", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
+    actionChoice.setValue("attack");
+
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));
       refreshPage();
     });
-    startChat();
+//    initChat();
+//    startChat();
   }
 }
 

@@ -20,6 +20,7 @@ import shared.Region;
 import shared.checkers.Checker;
 import shared.checkers.LoserChecker;
 import shared.checkers.WinnerChecker;
+import shared.instructions.InciteDefection;
 import shared.instructions.Instruction;
 
 public class GameMaster implements Runnable {
@@ -126,10 +127,20 @@ public class GameMaster implements Runnable {
   public void executeAll(Map<SocketChannel, List<Instruction>> instrMap) {
     for (SocketChannel playerSocket : instrMap.keySet()) {
       for (Instruction instr : instrMap.get(playerSocket)) {
-        instr.execute(board);
+        // execute all but incite defection
+        if(!(instr instanceof InciteDefection)){
+          instr.execute(board);
+        }
       }
     }
-    // TODO: figure out when to execute ally instructions
+    for (SocketChannel playerSocket : instrMap.keySet()) {
+      for (Instruction instr : instrMap.get(playerSocket)) {
+        // execute incite defection at the end of one round
+        if(instr instanceof InciteDefection){
+          instr.execute(board);
+        }
+      }
+    }
     board.resolve();
     board.resolveAlly();
   }

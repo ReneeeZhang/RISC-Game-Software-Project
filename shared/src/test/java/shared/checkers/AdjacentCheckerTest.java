@@ -35,8 +35,8 @@ public class AdjacentCheckerTest {
         Assertions.assertTrue(adjacentChecker.isValid());
         //add next
         when(r1.numUnitWithLevel(0)).thenReturn(4);
-        UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 0, 3);
-        adjacentChecker = new AdjacentChecker(boardMock, r1, r3, unitQuantityChecker);
+        //UnitQuantityChecker unitQuantityChecker = new UnitQuantityChecker(r1, 0, 3);
+        adjacentChecker = new AdjacentChecker(boardMock, r1, r3);
         Assertions.assertTrue(adjacentChecker.isValid());
         //invalid
         List<Region> regions2 = Arrays.asList(r2);
