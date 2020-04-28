@@ -89,7 +89,7 @@ public class GameBoard implements Board, Serializable {
     Map<Region, Integer> dist = new HashMap<Region, Integer>();
     // region : shortest distance
     initDistance(dist, player, src);
-    if (ally != null && ally.getAlly().equals(p)) {
+    if (ally != null) {
       initDistance(dist, ally.getName(), src);
     }
     getShortestDistance(dist, srcRegion, p, ally);
@@ -157,7 +157,6 @@ public class GameBoard implements Board, Serializable {
   }
 
   private void attackAlly(Player p, Player ally){
-    p.breakAlly();
     // get back all p's units immediately
     for (Region r : playerRegionMap.get(ally.getName())) {
       for (int level = 0; level < 7; level++) {
@@ -168,6 +167,7 @@ public class GameBoard implements Board, Serializable {
         }
       }
     }
+    p.breakAlly();
   }
 
   private Region getNearestRegion(Region src, String p) {
@@ -225,7 +225,7 @@ public class GameBoard implements Board, Serializable {
       if (ally != null) {
         // if ally has no ally or is not p
         if (ally.getAlly() == null || !ally.getAlly().equals(p)) {
-          attackAlly(ally, p);
+          attackAlly(p, ally);
         }
       }
     }
@@ -257,7 +257,7 @@ public class GameBoard implements Board, Serializable {
     Collections.sort(defenseUnits);
     fight(attackUnits, defenseUnits);
     // if wins, change the owner and send the rest units
-    if (attackUnits.size() > 0) {
+    if (!attackUnits.isEmpty()) {
       dst.setOwner(src.getOwner());
       dst.receiveUnit(attackUnits);
     }else{
@@ -268,7 +268,7 @@ public class GameBoard implements Board, Serializable {
   private void fight(List<BaseUnit> attack, List<BaseUnit> defense){
     Random rand = new Random();
     int round = 0;
-    while (attack.size() > 0 && defense.size() > 0) {
+    while (!attack.isEmpty() && !defense.isEmpty()) {
       int randA = rand.nextInt(20);
       int randB = rand.nextInt(20);
       BaseUnit unitA;
