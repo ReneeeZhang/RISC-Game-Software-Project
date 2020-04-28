@@ -146,16 +146,44 @@ public class GameBoard implements Board, Serializable {
     Region srcRegion = getRegion(src);
     Region dstRegion = getRegion(dst);
     Player p = getPlayer(player);
+    Player ally = p.getAlly();
     // if attack ally's region
-    if (p.getAlly() != null
-        && p.getAlly().equals(dstRegion.getOwner())) {
-      p.breakAlly();
+    if (ally != null && ally.equals(dstRegion.getOwner())) {
+      attackAlly(p, ally);
     }
     // costs 1 food per unit attacking
     p.decreaseFood(num);
     srcRegion.dispatch(dst, p, level, num);
   }
 
+  private void attackAlly(Player p, Player ally){
+    p.breakAlly();
+    // get back all p's units immediately
+    for (Region r : playerRegionMap.get(ally.getName())) {
+      for (int level = 0; level < 7; level++) {
+        int num = r.numUnitWithLevel(p, level);
+        if (num > 0) {
+          Region dst = getNearestRegion(r, p.getName());
+          dst.receiveUnit(r.sendUnit(p, level, num));
+        }
+      }
+    }
+  }
+
+  private Region getNearestRegion(Region src, String p) {
+    Region dst = null;
+    int cost = 1000;
+    for (Region r : playerRegionMap.get(p)) {
+      int dist = getDistance(p, src.getName(), r.getName());
+      if (dist < cost) {
+        // update cost and nearest region
+        cost = dist;
+        dst = r;
+      }
+    }
+    return dst;
+  }
+  
   @Override
   public void ally(String player1, String player2) {
     Player p1 = getPlayer(player1);
@@ -192,11 +220,12 @@ public class GameBoard implements Board, Serializable {
   @Override
   public void resolveAlly() {
     for (Player p : playerNameMap.values()) {
-      if (p.getAlly() != null) {
-        // if p.ally has no ally or not p
-        if (p.getAlly().getAlly() == null || !p.getAlly().getAlly().equals(p)) {
-          // break all unilateral relations
-          p.breakAlly();
+      Player ally = p.getAlly();
+      // has ally
+      if (ally != null) {
+        // if ally has no ally or is not p
+        if (ally.getAlly() == null || !ally.getAlly().equals(p)) {
+          attackAlly(ally, p);
         }
       }
     }
