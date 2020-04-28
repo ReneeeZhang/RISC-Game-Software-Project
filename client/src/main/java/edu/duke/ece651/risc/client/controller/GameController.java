@@ -134,7 +134,7 @@ public class GameController implements Initializable{
     return this;
   }
 
-  private void chooseAction(String a) {
+  public void chooseAction(String a) {
     a = a.split(" ")[0];
     URL resource = getClass().getResource(String.format("/fxml/component/%s.fxml", a));
     try {
@@ -149,7 +149,7 @@ public class GameController implements Initializable{
     setP1Choice(pname, a);
   }
 
-  private void refreshPage() {
+  public void refreshPage() {
     mainView.setRight(right);
     Stage window = (Stage)mainView.getScene().getWindow();
     window.setScene(mainView.getScene());
