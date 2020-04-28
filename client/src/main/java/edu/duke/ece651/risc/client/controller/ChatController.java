@@ -29,13 +29,14 @@ public class ChatController implements Initializable {
     System.out.println("Send() called ========");
     String message = input.getText();
     input.clear();
-    System.out.println("Message collected ===============");
+    //System.out.println("Message collected ===============");
     // String currentName = gui.getCurrentName(currentRoom - 1);
     //send message
-    System.out.println("CurrentRoom = " + currentRoom);
+    //System.out.println("CurrentRoom = " + currentRoom);
     // gui.getClient().sendChatMsg(currentRoom - 1, message);
-    chat.send(message);
-    System.out.println("Message sent ====================");
+    //chat.send(message);
+    //System.out.println("Message sent ====================");
+    area.appendText(message);
   }
 
   //append message
@@ -53,6 +54,7 @@ public class ChatController implements Initializable {
   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       startChat();
+      //startChat();
+      area.setEditable(false);
     }
 }

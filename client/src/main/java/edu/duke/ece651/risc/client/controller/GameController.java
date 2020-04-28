@@ -134,7 +134,7 @@ public class GameController implements Initializable{
     return this;
   }
 
-  private void chooseAction(String a) {
+  public void chooseAction(String a) {
     a = a.split(" ")[0];
     URL resource = getClass().getResource(String.format("/fxml/component/%s.fxml", a));
     try {
@@ -149,7 +149,7 @@ public class GameController implements Initializable{
     setP1Choice(pname, a);
   }
 
-  private void refreshPage() {
+  public void refreshPage() {
     mainView.setRight(right);
     Stage window = (Stage)mainView.getScene().getWindow();
     window.setScene(mainView.getScene());
@@ -168,9 +168,13 @@ public class GameController implements Initializable{
       ChoiceBox<String> dest = (ChoiceBox<String>) entry.getChildren().get(3);
       TextField level = (TextField) entry.getChildren().get(5);
       TextField num = (TextField) entry.getChildren().get(7);
+
+      System.out.println("making move");
       
       Move moveIns = new Move(pname, src.getValue(), dest.getValue(),
                                   Integer.parseInt(level.getText()), Integer.parseInt(num.getText()));
+      System.out.println("move made: " + src.getValue() + dest.getValue()+
+                         level.getText() + num.getText());
                                  
       if(gui.getClient().isValidInst(room, moveIns)) {
           insList.add(moveIns);
@@ -318,9 +322,12 @@ public class GameController implements Initializable{
 
   @FXML
   void createNewGame() throws IOException {
-    //System.out.println("start game " + (currentRoom + 1));
-    gui.getClient().joinGame();
-    gui.setNumPlayersScene();
+    System.out.println("start game " + (currentRoom + 1));
+    if (games.getTabs().size() > 1) {
+      System.out.println("Start game, activeGames > 1");
+      gui.getClient().joinGame();
+      gui.setNumPlayersScene();
+    }
   }
 
   @FXML
@@ -330,6 +337,7 @@ public class GameController implements Initializable{
     String pname = gui.getCurrentName(currentRoom - 1);
     Popup.showInfo(board.getRegion(id).getInfo(pname));
   }
+
   private void generateTabs(int activeRoom) {
     int size = games.getTabs().size();
     while (size - 1 < activeRoom) {
@@ -353,12 +361,25 @@ public class GameController implements Initializable{
 
   // Fill in source selection
   public void setSrcChoice(String pname, String ins) {
-    if (ins.equals("move") || ins.equals("attack") || ins.equals("unit") || ins.equals("incite")) {
+    if (ins.equals("unit") || ins.equals("incite")) {
       VBox entry = (VBox) right.getChildren().get(3);
       ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
       srcChoice.getItems().clear();
       for (String regionName: board.getRegionNames(pname)) {
         srcChoice.getItems().add(regionName);
+      }
+    }
+    else if(ins.equals("move") || ins.equals("attack")) {
+      VBox entry = (VBox) right.getChildren().get(3);
+      ChoiceBox<String> srcChoice = (ChoiceBox<String>) entry.getChildren().get(1);
+      srcChoice.getItems().clear();
+      for (String regionName: board.getRegionNames(pname)) {
+        srcChoice.getItems().add(regionName);
+      }
+      if (board.getPlayer(pname).getAlly() != null) {
+        for (String regionName: board.getRegionNames(board.getPlayer(pname).getAlly().getName())) {
+          srcChoice.getItems().add(regionName);
+        }
       }
     }
   }
@@ -401,34 +422,7 @@ public class GameController implements Initializable{
     }
     return false;
   }
-//  @FXML
-// public void send() {
-//    chatController.send();
-//  }
 
-//  @FXML
-//  public void send() {
-//    System.out.println("Send() called ========");
-//    String message = input.getText();
-//    input.clear();
-//    System.out.println("Message collected ===============");
-//    // String currentName = gui.getCurrentName(currentRoom - 1);
-//    //send message
-//    System.out.println("CurrentRoom = " + currentRoom);
-//    gui.getClient().sendChatMsg(currentRoom - 1, message);
-//    System.out.println("Message sent ====================");
-//  }
-//
-//  //append message
-//  public void appendMsg(String message) {
-//    area.appendText(message);
-//  }
-//
-//  public void startChat() {
-//    this.chat = new ChatThread(gui, this, currentRoom);
-//    Thread thread = new Thread(chat);
-//    thread.start();
-//  }
 
   // Fill in player1 selection
   public void setP1Choice(String pname, String ins) {
@@ -463,8 +457,8 @@ public class GameController implements Initializable{
   public void initialize(URL location, ResourceBundle resources) {
     System.out.println("initialize");
     generateTabs(gui.getActiveGames());
-    actionChoice.getItems().addAll("move", "attack", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
-    actionChoice.setValue("move");
+    actionChoice.getItems().addAll("attack", "move", "unit upgrade", "tech upgrade", "ally", "food support", "incite defection");
+    actionChoice.setValue("attack");
 
     actionChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
       chooseAction(actionChoice.getItems().get((int)newValue));

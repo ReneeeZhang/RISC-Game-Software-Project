@@ -28,8 +28,6 @@ public class NumPlayersController implements Initializable{
   
   public NumPlayersController(ClientGUI g) {
     this.gui = g;
-    // this.numChoice = new ChoiceBox<>();
-    // this.numChoice.getItems().addAll(2, 3, 4, 5);
   }
 
   @FXML
@@ -41,7 +39,6 @@ public class NumPlayersController implements Initializable{
         ex1.printStackTrace();
       }
 
-      
         // Get player name and board
         String pName = new String();
         Board board = new GameBoard();

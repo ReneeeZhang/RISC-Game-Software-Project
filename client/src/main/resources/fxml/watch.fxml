@@ -15,7 +15,7 @@
         <VBox fx:id="right" prefHeight="563.0" prefWidth="160.0" BorderPane.alignment="CENTER">
             <children>
                 <Region prefHeight="326.0" prefWidth="160.0" VBox.vgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#doRefresh" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #e03737#e03737;" text="Refresh" textFill="WHITE">
+                <Button fx:id="refresh" mnemonicParsing="false" onAction="#doRefresh" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #e03737#e03737;" text="Refresh" textFill="WHITE">
                     <VBox.margin>
                         <Insets bottom="10.0" left="10.0" />
                     </VBox.margin>
