@@ -5,9 +5,9 @@ import shared.instructions.UnitUpgrade;
 
 public class UnitUpgradeChecker implements Checker {
 
-    Board board;
-    UnitUpgrade instruction;
-    Checker next;
+    private Board board;
+    private UnitUpgrade instruction;
+    private Checker next;
 
     public UnitUpgradeChecker(Board board, UnitUpgrade instruction, Checker next) {
         this.board = board;
@@ -23,7 +23,7 @@ public class UnitUpgradeChecker implements Checker {
     public boolean isValid() {
         BaseRegion region = (BaseRegion)board.getRegion(instruction.getSrc());
         String playerName = instruction.getPlayerName();
-        if (!playerName.equals(region.getOwner())) {
+        if (!playerName.equals(region.getOwner().getName())) {
             System.out.println(String.format("Unit Upgrade failed because of inconsistent owner. Caller: %s, Region owner: %s", playerName, region.getOwner()));
             return false;
         }

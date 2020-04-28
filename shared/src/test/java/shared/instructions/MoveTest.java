@@ -1,36 +1,31 @@
 package shared.instructions;
 
 import shared.*;
-import shared.instructions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
-
 
 public class MoveTest {
   @Test
-  public void mock_() {
+  public void test_Move() {
     Region r1 = mock(Region.class);
     Region r2 = mock(Region.class);
     Region r3 = mock(Region.class);
     //owner
-    when(r1.getOwner()).thenReturn("A");
-    when(r2.getOwner()).thenReturn("A");
-    when(r3.getOwner()).thenReturn("B");
+    when(r1.getOwner()).thenReturn(new Player("A"));
+    when(r2.getOwner()).thenReturn(new Player("A"));
+    when(r3.getOwner()).thenReturn(new Player("B"));
     //name
     when(r1.getName()).thenReturn("r1");
     when(r2.getName()).thenReturn("r2");
     when(r3.getName()).thenReturn("r3");
     //unit
-    when(r1.getNumBaseUnit()).thenReturn(1);
-    when(r2.getNumBaseUnit()).thenReturn(1);
-    when(r3.getNumBaseUnit()).thenReturn(1);
+    when(r1.getAllUnitsAmount()).thenReturn(1);
+    when(r2.getAllUnitsAmount()).thenReturn(1);
+    when(r3.getAllUnitsAmount()).thenReturn(1);
 
     when(r1.numUnitWithLevel(0)).thenReturn(1);
 
@@ -40,59 +35,20 @@ public class MoveTest {
     when(boardMock.getRegion("r1")).thenReturn(r1);
     when(boardMock.getRegion("r2")).thenReturn(r2);
     when(boardMock.getRegion("r3")).thenReturn(r3);
-    //doNothing().when(boardMock.move("r1","r2"));
 
-    Move m1 = new Move("r1", "r2", 0, 1);
-    assertEquals(1, m1.getNumUnit());
-    assertEquals(true, m1.isValid(boardMock));
+    Player playerMock = mock(Player.class);
+    when(playerMock.getFoodAmount()).thenReturn(50);
+
+    when(boardMock.getPlayer("A")).thenReturn(playerMock);
+    when(r1.numUnitWithLevel(playerMock, 0)).thenReturn(5);
+    Move m1 = new Move("A", "r1", "r2", 0, 1);
+    assertTrue(m1.isValid(boardMock));
     m1.execute(boardMock);
 
     m1.toString();
 
-    Move m2 = new Move("r1", "r3", 0, 1);
-    assertEquals(false, m2.isValid(boardMock));
+    Move m2 = new Move("A", "r1", "r3", 0, 1);
+    assertFalse(m2.isValid(boardMock));
     m2.execute(boardMock);
-
-    assertEquals("r1", m2.getSrc());
-    assertEquals("r3", m2.getDest());
   }
-  @Test
-  public void test_() {
-    // ArrayList<Unit> u1 = new ArrayList<>();
-    // u1.add(new BaseUnit("r1"));
-    // Region r1 = new BaseRegion("1", "1", "1", u1);
-
-    // ArrayList<Unit> u2 = new ArrayList<>();
-    // u2.add(new BaseUnit("r2"));
-    // Region r2 = new BaseRegion("2", "2", "2", u2);
-
-    // ArrayList<Unit> u3 = new ArrayList<>();
-    // u3.add(new BaseUnit("r3"));
-    // Region r3 = new BaseRegion("3", "3", "3", u3);
-
-    // Map<Region, List<Region>> regionMap = new HashMap<Region, List<Region>>();
-    // ArrayList<Region> l1 = new ArrayList<>();
-    // l1.add(r2);
-    // ArrayList<Region> l2 = new ArrayList<>();
-    // l2.add(r1);
-    // ArrayList<Region> l3 = new ArrayList<>();
-    
-    // regionMap.put(r1, l1);
-    // regionMap.put(r2, l2);
-    // regionMap.put(r3, l3);
-    
-    // Board b = new GameBoard(regionMap);
-    // b.toString();
-
-    // Move m1 = new Move("1", "2", 1);
-    // m1.execute(b);
-    // //assertEquals(0, r1.getNumBaseUnit());
-    // //assertEquals(2, r2.getNumBaseUnit());
-    
-    // Move m2 = new Move("2", "3", 1);
-    // m2.execute(b);
-    // //assertEquals(1, r3.getNumBaseUnit());
-    
-  }
-
 }

@@ -1,6 +1,5 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.IOException;
 import shared.Board;
 
 import shared.instructions.*;
@@ -13,9 +12,13 @@ import shared.checkers.WinnerChecker;
 public class GameJoiner extends Connector {
   private String name;
   private Board board;
+  private ChatController chatController;
 
-  public GameJoiner(String hostname, int port) throws IOException {
-    super(hostname, port);
+  public GameJoiner(String hostname, int gamePort, int chatPort) {
+    super(hostname, gamePort);
+    System.out.println("Game server connected");
+    chatController = new ChatController(hostname, chatPort);
+    System.out.println("Chat Server connected");
   }
 
   // Must init GameJoiner after receiving name and board
@@ -24,10 +27,29 @@ public class GameJoiner extends Connector {
     setBoard(board);
   }
 
+  public void sendChatMsg(String msg) {
+    System.out.println("msg coming to gamejoiner: " + msg);
+    chatController.send(this.name + ": " + msg);
+    System.out.println("msg successfully sent");
+  }
+
+  public void sendNumPlayerToChat(int numPlayer) {
+    chatController.send(numPlayer);
+  }
+  
+  public String receiveChatMsg() {
+    String msg = (String) chatController.receive();
+    String[] splittedMsg = msg.split(": ");
+    if (splittedMsg[0].equals(this.name)) {
+      return "You: " + splittedMsg[1];
+    }
+    return msg;
+  }
+  
   public void setName(String name) {
     this.name = name;
   }
-
+  
   public Board getBoard() {
     return board;
   }
@@ -37,8 +59,13 @@ public class GameJoiner extends Connector {
   }
 
   public boolean isValidInst(Instruction inst) {
-    return inst.isValid(board);
+    if (inst.isValid(board)) {
+      inst.execute(board);
+      return true;
+    }
+    return false;
   }
+  
   public boolean hasWon() {
     Checker winnerChecker = new WinnerChecker(board, name);
     if (winnerChecker.isValid()) {

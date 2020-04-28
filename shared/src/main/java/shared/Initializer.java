@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import shared.BaseRegion;
-import shared.GameBoard;
-import shared.Region;
-
 public class Initializer {
   private String configFilePath;
 
@@ -59,7 +55,7 @@ public class Initializer {
       String[] regionNames = line[1].split(", ");
       List<Region> playerRegions = new ArrayList<>();
       for (int i = 0; i < regionNames.length; i++) {
-        Region r = new BaseRegion(regionNames[i], playerName, regionSizeMap.get(regionNames[i]));
+        Region r = new BaseRegion(regionNames[i], currPlayer, regionSizeMap.get(regionNames[i]));
         playerRegions.add(r);
         regionNameMap.put(regionNames[i], r);
       }

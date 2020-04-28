@@ -1,9 +1,6 @@
 package edu.duke.ece651.risc.client;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOError;
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,16 +13,20 @@ public class ClientTest {
     System.out.println("Test client");
     Thread serverThread = new Thread(new FakeServer(6666));
     serverThread.start();
-    Thread serverThread2 = new Thread(new FakeServer2(7777));
-    serverThread2.start();
+    Thread gameServerThread = new Thread(new FakeGameServer(7777));
+    gameServerThread.start();
+    Thread chatServerThread = new Thread(new FakeChatServerForClient(9999));
+    chatServerThread.start();
     
     try {
-      Client client = new Client("localhost", 6666, 7777);
+      Client client = new Client("localhost", 6666, 7777, 9999);
       client.send(2);
       String name = (String) client.receive();
       Board board = (Board) client.receive();
 
       client.joinGame();
+      client.sendNumPlayer(0, 2);
+      
       client.initMatch(0, name, board);
       client.getBoard(0);
       client.setBoard(0, board);
@@ -33,22 +34,25 @@ public class ClientTest {
       client.hasWon(0);
       client.isGameOver(0);
 
+
+      //Client.main(new String[] { "localhost", "6666" });
+
+
       client.sendViaChannel(0, 1);
       String a = (String) client.receiveViaChannel(0);
-      Move m1 = new Move("Hudson", "Teer", 4, 1);
-      Move m2 = new Move("Hudson", "Teer", 0, 1);
+      Move m1 = new Move("p1", "Hudson", "Teer", 4, 1);
+      Move m2 = new Move("p2", "Perkins", "Teer", 0, 1);
       client.isValidInst(0, m1);
-      client.isValidInst(0, m2);
-    } catch (IOException e) {
-      System.out.println(e);
-    } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
-    }
-    try{
-      Thread.sleep(50);
-    } catch (InterruptedException e) {
-      System.out.println(e);
+      //client.isValidInst(0, m2);
+
+      //send and receive msg
+      client.sendChatMsg(0, "chat msg");
+      String msg = client.receiveChatMsg(0);
+      assertEquals(msg, "You: chat msg");
+      Thread.sleep(1000);
+    } catch (Exception e) {
     }
     //Client.main(new String[] { "localhost", "6666" });
   }
+
 }

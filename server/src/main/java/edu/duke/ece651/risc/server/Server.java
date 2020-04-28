@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Server {
   private ServerSocketChannel serverSocketChannel;
   private Map<Integer, GameMaster> games;
-
+  
   public Server(int port) throws IOException {
     this.serverSocketChannel = ServerSocketChannel.open();
     serverSocketChannel.socket().bind(new InetSocketAddress(port));
@@ -23,22 +23,21 @@ public class Server {
       games.put(i, new GameMaster(i));
     }
   }
- 
+
   public static void main(String[] args) {
     try {
-      Scanner config = new Scanner(new File("src/main/resources/config.txt"));
-      AuthServer auth = new AuthServer(config.nextInt());
-      Thread authServer = new Thread(auth);
-      authServer.start();
-      Server server = new Server(config.nextInt());
+      Server server = Server.start("src/main/resources/config.txt");
       while (true) {
+        System.out.println("request");
         server.handleRequest();
       }
-    } catch (IOException e) {
-      System.out.println(e);
-    } catch (ClassNotFoundException e) {
-      System.out.println(e);
+    } catch (Exception e) {
     }
+  }
+
+  public static Server start(String path) throws IOException {
+    Scanner config = new Scanner(new File(path));
+    return new Server(config.nextInt());
   }
 
   public int getPlayerNum(SocketChannel sc) throws IOException, ClassNotFoundException{

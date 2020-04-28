@@ -44,11 +44,11 @@ subprojects{
         
         // Use JUnit Jupiter Engine for testing.
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
-        
+
         clover 'org.openclover:clover:4.3.1'
 
         testCompile "org.mockito:mockito-core:2.+"
-
+        testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
     }
     test {
         testLogging {
@@ -84,6 +84,12 @@ project (':server'){
     }
 }
 
+project (':authServer'){
+}
+
+project (':chatServer'){    
+}
+
 project (':client'){
     dependencies{
         implementation project(':shared')
@@ -91,9 +97,21 @@ project (':client'){
 }
 
 tasks.register("run-server"){
-    dependsOn project('server').getTasksByName('run',false)
+    dependsOn project('server').getTasksByName('run', false)
     group = 'Run Client/Server'
-    description = 'Run the Server'
+    description = 'Run the Game Server'
+}
+
+tasks.register("run-authServer"){
+    dependsOn project('authServer').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the Authentication Server'
+}
+
+tasks.register("run-chatServer"){
+    dependsOn project('chatServer').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the Chat Server'
 }
 
 tasks.register("run-client"){
@@ -122,5 +140,3 @@ task resolveDependencies {
         }
     }
 }
-
-

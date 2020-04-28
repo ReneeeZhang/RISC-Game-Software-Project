@@ -20,11 +20,19 @@ public interface Board {
   
   public Set<String> getAllOwners();
 
-  public int getDistance(String src, String dst);
+  public int getDistance(String player, String src, String dst);
   
-  public void move(String src, String dst, int level, int num);
+  public void move(String player, String src, String dst, int level, int num);
 
-  public void attack(String src, String dst, int level, int num);
+  public void attack(String player, String src, String dst, int level, int num);
+
+  public void ally(String player1, String player2);
+
+  public void supportFood(String supportor, String supportee, int amount);
+
+  public void inciteDefection(String src, String dst);
   
   public void resolve();
+
+  public void resolveAlly();
 }

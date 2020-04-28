@@ -7,44 +7,51 @@ import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import shared.GameBoard;
-import shared.instructions.Attack;
 import shared.instructions.Instruction;
-import shared.instructions.Move;
 
 public class FakeClient implements Runnable {
-  private Scanner input;
+  private List<Instruction> instr;
   
-  public FakeClient(String s) {
-    this.input = new Scanner(s);
+  public FakeClient(List<Instruction> instr) {
+    this.instr = instr;
   }
 
   public void run() {
     try {
-      Thread.sleep(50);
+      Thread.sleep(1000);
       SocketChannel sc = SocketChannel.open();
       sc.connect(new InetSocketAddress("localhost", 7777));
       Socket s = sc.socket();
+      
+      // send player number to server
       ObjectOutputStream serial = new ObjectOutputStream(s.getOutputStream());
       serial.writeObject(2);
+      
+      // recv player name from server
       ObjectInputStream deserial = new ObjectInputStream(s.getInputStream());
       String name = (String) deserial.readObject();
-      System.out.println(name);
-      while (true) {
-        deserial = new ObjectInputStream(s.getInputStream());
-        GameBoard b = (GameBoard) deserial.readObject();
-        serial = new ObjectOutputStream(s.getOutputStream());
-        Instruction move = new Move(input.next(), input.next(), input.nextInt(), input.nextInt());
-        Instruction attack = new Attack(input.next(), input.next(), input.nextInt(), input.nextInt());
-        List<Instruction> ins = new ArrayList<Instruction>();
-        ins.add(move);
-        ins.add(attack);
-        serial.writeObject(ins);
-      }
+
+      // recv board from server
+      deserial = new ObjectInputStream(s.getInputStream());
+      GameBoard b = (GameBoard) deserial.readObject();
+      
+      // send instr to server
+      serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(new ArrayList<>());
+
+      // recv board from server
+      deserial = new ObjectInputStream(s.getInputStream());
+      b = (GameBoard) deserial.readObject();
+
+      serial = new ObjectOutputStream(s.getOutputStream());
+      serial.writeObject(instr);
+      
+      sc.close();
+      return;
     } catch (Exception e) {
-      System.out.println(e);
+      return;
     }
   }
 }
